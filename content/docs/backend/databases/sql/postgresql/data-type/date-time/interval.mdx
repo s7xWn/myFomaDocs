@@ -1,0 +1,32 @@
+---
+title: "`INTERVAL`"
+---
+
+— это тип данных для хранения промежутка времени, а не конкретной даты или момента времени.
+
+```sql
+INTERVAL 'значение единица'
+```
+
+| Единица              | Полная запись           | Сокращённый вариант | Пример              |
+| -------------------- | ----------------------- | ------------------- | ------------------- |
+| `year` / `years`     | `INTERVAL '2 years'`    | `yr`                | `INTERVAL '2 yr'`   |
+| `month` / `months`   | `INTERVAL '3 months'`   | `mon` / `mons`      | `INTERVAL '3 mons'` |
+| `week` / `weeks`     | `INTERVAL '2 weeks'`    |                     |                     |
+| `day` / `days`       | `INTERVAL '5 days'`     | `d`                 | `INTERVAL '5 d'`    |
+| `hour` / `hours`     | `INTERVAL '4 hours'`    | `h`                 | `INTERVAL '4 h'`    |
+| `minute` / `minutes` | `INTERVAL '30 minutes'` | `min`               | `INTERVAL '30 min'` |
+| `second` / `seconds` | `INTERVAL '15 seconds'` | `s` / `sec`         | `INTERVAL '15 sec'` |
+
+Единственное число и множественное обычно оба допустимы:
+
+```sql
+INTERVAL '1 day'
+INTERVAL '5 days'
+```
+
+Можно комбинировать
+
+```sql
+INTERVAL '1 day 3 hours 20 minutes'
+```

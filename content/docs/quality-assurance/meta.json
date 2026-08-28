@@ -1,0 +1,13 @@
+{
+  "title": "QAr",
+  "description": "The description of root folder (optional)",
+  "root": true,
+  "pages": [
+    "index",
+    "software-testing-life-cycle",
+    "---[BookText]Теория---",
+    "...theory",
+    "---[FileCog]Тестовые документации---",
+    "...testing-docs"
+  ]
+}

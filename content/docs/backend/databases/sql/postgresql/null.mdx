@@ -1,0 +1,74 @@
+---
+title: "`NULL`"
+---
+
+`NULL` в PostgreSQL означает отсутствующее или неизвестное значение.
+
+```
+Тип данных
+├── INTEGER
+├── TEXT
+├── NUMERIC
+├── BOOLEAN
+└── TIMESTAMP
+       ↓
+Значение
+├── конкретное значение
+└── NULL
+```
+
+<hr />
+
+## Свойства
+
+### С `NULL` нельзя сравнивать через `=`
+
+```sql
+-- ❌
+WHERE name = NULL
+
+-- ✅
+WHERE name IS NULL
+
+-- ✅
+WHERE name IS NOT NULL
+```
+
+Это связано с трёхзначной логикой SQL: `TRUE`/`FALSE`/`UNKNOWN`
+
+<hr />
+
+### `NULL` и агрегатные функции
+
+Большинство агрегатных функций игнорируют `NULL`
+
+Но `COUNT(*)` и `COUNT(column)` ведут себя по-разному:
+
+```sql
+COUNT(*)       -- считает все строки
+COUNT(age)     -- считает только строки, где age IS NOT NULL
+```
+
+<hr />
+
+### `NULL` в арифметике
+
+Операции с `NULL` обычно дают `NULL`
+
+<hr />
+
+## `COALESCE` как замена `NULL`
+
+Для этого часто используется `COALESCE`
+
+<details>
+  <summary>Пример</summary>
+
+```sql
+SELECT COALESCE(name, 'Unknown')
+FROM users;
+```
+
+Если `name` равен `NULL`, вернётся `'Unknown'`.
+
+</details>

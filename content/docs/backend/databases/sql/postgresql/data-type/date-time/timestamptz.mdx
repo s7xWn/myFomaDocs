@@ -1,0 +1,17 @@
+---
+title: "`TIMESTAMPTZ`"
+---
+
+— это тип данных PostgreSQL для хранения момента времени с учётом часового пояса.
+
+`TIMESTAMPTZ` хранит не сам часовой пояс, а момент времени.
+
+```
+YYYY-MM-DD HH:MI:SS.ffffff+TZ
+```
+
+`TIMESTAMPTZ` — это сокращение для:
+
+```sql
+TIMESTAMP WITH TIME ZONE
+```
