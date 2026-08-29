@@ -1,0 +1,43 @@
+---
+title: useParams
+---
+
+— это хук для получения параметров из URL (динамических сегментов маршрута).
+
+Возвращает объект ключ:"значение", указанные в [Динамические параметры (`<Route>` `path` через `:`)](../declarative-mode/route#динамические-параметры)
+
+```tsx
+import { useParams } from "react-router";
+```
+
+```tsx
+const params = useParams();
+```
+
+:::important[Важные моменты]
+
+- Значения всегда приходят как строки
+- `useParams` работает только внутри компонента, который находится под `Router`
+- Если параметр не найден, значение будет `undefined`
+
+:::
+
+<details>
+  <summary> Пример </summary>
+
+    ```tsx
+    <Route path="/posts/:postId/comments/:commentId" element={<Comment />} />
+    ```
+
+    URL: `/posts/10/comments/5`
+
+    Компонент:
+
+    ```tsx
+    const { postId, commentId } = useParams();
+
+    console.log(postId);    // "10"
+    console.log(commentId); // "5"
+    ```
+
+</details>

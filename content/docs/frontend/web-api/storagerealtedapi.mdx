@@ -1,0 +1,56 @@
+---
+title: Storage-related APIs
+---
+
+— это общий термин для группы браузерных API, которые дают веб-приложениям доступ к локальному и другим видам хранения данных.
+
+## Web Storage
+
+> `localStorage` и `sessionStorage`
+
+Локальные хранилища используются, чтобы хранить какие-то данные в браузере пользователя.
+
+Они удобны, когда мы не хотим отправлять данные на сервер, потому что они, например, промежуточные, или нужны только на клиенте.
+
+Допустим, у нас есть форма из 5 шагов, и мы хотим, чтобы все введённые данные сохранились, и пользователь, закрыв браузер и через какое-то время вернувшись, мог не набирать их заново.
+
+```js
+function saveToStorage(data) {
+  try {
+    window.localStorage.setItem("some-key", JSON.stringify(data));
+  } catch {
+    alert("Failed to save data to local storage.");
+  }
+}
+
+function loadFromStorage() {
+  try {
+    return JSON.parse(window.localStorage.getItem("some-key"));
+  } catch {
+    alert("Failed to load data from local storage.");
+  }
+}
+
+// Код обработки формы
+
+function nextStep() {
+  // При переходе сохраняем всё, что введено:
+  saveToStorage(formData);
+}
+```
+
+Разница между `localStorage` и `sessionStorage` в длительности хранения данных. Данные из `sessionStorage` сотрутся, когда пользователь закроет вкладку с приложением. Данные же из `localStorage` не стираются сами по себе.
+
+### localStorage
+
+— хранит данные надолго (пока пользователь не удалит)
+
+### sessionStorage
+
+— хранит данные только на время вкладки
+
+## IndexedDB API
+
+Более мощная встроенная база данных в браузере. Подходит для больших и структурированных данных.Асинхронная, работает через транзакции
+
+## Cache API

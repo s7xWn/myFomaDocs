@@ -1,0 +1,177 @@
+---
+title: DOM (Document Object Model)
+---
+
+**Document Object Model**, сокращённо **DOM** – объектная модель документа, которая представляет все содержимое страницы в виде объектов, которые можно менять.
+
+Когда браузер читает HTML
+
+```html
+<body>
+  <h1>Hello</h1>
+</body>
+```
+
+он превращает его в дерево объектов:
+
+```
+Document
+└── body
+    └── h1
+        └── "Hello"
+```
+
+## DOM Api
+
+— это инструменты для работы с DOM
+
+DOM API позволяет:
+
+- искать элементы,
+- менять текст,
+- добавлять узлы,
+- удалять элементы,
+- подписываться на события.
+
+Например:
+
+```js
+// заменим цвет фона на красный,
+document.body.style.background = "red";
+
+document.querySelector();
+element.append();
+element.remove();
+addEventListener();
+```
+
+### document
+
+Объект `window.document` или `document` – основная «входная точка». Главный объект страницы. С его помощью мы можем что-то создавать или менять на странице (Через него ты получаешь доступ ко всему DOM-дереву.). Например, `document.body` – объект для тега `<body>`.
+
+Он умеет:
+
+- искать элементы
+- создавать элементы
+- изменять структуру страницы
+
+### Node
+
+— базовая единица DOM-дерева.
+
+— базовая программная абстракция, представляющая элемент структуры документа в модели Document Object Model (DOM). Каждый узел (Node) соответствует части дерева документа: элементу, тексту, атрибуту или комментарию. Эта концепция лежит в основе работы браузеров и API, взаимодействующих с HTML и XML.
+
+Всё в **DOM** — это **Node**:
+
+- элементы (`<div>`, `<p>`)
+- текст
+- комментарии
+- сам `document`
+
+Пример структуры:
+
+```
+Document
+ └── HTML
+      └── BODY
+           └── DIV
+                └── "text"
+```
+
+Каждый из них — **Node**.
+
+Основные свойства:
+
+```
+node.parentNode
+node.childNodes
+node.nextSibling
+node.nodeType
+```
+
+### Element
+
+— это специализированный Node, который представляет HTML-тег.
+
+— это интерфейс в объектной модели документа (DOM), представляющий один узел элемента в HTML или XML-документе. Он служит базовым классом для конкретных типов элементов, обеспечивая доступ к атрибутам, дочерним узлам и связанной разметке.
+
+Например
+
+```html
+<div id="box"></div>
+```
+
+```js
+const el = document.querySelector("#box");
+```
+
+Это уже `Element`, а не просто **Node**.
+
+Что умеет `Element`:
+
+- работать с атрибутами
+
+  ```js
+  // Получение атрибута
+  const value = el.getAttribute("id");
+
+  // Установка или изменение атрибута
+  el.setAttribute("class", "active");
+  el.setAttribute("data-user", "123");
+  ```
+
+- управлять классами
+  ```js
+  el.classList.add("active", "hidden");
+  el.classList.remove("active");
+  el.classList.toggle("active", isVisible);
+  ```
+- менять стили
+
+  ```js
+  el.style.color = "red";
+  el.style.backgroundColor = "black";
+  el.style.fontSize = "20px";
+
+  el.style.cssText = "color: white; background: black; padding: 10px;";
+  ```
+
+- искать вложенные элементы
+
+  ```js
+  const parent = document.querySelector(".parent");
+  const child = parent.querySelector(".child");
+
+  parent.firstElementChild;
+  parent.lastElementChild;
+  ```
+
+### Event
+
+— это объект, который описывает происшествие в браузере:
+
+- клик
+- ввод текста
+- движение мыши
+- загрузка страницы
+
+— это объект в модели документа (Document Object Model), представляющий сигнал о том, что в браузере произошло определённое действие. Он служит основой системы событий в веб-разработке, позволяя JavaScript-кодам реагировать на пользовательские взаимодействия, сетевые изменения и другие процессы в браузере.
+
+`Event` — это «сообщение о действии», которое передаётся по DOM.
+
+Пример
+
+```js
+button.addEventListener("click", (event) => {
+  console.log(event);
+});
+```
+
+`event` содержит:
+
+```js
+event.type; // "click"
+event.target; // элемент, на который кликнули
+event.currentTarget;
+event.timeStamp;
+```

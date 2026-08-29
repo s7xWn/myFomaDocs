@@ -1,0 +1,83 @@
+---
+title: <RouterProvider/>
+---
+
+— это компонент, который подключает уже созданный объект роутера к вашему React-приложению.
+
+> Вместо декларативного описания маршрутов через [`<BrowserRouter>`](../declarative-mode/browser-router) и [`<Routes>`](../declarative-mode/routes), вы сначала создаете роутер, а затем передаете его в `<RouterProvider>`.
+
+```tsx
+import { RouterProvider } from "react-router";
+```
+
+`RouterProvider`:
+
+- хранит состояние навигации;
+- отслеживает URL;
+- рендерит нужный маршрут;
+- запускает loader и action;
+- обрабатывает ошибки маршрутов;
+- поддерживает ленивую загрузку (lazy);
+- управляет состоянием переходов (useNavigation()).
+
+## Использование
+
+Подключаем `RouterProvider` в главном файле приложения.
+
+```tsx
+import { RouterProvider } from "react-router";
+import router from "./routes/router";
+
+function App() {
+  return <RouterProvider router={router} />;
+}
+
+export default App;
+```
+
+или
+
+```tsx
+import { createRoot } from "react-dom/client";
+import { RouterProvider } from "react-router";
+import router from "./routes/router";
+
+createRoot(document.getElementById("root")!).render(
+  <RouterProvider router={router} />,
+);
+```
+
+<hr />
+
+## Свойства
+
+### `router` (обязательное)
+
+Передается экземпляр роутера, созданный через `createBrowserRouter`, `createHashRouter`, `createMemoryRouter` и т.д.
+
+```tsx
+function App() {
+  return <RouterProvider router={router} />;
+}
+```
+
+<hr />
+
+### flushSync
+
+<hr />
+
+### unstable_onError
+
+<hr />
+
+## Отличие от `BrowserRouter`
+
+| BrowserRouter                    | RouterProvider                              |
+| -------------------------------- | ------------------------------------------- |
+| Только маршрутизация             | Полноценный Data Router                     |
+| `<Routes>` внутри JSX            | Конфигурация маршрутов создается заранее    |
+| Нет встроенных `loader`/`action` | Полностью поддерживает Data APIs            |
+| Нет состояния навигации          | Есть `useNavigation()`                      |
+| Ограниченная обработка ошибок    | Поддерживает `errorElement`/`ErrorBoundary` |
+| Подходит для простых приложений  | Рекомендуется для новых проектов            |

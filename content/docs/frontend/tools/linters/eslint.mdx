@@ -1,0 +1,268 @@
+---
+title: ESLint
+---
+
+> [Web Site](https://eslint.org)
+
+— это линтер для **JavaScript/TypeScript**.
+
+Гайды:
+
+- YouTubue:
+  - [Александр Ламков — Friendly Frontend | Линтеры и форматтеры в фронтенде: ESLint, Stylelint и Prettier без боли](https://www.youtube.com/watch?v=jwTwnI3hwig)
+
+## Установка в проект
+
+```bash
+npm install -D eslint
+```
+
+Запусти мастер настройки:
+
+```bash
+npx eslint --init
+```
+
+Он спросит:
+
+- какой форма файлов проверять,
+- как использовать будем ESlint,
+- какой тип модулей,
+- React/Vue,
+- используешь ли TypeScript,
+- где запускается код (browser/node),
+- предлодижит установить пакеты,
+- спросит какой packet manager использовать
+
+После этого появится конфиг:
+
+- `eslint.config.js` _(новый flat config)_
+- `.eslintrc.js` _(старый)_
+
+<hr />
+
+## Установка пакета для Java Script
+
+> При `npx eslint --init` в последнем этапе он может предложить скачать его сам
+
+```bash
+npm install -D @eslint/js
+```
+
+<hr />
+
+## Установка пакета для Type Script
+
+> При `npx eslint --init` в последнем этапе он может предложить скачать его сам
+
+```
+npm install -D typescript-eslint
+```
+
+<hr />
+
+## Установка пакета для React
+
+> При `npx eslint --init` в последнем этапе он может предложить скачать его сам
+
+```
+npm install -D eslint-plugin-react eslint-plugin-react-hooks
+```
+
+<hr />
+
+## Установка пакета для Prettier
+
+```
+npm install -D eslint-config-prettier
+```
+
+> Раньше часто ставили еще:
+>
+> ```
+> npm install -D eslint-plugin-prettier
+> ```
+>
+> и запускали **Prettier** как правило **ESLint**. Сейчас команда **Prettier** рекомендует не делать так без необходимости.
+
+Конфигурация ESLint (Flat Config) `eslint.config.js`
+
+Добавить:
+
+```
+...
+import eslintConfigPrettier from "eslint-config-prettier";
+...
+
+export default defineConfig([
+	{
+        ...
+        eslintConfigPrettier,
+        ...
+    }
+]);
+```
+
+<hr />
+
+## Установка в VS Code
+
+> [Расширение](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint&utm_source=chatgpt.com)
+
+<hr />
+
+## Проверка проекта
+
+Запускает проверку проекта:
+
+```
+npx eslint .
+```
+
+или конкретной папки
+
+```
+npx eslint src
+```
+
+### --fix
+
+Автоисправление, делает это безопасно
+
+```
+npx eslint . --fix
+```
+
+## `eslint.config.mjs`
+
+Основная конфигурация <br/>
+Экспортируется массив конфигов. <br/>
+В новом ESLint flat config конфиги — это массив объектов.
+
+```
+export default defineConfig([{}])
+```
+
+Один из объктов:
+
+```
+pluginReact.configs.flat.recommended,
+```
+
+Подключает рекомендуемые React-правила.
+Например:
+
+- проверка JSX,
+- корректность React-компонентов,
+- ошибки React API,
+- best practices.
+
+### files
+
+files применять этот конфиг ко всем:
+
+- `.js`
+- `.mjs`
+- `.cjs`
+- `.jsx`
+
+```
+files: ["**/*.{js,mjs,cjs,jsx}"],
+```
+
+### plugins
+
+Подключает плагин `@eslint/js`.
+
+```
+plugins: { js },
+```
+
+### extends
+
+Включает стандартный набор рекомендуемых правил ESLint.
+
+```
+extends: ["js/recommended"],
+```
+
+- no-unused-vars
+- no-undef
+- no-unreachable
+- и другие базовые проверки.
+
+### languageOptions
+
+```
+languageOptions: { globals: globals.browser },
+```
+
+Говорит **ESLint**: **_код выполняется в браузере._**
+
+Поэтому **ESLint** не будет ругаться на:
+
+```
+window
+document
+console
+localStorage
+```
+
+### rules
+
+> [Офф. документация с правилами](https://eslint.org/docs/latest/rules/)
+
+— это раздел, где ты говоришь **ESLint**, какие проверки включать, выключать и насколько строго их применять.
+
+Каждое правило имеет:
+
+- имя,
+- уровень строгости,
+- иногда параметры.
+
+```
+    rules: {
+      semi: ["error", "always"],
+      "eqeqeq": "error",
+      "no-unused-vars": "warn",
+    },
+```
+
+#### Уровни строгости
+
+##### `"off"` или `0`
+
+Выключить правило.
+
+##### `"warn"` или `1`
+
+Предупреждение. <br/>
+Будет жёлтая подсветка, но сборка не упадёт.
+
+##### `"error"` или `2`
+
+Будет красная ошибка.
+
+#### curly
+
+Требует `{}` у `if/for`.
+
+```
+curly: "error"
+```
+
+#### eqeqeq
+
+Запрещает `==`
+
+```
+eqeqeq: "error"
+```
+
+#### no-console
+
+Ругается на любые методы `console`
+
+```
+"no-console": "warn"
+```

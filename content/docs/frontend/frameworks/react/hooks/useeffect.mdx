@@ -1,0 +1,505 @@
+---
+title: useEffect
+---
+
+— это хук в `React`, который позволяет выполнять побочные эффекты (side effects) в функциональных компонентах. <br/>
+Хук создавался для синхронизации состояния React-компонента с состоянием внешних систем.
+
+— это хук, который в момент рендера запоминает эффект, и этот эффект выполняется **АСИНХРОННО** после того, как React применил изменения в DOM (отрисовалась страницы). <br/>
+Он может возвращать функцию очистки (cleanup), которая вызывается перед следующем запуском эффекта или при размонтировании компонента.
+
+:::note
+`useEffect` рекомендуется рассматривать не как «место для любого кода после рендера»,
+а именно как **механизм синхронизации компонента** с внешней системой (побочными эффектами (side effects)).
+
+Исторически многие использовали его как аналог `componentDidMount` / `componentDidUpdate` из классовых компонентов и складывали туда почти любую логику после рендера.
+Современный React старается от этого подхода уходить.
+:::
+
+```jsx
+import { useEffect } from "react";
+```
+
+```js
+useEffect(
+  () => {}, // функция-эффект
+  [], // массив зависимостей
+);
+```
+
+```js
+useEffect(() => {
+  // код эффекта
+  console.log("Компонент смонтирован");
+  return () => {
+    // функция-очистка (cleanup)
+    console.log("Компонент размонтирован");
+  };
+}, [dependencies]);
+```
+
+<details>
+<summary>**“Побочные эффекты”**</summary>
+
+Это любые действия (**асинхронные действия**), которые происходят **вне процесса рендера компонента**, например:
+
+- запросы к API (`fetch`)
+- работа с таймерами (`setTimeout`, `setInterval`)
+- подписки (`events`, `websockets`)
+- прямое взаимодействие с **DOM** (манипуляции с `ref'ами`)
+- запись в `localStorage`
+- асинхронная отправка метрик
+- сложные анимации
+- асинхронная подгрузка статики - стили, переводы, скрипты
+
+</details>
+
+<hr />
+
+## Не нужен
+
+- трансформация данных для рендеринга
+
+  ```js
+  const [fullName, setFullName] = useState("");
+
+  useEffect(() => {
+    setFullName(`${user.firstName} ${user.lastName}`);
+  }, [user]);
+  ```
+
+- обработка пользовательских дейстивй
+
+  ```js
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (isSubmitted) {
+      sendOrder();
+    }
+  }, [isSubmitted]);
+  ```
+
+- получение данных с библиотеками TanStack Quer, SWR, RTK Query, Apollo, Relay и пр.
+
+  Раньше:
+
+  ```js
+  useEffect(() => {
+    fetch("/api/users")
+      .then((res) => res.json())
+      .then(setUsers);
+  }, []);
+  ```
+
+  Проблемы:
+  - загрузка
+  - ошибки
+  - кеширование
+  - повторные запросы
+  - рефетч
+  - отмена запросов
+
+  всё приходится писать вручную.
+
+  **TanStack Query**
+
+  ```js
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["users"],
+    queryFn: getUsers,
+  });
+  ```
+
+  **SWR**
+
+  ```js
+  const { data } = useSWR("/api/users", fetcher);
+  ```
+
+<hr />
+
+## Выполняется
+
+1. После каждого рендера, если нет массива зависимостей `[dependencies]` — React не знает, от чего зависит эффект → запускает всегда;
+
+```jsx
+useEffect(() => {
+  console.log("Компонент отрендерился");
+});
+```
+
+<details>
+<summary>Пример:</summary>
+  
+```jsx
+function App() {
+const [count, setCount] = useState(0);
+
+useEffect(() => {
+console.log("effect");
+});
+
+return (
+
+  <button onClick={() => setCount(count + 1)}>
+  {count}
+  </button>
+  );
+}
+```
+
+При кликах:
+
+```
+effect   // первый рендер
+effect   // count = 1
+effect   // count = 2
+effect   // count = 3
+```
+
+</details>
+
+2. Только один раз (как `componentDidMount`), пустой массив `[]` означает: выполнить один раз при загрузке компонента.
+
+```js
+useEffect(() => {
+  console.log("Компонент смонтирован");
+}, []);
+```
+
+<details>
+<summary>Пример:</summary>
+  
+```js
+function App() {
+const [count, setCount] = useState(0);
+
+useEffect(() => {
+console.log("effect");
+}, []);
+
+return (
+
+  <button onClick={() => setCount(count + 1)}>
+  {count}
+  </button>
+  );
+}
+```
+
+При кликах:
+
+```
+effect   // первый рендер
+```
+
+</details>
+
+3. Когда меняются зависимости, эффект запускается только когда меняется `count`.
+
+```js
+useEffect(() => {
+  console.log("count изменился");
+}, [count]);
+```
+
+<hr />
+
+## Зависимости `[dependencies]`
+
+Массив зависимостей (`[dependencies]`) в `useEffect` определяет, когда эффект должен выполняться повторно.
+
+### Как React проверяет изменения
+
+**React** сравнивает значения по принципу `Object.is()`.
+
+### Передача объекта или функции
+
+Если передать в массив зависимостей объект или функцию, React будет **сравнивать** не **содержимое**, а **ссылку**.
+
+Для того избежать лишних срабатываний:
+
+- Для объекта — `useMemo`
+
+```jsx
+const options = useMemo(() => ({ theme: "dark" }), []);
+
+useEffect(() => {
+  console.log("effect");
+}, [options]);
+```
+
+- Для функции — `useCallback`
+
+```jsx
+const handleClick = useCallback(() => {
+  console.log("click");
+}, []);
+
+useEffect(() => {
+  console.log("effect");
+}, [handleClick]);
+```
+
+<hr />
+
+## Очистка эффекта (cleanup)
+
+:::danger
+Важно для таймеров и подписок
+:::
+
+Очистка выполняется:
+
+- при размонтировании компонента
+- перед повторным запуском эффекта (если зависимости изменились)
+
+```js
+useEffect(() => {
+  const timer = setInterval(() => {
+    console.log("тик");
+  }, 1000);
+
+  return () => clearInterval(timer);
+}, []);
+```
+
+Когда ты пишешь:
+
+```js
+useEffect(() => {
+  console.log("Эффект запустился");
+
+  return () => {
+    console.log("Cleanup");
+  };
+}, [count]);
+```
+
+`return` не выполняется сразу после эффекта. Он выполняется в двух случаях:
+
+### Перед повторным запуском эффекта
+
+```js
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    console.log("Эффект для", count);
+
+    return () => {
+      console.log("Очистка для", count);
+    };
+  }, [count]);
+
+  return <button onClick={() => setCount(count + 1)}>{count}</button>;
+}
+```
+
+Первый рендер : Эффект для 0 <br/>
+Нажали кнопку → count = 1 : Очистка для 0 Эффект для 1
+
+> Сначала вызывает cleanup старого эффекта, потом запускает новый эффект.
+
+### При размонтировании компонента
+
+```js
+function App() {
+  const [show, setShow] = useState(true);
+
+  return (
+    <>
+      <button onClick={() => setShow(false)}>Скрыть</button>
+
+      {show && <Timer />}
+    </>
+  );
+}
+```
+
+```js
+function Timer() {
+  useEffect(() => {
+    console.log("Timer создан");
+
+    return () => {
+      console.log("Timer удален");
+    };
+  }, []);
+
+  return <div>Timer</div>;
+}
+```
+
+После нажатия: Timer создан Timer удален <br/>
+Потому что компонент исчез из дерева React.
+
+### Почему это нужно
+
+Подписка:
+
+```js
+useEffect(() => {
+  window.addEventListener("resize", handleResize);
+
+  return () => {
+    window.removeEventListener("resize", handleResize);
+  };
+}, []);
+```
+
+Cleanup гарантирует, что всё будет убрано. <br/>
+Без cleanup будет утечка памяти:
+
+```
+компонент удалился
+↓
+обработчик resize остался
+↓
+лишние вызовы
+↓
+утечка памяти
+```
+
+<hr />
+
+## Порядок выполнения
+
+В React порядок выполнения `useEffect` и отписки от него зависит от жизненного цикла компонентов. Вот как это работает:
+
+### Монтирование компонентов:
+
+Сначала монтируется компонент A. <br/>
+Затем монтируется компонент B. <br/>
+Наконец, монтируется компонент C. <br/>
+
+При монтировании компонента `useEffect` выполняется после рендеринга компонента. <br/>
+Таким образом, порядок выполнения `useEffect` будет следующим: <br/>
+useEffect компонента C <br/>
+useEffect компонента B <br/>
+useEffect компонента A <br/>
+
+### Размонтирование компонентов:
+
+Сначала размонтируется компонент A. <br/>
+Затем размонтируется компонент B. <br/>
+Наконец, размонтируется компонент C. <br/>
+
+При размонтировании компонента вызывается функция очистки, возвращаемая из useEffect. Таким образом, порядок выполнения функции очистки будет следующим: <br/>
+Функция очистки компонента A <br/>
+Функция очистки компонента B <br/>
+Функция очистки компонента C <br/>
+
+Таким образом, при монтировании компоненты `useEffect` выполняются от самого вложенного компонента к самому внешнему, а при размонтировании функции очистки выполняются в обратном порядке — от самого внешнего компонента к самому вложенному.
+
+<hr />
+
+## Частые Проблемы
+
+### Бесконечный ререндер
+
+Это одна из самых частых ловушек в React. <br/>
+Если передать в массив зависимостей объект или функцию, React будет сравнивать не содержимое, а ссылку.<br/>
+Каждый рендер создаёт новый объект -> Поэтому эффект будет запускаться на каждом рендере. <br/>
+
+### Эффект моргания/блика страницы
+
+Это связано с тем, что `useEffect` выполняется после того, как React уже обновил DOM и браузер успел отрисовать экран. <br/>
+Решение: `useLayoutEffect` <br/>
+Но не стоит заменять все `useEffect` на `useLayoutEffect`, т.к. `useLayoutEffect` блокирует отрисовку страницы до завершения своего кода.
+
+<details>
+<summary>Пример</summary>
+
+```js
+function App() {
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+  }, []);
+
+  return <div className={theme}>...</div>;
+}
+```
+
+Что увидит пользователь:
+
+1. Компонент рендерится с `"light"`.
+2. Браузер показывает страницу.
+3. Выполняется `useEffect`.
+4. Вызывается `setTheme(savedTheme)`.
+5. Происходит второй рендер.
+6. Тема меняется на `"dark"`.
+
+</details>
+
+<hr />
+
+## Примеры
+
+### Закрытие модального окна на `Esc`
+
+```jsx
+useEffect(() => {
+  const bandleEscapeKey = () => {};
+  document.addEventListener("keyup", bandleEscapeKey);
+
+  return () => {
+    document.removeEventListener("keyup", bandleEscapeKey);
+  };
+}, []);
+```
+
+### Отмена незавершённых запросов `AbortController`
+
+```jsx
+import { useEffect, useState } from "react";
+
+function User({ userId }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function fetchUser() {
+      try {
+        const response = await fetch(
+          `https://jsonplaceholder.typicode.com/users/${userId}`,
+          {
+            signal: controller.signal,
+          },
+        );
+
+        const data = await response.json();
+        setUser(data);
+      } catch (error) {
+        if (error.name === "AbortError") {
+          console.log("Запрос отменён");
+          return;
+        }
+
+        console.error(error);
+      }
+    }
+
+    fetchUser();
+
+    return () => {
+      controller.abort();
+    };
+  }, [userId]);
+
+  return <div>{user?.name}</div>;
+}
+```
+
+## Ссылки
+
+- 🔥[Евгений Паромов | Front-end | #26 Погружаемся в useEffect - ReactJS Полный курс](https://youtu.be/3qog2AiTISw)
+- 🔥[Михаил Непомнящий | useEffect подробно - как работает, когда вызываются эффекты](https://youtu.be/ivtRckdgfts?si=614U8ToXxyfdizxC)
+- [Какие-то уроки [Frontend] | #16 React для НАЧИНАЮЩИХ (Хук useEffect)](https://www.youtube.com/watch?v=s2fWu6YcNIg)

@@ -1,0 +1,53 @@
+---
+title: Utils
+---
+
+## `data()`
+
+<hr />
+
+## `redirect()`
+
+— это функция для серверного/дата-роутинга перенаправления, а не компонент для навигации в UI.
+Она создаёт специальный `Response` с HTTP-статусом редиректа, который **React Router** обрабатывает сам.
+
+```ts
+redirect("/");
+```
+
+Основные места использования:
+
+- [`loader`](./route-object#loader)
+- [`action`](./route-object#action)
+- middleware (в v7)
+- серверные обработчики
+
+### Пример
+
+```ts
+loader: async () => {
+      const data = await getCurrentUser();
+      console.log(data);
+      if (data) return redirect("/");
+    },
+```
+
+### Чем отличается от [`navigate()`](../hooks/usenavigate)
+
+|                     | redirect      | navigate      |
+| ------------------- | ------------- | ------------- |
+| Где используется    | loader/action | компоненты    |
+| Когда происходит    | до рендера    | после рендера |
+| Подходит для auth   | ✅            | ⚠️            |
+| После submit формы  | ✅            | можно         |
+| Требует React state | нет           | да            |
+
+<hr />
+
+## `redirectDocument()`
+
+<hr />
+
+## `replace()`
+
+<hr />

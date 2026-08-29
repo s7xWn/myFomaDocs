@@ -1,0 +1,703 @@
+---
+title: Event Loop
+---
+
+:::warning
+**Event Loop** не является частью языка **JavaScript** или **JS-движка (например V8)**.
+
+**Event Loop** предоставляется средой (**браузером** или **NodeJS**)
+:::
+— это механизм среды выполнения (browser / Node.js), который позволяет языку быть однопоточным, но при этом обрабатывать асинхронные операции (таймеры, запросы, события UI, промисы) без блокировки выполнения кода.
+
+Проще говоря: **Event Loop** решает, когда и какой кусок кода выполнять, чтобы **JS** не “зависал”.
+
+**JS-движок** сам по себе делает только: выполняет код, управляет `call stack`, работает с `heap` (память). Он не решает когда запускать асинхронный код.
+
+**Event Loop** реализуется в среде выполнения (**_устройства Event Loop в них разное_**):
+
+1. В браузере:
+   - движок **JS**: V8 / SpiderMonkey / JavaScriptCore
+   - **Event Loop** реализован браузером (Chromium, Firefox, Safari)
+
+   Он координирует: Web APIs (DOM, fetch, setTimeout), очереди задач, рендеринг
+
+2. В Node.js:
+   - **JS** движок: V8
+   - **Event Loop** реализует библиотека `libuv`
+
+   Он координирует: файловую систему, сеть, таймеры, thread pool
+
+Порядок выполнения задач:
+
+1. Выполняется весь синхронный код
+2. Во время выполнения код может создавать задачи - **Microtasks** и **Macrotasks**
+   - Но они НЕ выполняются сразу. Они попадают в очереди.
+3. Выполняются **_ВСЕ_** **Microtasks**
+4. Берётся **_ОДНА_** **Macrotask**
+5. Если **Macrotask** создала **Microtasks**, они выполняются **_СРАЗУ_** после неё
+6. Повторить цикл
+
+<hr />
+
+## Call Stack
+
+— это структура данных, которая используется **JavaScript-движком** для управления выполнением функций.<br/>
+Проще говоря: это “очередь из функций, которые сейчас выполняются”.
+
+Так же это ограниченная область памяти, где хранятся вызовы функций. Если функций становится слишком много (особенно из-за рекурсии), стек переполняется, и программа падает с ошибкой.
+
+`Call Stack` работает по принципу **LIFO** **_(Last In, First Out)_**:
+
+1. последняя добавленная функция выполняется первой
+2. после завершения она удаляется из стека
+
+<hr />
+
+### Stack overflow
+
+— это ошибка, которая возникает, когда программа заполняет `call stack` больше допустимого размера.
+
+Когда память заканчивается:
+
+```js
+Uncaught RangeError: Maximum call stack size exceeded
+```
+
+<hr />
+
+### Примеры синхронных вызовов
+
+#### Линейный вызов
+
+Пример:<br/>
+_Наш **JS** код_
+
+```js
+function sum(a, b) {
+  return a + b;
+}
+
+const first = sum(5, 5);
+const second = sum(1, 2);
+const third = sum(3, 4);
+```
+
+_Выполнение `call stack`_
+
+```
+CALL STACK:
+Вызывается sum(5,5)
+[ sum(5,5) ]
+[ Global Execution Context ]
+
+Функция выполняется → возвращает 10 → удаляется из стека
+CALL STACK:
+[ Global Execution Context ]
+
+Вызывается sum(1,2)
+CALL STACK:
+[ sum(1,2) ]
+[ Global Execution Context ]
+
+Функция выполняется → возвращает 3 → удаляется из стека
+CALL STACK:
+[ Global Execution Context ]
+
+Вызывается sum(3,4)
+CALL STACK:
+[ sum(3,4) ]
+[ Global Execution Context ]
+
+Функция выполняется → возвращает 7 → удаляется из стека
+CALL STACK:
+[ Global Execution Context ]
+```
+
+<hr />
+
+#### Вложенный вызов
+
+Пример:<br/>
+_Наш **JS** код_
+
+```js
+function first() {
+  return null;
+}
+
+function second() {
+  first();
+}
+
+function third() {
+  second();
+}
+
+third();
+```
+
+_Выполнение `call stack`_
+
+```
+Вызывается third()
+CALL STACK:
+[ third() ]
+[ Global Execution Context ]
+
+third() вызывает second()
+CALL STACK:
+[ second() ]
+[ third() ]
+[ Global Execution Context ]
+
+second() вызывает first()
+CALL STACK:
+[ first() ]
+[ second() ]
+[ third() ]
+[ Global Execution Context ]
+
+first() выполняется и возвращает null
+second() выполняется
+third() выполняется
+CALL STACK:
+[ Global Execution Context ]
+```
+
+##### Рекурсивный вызов
+
+— это частный случай вложенных вызовов, где функция вызывает саму себя.
+
+Пример:<br/>
+_Наш **JS** код_
+
+```js
+function fact(n) {
+  if (n === 1) return 1;
+  return n * fact(n - 1);
+}
+
+fact(5);
+```
+
+_Выполнение `call stack`_
+
+```
+Вызывается fact(5)
+CALL STACK:
+[ fact(5) ]
+[ Global Execution Context ]
+
+fact(5) вызывает fact(4)
+CALL STACK:
+[ fact(4) ]
+[ fact(5) ]
+[ Global Execution Context ]
+
+fact(4) вызывает fact(3)
+...
+
+CALL STACK:
+[ fact(1) ]
+[ fact(2) ]
+[ fact(3) ]
+[ fact(4) ]
+[ fact(5) ]
+[ Global Execution Context ]
+fact(1) выполняется и возвращает 1
+fact(2) выполняется и возвращает 2
+fact(3) выполняется и возвращает 6
+fact(4) выполняется и возвращает 24
+fact(5) выполняется и возвращает 120
+
+CALL STACK:
+[ Global Execution Context ]
+```
+
+<hr />
+
+## Macrotask queue
+
+— это часть механизма, который управляет тем, когда именно выполняется асинхронный код.
+
+— это очередь, куда попадают готовые к выполнению задачи, например:
+
+- `setTimeout`
+- `setInterval`
+- `setImmediate` (**NodeJS**)
+- обработчики событий (`click`, `input` и т.д.)
+- I/O операции (**Node.js**)
+- `postMessage`
+
+Эти задачи ждут, пока:
+
+- `Call Stack` полностью освободится
+- и только потом Event Loop берёт следующую задачу из очереди
+
+> Помимо **Macrotask queue** есть ещё **Microtask Queue**
+
+<hr />
+
+### Примеры асинхронных вызовов
+
+#### Timeout
+
+Пример:<br/>
+_Наш **JS** код_
+
+```js
+function log(value) {
+  console.log(value);
+}
+
+log("start");
+
+setTimeout(() => {
+  log("timeout");
+}, 3000);
+
+log("end");
+```
+
+_Выполнение `call stack`_
+
+```
+Вызывается log('start');
+CALL STACK:
+[ log('start') ]
+[ Global Execution Context ]
+
+
+log('start') вызывает console.log('start')
+CALL STACK:
+[ console.log('start') ]
+[ log('start') ]
+[ Global Execution Context ]
+console.log('start') выполняется, выводится start
+log('start') выполняется
+
+
+CALL STACK:
+[ Global Execution Context ]
+
+
+Вызов setTimeout()
+CALL STACK:
+[ setTimeout(...) ]
+[ Global Execution Context ]
+
+callback у setTimeout НЕ выполняется сразу
+он уходит в Web APIs (таймер)
+После регистрации таймера:
+CALL STACK:
+[ Global Execution Context ]
+
+MACROTASK QUEUE:
+[ empty ]
+
+Web API:
+[ setTimeout() ]
+
+
+Вызывается log('end');
+CALL STACK:
+[ log('end') ]
+[ Global Execution Context ]
+
+
+log('end') вызывает console.log('end')
+CALL STACK:
+[ console.log('start') ]
+[ log('start') ]
+[ Global Execution Context ]
+console.log('end') выполняется, выводится end
+log('end') выполняется
+
+
+CALL STACK:
+[ Global Execution Context ]
+
+=== Завершение синхронного кода ===
+
+Ждём ~3000ms
+Callback попадает в очередь
+CALL STACK:
+[ Global Execution Context ]
+
+MACROTASK QUEUE:
+[ () => { log('timeout') } ]
+
+Web API:
+[ empty ]
+
+
+Event Loop переносит задачу в Call Stack
+CALL STACK:
+[ () => { log('timeout') } ]
+[ Global Execution Context ]
+
+MACROTASK QUEUE:
+[ empty ]
+
+
+() => { log('timeout') } вызывает log(), а log() вызываета console.log
+CALL STACK:
+[ console.log('timeout') ]
+[ log('timeout') ]
+[ () => { log('timeout') } ]
+[ Global Execution Context ]
+console.log('timeout') выполняется, выводится timeout
+log('timeout') выполняется
+() => { log('timeout') } выполняется
+
+
+CALL STACK:
+[ Global Execution Context ]
+
+MACROTASK QUEUE:
+[ empty ]
+
+Web API:
+[ empty ]
+```
+
+<hr />
+
+#### Event Listener
+
+Пример:<br/>
+_Наш **JS** код_
+
+```js
+const b1 = document.getElementById("button1");
+
+b1.addEventListener("click", () => {
+  console.log("b1 clicked");
+});
+```
+
+_Выполнение `call stack`_
+
+```
+Вызывается addEventListener();
+CALL STACK:
+[ addEventListener ]
+[ Global Execution Context ]
+
+
+addEventListener НЕ выполняется сразу
+addEventListener 'click' регистрируется в Web APIs
+После регистрации клика:
+CALL STACK:
+[ Global Execution Context ]
+
+MACROTASK QUEUE:
+[ empty ]
+
+Web API:
+[ Button 1 (click) ]
+
+
+Нажимаем на Button 1
+console.log('b1 clicked'); отправляется в Macrotask Queue
+CALL STACK:
+[ Global Execution Context ]
+
+MACROTASK QUEUE:
+[ console.log() ]
+
+Web API:
+[ Button 1 (click) ]
+
+
+После выполнения всех синхронных задач
+Event Loop переносит Macrotask Queue в Call Stack
+```
+
+<hr />
+
+## Microtask Queue
+
+К Microtask относятся:
+
+- `Promise.then/catch/finally`
+- `queueMicrotask`
+- `MutationObserver`
+- `process.nextTick` (**NodeJS**)
+
+<hr />
+
+### Примеры асинхронных вызовов
+
+#### Promise
+
+Пример:<br/>
+_Наш **JS** код_
+
+```js
+console.log("1");
+
+setTimeout(() => {
+  console.log("2");
+}, 0);
+
+Promise.resolve().then(() => console.log("3"));
+
+console.log("4");
+```
+
+_Выполнение `call stack`_
+
+```
+Вызывается console.log('1');
+CALL STACK:
+[ console.log('1') ]
+[ Global Execution Context ]
+console.log('1') выполняется, выводится 1
+
+
+
+CALL STACK:
+[ Global Execution Context ]
+
+
+
+Вызов setTimeout()
+CALL STACK:
+[ setTimeout(...) ]
+[ Global Execution Context ]
+
+callback у setTimeout НЕ выполняется сразу
+он уходит в Web APIs (таймер)
+После регистрации таймера:
+CALL STACK:
+[ Global Execution Context ]
+
+MACROTASK QUEUE:
+[ empty ]
+
+MICROTASK QUEUE:
+[ empty ]
+
+Web API:
+[ setTimeout() ]
+
+
+
+Вызов Promise()
+CALL STACK:
+[ Promise(...) ]
+[ Global Execution Context ]
+
+Promise НЕ выполняется сразу
+он уходит в Microtask Queue
+CALL STACK:
+[ Global Execution Context ]
+
+MACROTASK QUEUE:
+[ empty ]
+
+MICROTASK QUEUE:
+[ Promise() ]
+
+Web API:
+[ setTimeout() ]
+
+
+
+Вызывается console.log('4');
+CALL STACK:
+[ console.log('4') ]
+[ Global Execution Context ]
+console.log('4') выполняется, выводится 4
+
+
+
+=== Завершение синхронного кода ===
+Ждём ~0ms
+Callback попадает в очередь
+CALL STACK:
+[ Global Execution Context ]
+
+MACROTASK QUEUE:
+[ () => { log('2') } ]
+
+MICROTASK QUEUE:
+[ Promise() ]
+
+Web API:
+[ empty ]
+
+
+
+Event Loop переносит все Microtask Queue по 1 в Call Stack
+Вызывается console.log('3');
+CALL STACK:
+[ console.log('3') ]
+[ Global Execution Context ]
+console.log('3') выполняется, выводится 3
+
+MACROTASK QUEUE:
+[ () => { log('2') } ]
+
+MICROTASK QUEUE:
+[ empty ]
+
+Web API:
+[ empty ]
+
+
+
+Event Loop переносит Macrotask Queue в Call Stack
+CALL STACK:
+[ console.log('2') ]
+[ Global Execution Context ]
+console.log('2') выполняется, выводится 2
+
+MACROTASK QUEUE:
+[ empty ]
+
+MICROTASK QUEUE:
+[ empty ]
+
+Web API:
+[ empty ]
+```
+
+##### Вложенность Microtasks
+
+```js
+console.log(1);
+Promise.resolve().then(() => {
+  console.log(2);
+
+  Promise.resolve().then(() => {
+    console.log(3);
+  });
+  console.log(5);
+});
+console.log(4);
+```
+
+Вывод:
+
+```js
+1 4 2 5 3
+```
+
+<hr />
+
+#### With Macrotasks
+
+Пример:<br/>
+_Без **JS** кода_
+_Выполнение `call stack`_
+
+```
+CALL STACK:
+[ Global Execution Context ]
+
+MACROTASK QUEUE:
+[ Macrotask 1 ]
+[ Macrotask 2 ]
+
+MICROTASK QUEUE:
+[ Microtask 1 ]
+[ Microtask 2 ]
+[ Microtask 3 ]
+
+
+
+=== Завершение синхронного кода ===
+Event Loop переносит все Microtask Queue по 1 в Call Stack
+
+CALL STACK:
+[ Microtask 1 ]
+[ Global Execution Context ]
+Выполняется [ Microtask 1 ]
+
+CALL STACK:
+[ Microtask 2 ]
+[ Global Execution Context ]
+Выполняется [ Microtask 2 ]
+
+CALL STACK:
+[ Microtask 3 ]
+[ Global Execution Context ]
+Выполняется [ Microtask 3 ]
+
+MACROTASK QUEUE:
+[ Macrotask 1 ]
+[ Macrotask 2 ]
+
+MICROTASK QUEUE:
+[ empty ]
+
+
+
+Как только Microtask Queue закончились, он берёт 1 Macrotask Queue и переносит в Call Stack
+Допустим [ Macrotask 1 ]  будет setTimeout, который содержать в себе Promise ()
+CALL STACK:
+[ Macrotask 1 ]
+[ Global Execution Context ]
+
+MACROTASK QUEUE:
+[ Macrotask 2 ]
+
+MICROTASK QUEUE:
+[ empty ]
+
+
+
+Выполняется [ Macrotask 1 ], который создаёт [ Microtask 1 ]
+CALL STACK:
+[ Global Execution Context ]
+
+MACROTASK QUEUE:
+[ Macrotask 2 ]
+
+MICROTASK QUEUE:
+[ Microtask 1 ]
+Теперь будет выполнятся [ Microtask 1 ], а не [ Macrotask 2 ]
+
+
+Выполняется [ Microtask 1 ]
+CALL STACK:
+[ Microtask 1 ]
+[ Global Execution Context ]
+
+MACROTASK QUEUE:
+[ Macrotask 2 ]
+
+MICROTASK QUEUE:
+[ empty ]
+После выполнения [ Microtask 1 ], Event Loop переносит [ Macrotask 2 ] в Call stack
+
+
+Он выполняется
+CALL STACK:
+[ Macrotask 2 ]
+[ Global Execution Context ]
+
+MACROTASK QUEUE:
+[ empty ]
+
+MICROTASK QUEUE:
+[ empty ]
+
+
+
+CALL STACK:
+[ Global Execution Context ]
+
+MACROTASK QUEUE:
+[ empty ]
+
+MICROTASK QUEUE:
+[ empty ]
+```
+
+## Ссылки
+
+- [Ulbi TV | Event Loop от А до Я. Архитектура браузера и Node JS. Движки и рендер. Самое подробное видео](https://www.youtube.com/watch?v=zDlg64fsQow)
+- [Александр Ламков — Friendly Frontend | JavaScript событийный цикл Event Loop, асинхронный код, промисы (Promise), async / await](https://youtu.be/C7TgmKZRNF4)

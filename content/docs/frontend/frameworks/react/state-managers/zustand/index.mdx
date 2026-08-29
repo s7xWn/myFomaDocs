@@ -1,0 +1,98 @@
+---
+title: Zustand
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+| [Off. website](https://github.com/pmndrs/zustand) | [NPM](https://www.npmjs.com/package/zustand) |
+| ------------------------------------------------- | -------------------------------------------- |
+
+— это лёгкая библиотека для управления состоянием в React-приложениях.
+
+:::important
+Zustand является **`multi-store`**! <br/>
+Нет глобального “единственного `store`”, как в классическом Redux-подходе. <br/>
+Вместо этого ты можешь **создавать сколько угодно независимых `store’ов`**
+:::
+
+## Установка
+
+<Tabs items={["npm", "yarn", "pnpm"]}>
+  <Tab value="npm">
+    
+    ```bash
+    npm install zustand
+    ```
+
+  </Tab>
+  <Tab value="yarn">
+    
+    ```bash
+    yarn add zustand
+    ```
+
+  </Tab>
+  <Tab value="pnpm">
+    
+    ```bash
+    pnpm add zustand
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## Создание и использование
+
+Для начала создаём [`Store`](./store) <br/>
+Импортируем наш `store` и используем в нашем компоненте:
+
+<Tabs items={["Без селектора", "С селектором"]}>
+  <Tab value="woselector">
+    
+    Ты получаешь весь объект состояния стора (или весь объект, который возвращает хук). <br/>
+    Если в сторе изменится любое поле, компонент будет перерендерен.
+
+    ```jsx
+    import useStore from "./store";
+
+    function Counter() {
+      const { count, increment } = useStore();
+      return (
+        <div>
+          <p>{count}</p>
+          <button onClick={increment}>+</button>
+        </div>
+      );
+    }
+    ```
+
+  </Tab>
+  <Tab value="selector">
+    
+    Здесь используется селектор. <br/>
+    Компонент подписывается только на `state.count`.
+    Он перерендерится только когда изменится `count` или `increment`.
+
+    ```jsx
+    import useStore from "./store";
+
+    function Counter() {
+      const count = useStore((state) => state.count);
+      const increment = useStore((state) => state.increment);
+      return (
+        <div>
+          <p>{count}</p>
+          <button onClick={increment}>+</button>
+        </div>
+      );
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+## Ссылки
+
+- [Ulbi TV | Zustand и React query. State management в React без боли](https://www.youtube.com/watch?v=Egg8jH0Yj14)

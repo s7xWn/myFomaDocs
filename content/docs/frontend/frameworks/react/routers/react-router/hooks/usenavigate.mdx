@@ -1,0 +1,131 @@
+---
+title: useNavigate
+---
+
+— это хук, который позволяет программно менять маршрут (переходить на другую страницу без клика по [`<Link>`](../components/link)).
+
+```tsx
+import { useNavigate } from "react-router";
+```
+
+```tsx
+const navigate = useNavigate();
+```
+
+```tsx
+navigate(value);
+```
+
+- `navigate` — это функция, возвращаемая хуком `useNavigate()`;
+- `value` — это значение, которое передаётся в эту функцию и определяет, куда нужно перейти.
+
+## Использование
+
+Для использования `useNavigate` необходимо вызвать хук внутри компонента и присвоить возвращаемую им функцию переменной.<br/>
+Затем эту функцию можно использовать для программной навигации.
+
+<details>
+  <summary> Пример </summary>
+
+    ```tsx
+    import { useNavigate } from "react-router";
+
+    function Home() {
+        const navigate = useNavigate();
+
+        const goToProfile = () => {
+            navigate("/profile");
+    };
+
+    return <button onClick={goToProfile}>Профиль</button>;
+    }
+    ```
+
+</details>
+
+### Через функцию-обертку
+
+- можно переиспользовать
+- легче добавить общую логику
+- проще тестировать
+- чище JSX, если логика сложная
+
+Но для одного простого перехода это лишний слой абстракции.
+
+<details>
+  <summary> Пример </summary>
+
+    ```tsx
+    import { useNavigate } from "react-router";
+
+    function Home() {
+        const navigate = useNavigate();
+
+        const goToProfile = () => {
+            navigate("/profile");
+
+        const handleChange = (to: string) => {
+            console.log("Navigating to:", to);
+            navigate(to);
+        };
+    };
+
+    return <button onClick={goToProfile}>Профиль</button>;
+    }
+    ```
+
+</details>
+
+<hr />
+
+## Значения для перехода (`value`)
+
+По умолчанию переход добавляет новую запись в историю.
+
+### Навигация относительно текущего маршрута
+
+```tsx
+navigate("route");
+```
+
+Выполняет переход по относительному пути. Он добавляет `route` к текущему маршруту, если текущий маршрут поддерживает относительную вложенность.
+
+`navigate("../");` поднимет на уровень выше.
+
+<details>
+  <summary> Пример </summary>
+
+    Если текущий маршрут: `/users/42` <br/>
+    то `navigate("settings");` переведет на `/users/42/settings`
+
+</details>
+
+<hr />
+
+### Замена текущей записи `{replace: true}`
+
+<details>
+  <summary> Пример </summary>
+
+    Теперь кнопка «Назад» не вернет пользователя на страницу входа.
+
+    ```tsx
+    const handleLogin = async () => {
+        await login();
+        navigate("/dashboard", { replace: true });
+    };
+    ```
+
+</details>
+
+<hr />
+
+### Переход назад и вперед по истории
+
+`navigate()` умеет работать с историей браузера. <br />
+В `useNavigate()` аргумент может быть числом — в этом случае он используется для перемещения по истории браузера.
+
+- положительные числа, перемещают вперед
+- отрицательные числа, перемещают назад
+
+<hr />

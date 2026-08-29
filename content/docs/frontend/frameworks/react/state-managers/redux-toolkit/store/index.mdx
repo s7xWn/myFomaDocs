@@ -1,0 +1,207 @@
+---
+title: Store
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+— это центральный объект, который хранит всё состояние приложения и управляет тем, как это состояние изменяется.
+
+1. Хранит всё состояние приложения (`State`)
+2. Позволяет получить текущее состояние (`getState()`, `useSelector`)
+3. Позволяет изменять состояние только через `actions`
+4. Уведомляет UI об изменениях
+
+Можно представить `Store` как «единый источник правды» (single source of truth) для всего состояния приложения.
+
+:::danger
+`Store` нельзя менять напрямую <br/>
+Только через `action` + `reducer`.
+:::
+
+`Store` сам хранит `State` внутри себя. <br/>
+В него мы передаём `Reducer`, который описывает, как новое состояние должно вычисляться из текущего `State` и `Action` при каждом `Dispatch`.
+
+Чтобы понять как изменить состояние (`state`), он получает её через `action`
+
+Как всё работает вместе (поток данных):
+
+1. UI вызывает `dispatch`(`action`)
+2. `action` попадает в `middleware` (если есть)
+3. затем в `reducer`
+4. `reducer` создаёт новое состояние
+5. `store` обновляется
+6. UI перерисовывается
+
+## Создание
+
+В большинстве **React** + **Redux** (или **Redux** **Toolkit**) проектов файл `store.ts` нужен, но это не обязательное требование — скорее стандарт организации кода.
+
+```ts
+import { configureStore } from "@reduxjs/toolkit";
+
+export const store = configureStore({
+  reducer: {},
+});
+```
+
+Создаём [`State`](/docs/frontend/frameworks/react/state-managers/redux-toolkit/store/state) <br/>
+Создаём на основании каких [`Action`](/docs/frontend/frameworks/react/state-managers/redux-toolkit/action) будет меняться [`State`](/docs/frontend/frameworks/react/state-managers/redux-toolkit/store/state) <br/>
+После нам надо создать [`Reducer`](/docs/frontend/frameworks/react/state-managers/redux-toolkit/store/reducer) и описать логику.
+
+```
+Redux (классический) → иммутабельные обновления вручную <br/>
+Redux Toolkit → “мутационный” код под капотом через **Immer**
+```
+
+<Tabs items={["Redux", "Redux Toolkit"]}>
+    <Tab value="redux">
+      <Tabs items={["Без payload", "С payload + immutable"]}>
+        <Tab value="without">
+        ```ts
+        import { configureStore } from "@reduxjs/toolkit";
+
+        type CounterState = {
+          counter: number;
+        };
+
+        const initialState: CounterState = {
+          counter: 0,
+        };
+
+        type CounterAction = { type: "INCREMENT" } | { type: "DECREMENT" };
+
+        const reducer = (
+          state: CounterState = initialState,
+          action: CounterAction,
+        ): CounterState => {
+          switch (action.type) {
+            case "INCREMENT":
+              return {
+                ...state, // если есть другие поля
+                counter: state.counter + 1,
+              };
+            case "DECREMENT":
+              return {
+                ...state, // если есть другие поля
+                counter: state.counter - 1,
+              };
+            default:
+              return state;
+          }
+        };
+
+        export const store = configureStore({
+          reducer: reducer,
+        });
+        ```
+        </Tab>
+        <Tab value="with">
+        ```ts
+        import { configureStore } from "@reduxjs/toolkit";
+
+        type CounterState = {
+          counter: number;
+        };
+
+        export type CounterId = string;
+
+        type CounterStates = {
+          counters: Record<CounterId, CounterState | undefined>;
+        };
+
+        const initialCounterState: CounterState = { counter: 0 };
+        const initialState: CounterStates = {
+          counters: {},
+        };
+
+        export type CounterAction =
+          | {
+              type: "INCREMENT";
+              payload: {
+                counterId: CounterId;
+              };
+            }
+          | {
+              type: "DECREMENT";
+              payload: {
+                counterId: CounterId;
+              };
+            };
+
+        const reducer = (
+          state: CounterStates = initialState,
+          action: CounterAction,
+        ): CounterStates => {
+          switch (action.type) {
+            case "INCREMENT": {
+              const { counterId } = action.payload;
+              const currentCounter = state.counters[counterId] ?? initialCounterState;
+              return {
+                ...state,
+                counters: {
+                  ...state.counters,
+                  [counterId]: {
+                    ...currentCounter,
+                    counter: currentCounter.counter + 1,
+                  },
+                },
+              };
+            }
+
+            case "DECREMENT": {
+              const { counterId } = action.payload;
+              const currentCounter = state.counters[counterId] ?? initialCounterState;
+              return {
+                ...state,
+                counters: {
+                  ...state.counters,
+                  [counterId]: {
+                    ...currentCounter,
+                    counter: currentCounter.counter - 1,
+                  },
+                },
+              };
+            }
+
+            default:
+              return state;
+          }
+        };
+
+        export const store = configureStore({
+          reducer: reducer,
+        });
+
+        ```
+        </Tab>
+       </Tabs>
+    </Tab>
+    <Tab value="rtx">
+    </Tab>
+
+</Tabs>
+
+## Экспорт типа всего состояния Redux Store
+
+Можно добавить тип, который автоматически извлекает тип всего состояния Redux store.<br/>
+Возьми тип того, что возвращает `store.getState()`
+
+```ts
+export type AppState = ReturnType<typeof store.getState>; //type AppState = {counters: Record<string, CounterState | undefined>;};
+```
+
+`ReturnType<>` Он берёт тип возвращаемого значения функции (То что идёт после `return`).
+
+```ts
+function foo() {
+  return 123;
+}
+
+type A = ReturnType<typeof foo>; // number
+```
+
+### Зачем это нужно
+
+1. Не писать тип вручную
+2. Тип всегда синхронизирован со `store`
+3. Используется в селекторах

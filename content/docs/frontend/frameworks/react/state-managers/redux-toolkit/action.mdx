@@ -1,0 +1,49 @@
+---
+title: Action
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+— это обычный JavaScript-объект, который описывает что произошло в приложении. <br/>
+Он не изменяет состояние напрямую. Его задача — быть “сообщением”, которое отправляется в store через dispatch.
+
+Сам `type` говорит что произошло, а `payload` содержит данные, необходимые для обработки этого события.
+
+<hr />
+
+## Создание
+
+<Tabs items={["Без payload", "С payload"]}>
+  <Tab value="without">
+
+    Типизируем
+
+    ```ts
+    export type CounterAction = { type: "INCREMENT" } | { type: "DECREMENT" };
+    ```
+
+  </Tab>
+  <Tab value="with">
+  
+    Типизируем
+
+    ```ts
+    export type CounterAction =
+    | {
+        type: "INCREMENT";
+        payload: {
+            counterId: CounterId;
+        };
+        }
+    | {
+        type: "DECREMENT";
+        payload: {
+            counterId: CounterId;
+        };
+      };
+    ```
+
+    Здесь `payload` нужен для передачи `counterId`, чтобы `reducer` понимал, какой именно счётчик нужно изменить.
+
+  </Tab>
+</Tabs>

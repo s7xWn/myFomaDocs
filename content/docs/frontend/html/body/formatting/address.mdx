@@ -1,0 +1,245 @@
+---
+title: <address>
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+— это HTML-тег, который используется для указания контактной информации о человеке, организации или авторе страницы.
+
+:::danger
+Тег `<address>` влияет не столько “магически на позиции”, сколько через семантику, а это важно и для **SEO**, и для доступности.
+:::
+
+:::note
+По умолчанию содержимое тега `<address>` выделяется на вёрстке курсивом.
+:::
+
+<Tabs items={["Code", "HTML"]}>
+  <Tab value="Code">
+    ```html
+    <p>С автором статьи можно связаться:</p>
+
+    <address>
+      По эл. почте: <a href="mailto:article@auth.or">article@auth.or</a><br>
+      По телефону: <a href="tel:+77778889900">+7(777)888-99-00</a>
+    </address>
+    ```
+
+  </Tab>
+
+  <Tab value="View">
+    <p>С автором статьи можно связаться:</p>
+
+      <address>
+        По эл. почте: <a href="mailto:article@auth.or">{'article@auth.or'}</a><br/>
+        По телефону: <a href="tel:+77778889900">+7(777)888-99-00</a>
+      </address>
+
+  </Tab>
+</Tabs>
+
+Тег `<address>` обычно содержит:
+
+- имя автора или владельца сайта,
+- почтовый адрес,
+- email,
+- телефон,
+- ссылки на контактные страницы.
+
+:::important
+Обычно относится к ближайшему разделу (статье, странице или сайту в целом).
+:::
+
+:::warning
+Есть ряд ограничений на содержимое тега `<address>`:
+
+- Нельзя вкладывать теги `<address>` друг в друга.
+- Нельзя вкладывать в параграф с текстом, это не фразовый элемент.
+- Внутри нельзя использовать заголовки, секционные теги (`<section>`, `<article>`, `<aside>`, `<nav>`), а также теги `<header>` и `<footer>`.
+
+:::
+
+### SEO: Комбинация с `Schema.org`
+
+Лучший эффект даёт связка: семантический HTML (`<address>`) + структурированные данные (`Schema.org`) <br/>
+Они не конкурируют — они усиливают друг друга.
+
+Пример правильной комбинации:
+
+```html
+<footer>
+  <address>
+    <strong>ACME Sp. z o.o.</strong><br />
+    ul. Marszałkowska 10<br />
+    00-001 Warszawa, Polska<br />
+    Email: kontakt@acme.pl<br />
+    Tel: +48 123 456 789
+  </address>
+</footer>
+```
+
+Добавляется в `<head>` или внизу страницы:
+
+```html
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "ACME Sp. z o.o.",
+    "url": "https://acme.pl",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "ul. Marszałkowska 10",
+      "postalCode": "00-001",
+      "addressLocality": "Warszawa",
+      "addressCountry": "PL"
+    },
+    "email": "kontakt@acme.pl",
+    "telephone": "+48 123 456 789"
+  }
+</script>
+```
+
+Когда у тебя есть и `<address>`, и `Schema`:
+
+1. **Google** получает 2 уровня понимания: HTML (“человеческий” смысл) + Schema (“машинная” структура)
+2. Улучшение локального SEO
+   - Google Business Profile
+   - “near me” запросов
+   - карточек организаций
+
+   Schema помогает попасть в:
+   - knowledge panel
+   - расширенные сниппеты
+   - корректное отображение адреса
+
+3. Меньше ошибок интерпретации
+   Без Schema Google может: неправильно понять адрес, спутать контакты с обычным текстом
+
+Пример:
+
+```html
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SEO статьи от разных авторов</title>
+    <meta
+      name="description"
+      content="Примеры статей с разными авторами и Schema.org разметкой."
+    />
+
+    <!-- Schema.org: страница с несколькими статьями -->
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://example.com/articles/seo-basics",
+            "headline": "Основы SEO",
+            "author": {
+              "@type": "Person",
+              "name": "Иван Петров",
+              "url": "https://example.com/authors/ivan-petrov",
+              "sameAs": ["https://linkedin.com/in/ivanpetrov"]
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "SEO Blog",
+              "url": "https://example.com"
+            },
+            "datePublished": "2026-06-01"
+          },
+          {
+            "@type": "Article",
+            "@id": "https://example.com/articles/site-speed-seo",
+            "headline": "Скорость сайта и SEO",
+            "author": {
+              "@type": "Person",
+              "name": "Анна Смирнова",
+              "url": "https://example.com/authors/anna-smirnova",
+              "sameAs": ["https://linkedin.com/in/annasmirnova"]
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "SEO Blog",
+              "url": "https://example.com"
+            },
+            "datePublished": "2026-06-02"
+          }
+        ]
+      }
+    </script>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 16px;
+        line-height: 1.6;
+      }
+      article {
+        border: 1px solid #ddd;
+        padding: 20px;
+        margin-bottom: 24px;
+        border-radius: 10px;
+      }
+      .author {
+        background: #f5f5f5;
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 12px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>SEO блог</h1>
+
+    <!-- 📌 Статья 1 -->
+
+    <article>
+      <h2>Основы SEO</h2>
+
+      <div class="author">
+        <address>
+          <strong>Автор:</strong> Иван Петров<br />
+          <a href="https://example.com/authors/ivan-petrov">Профиль автора</a
+          ><br />
+          ivan@example.com
+        </address>
+      </div>
+
+      <p>
+        SEO — это набор методов оптимизации сайта для поисковых систем. Основная
+        цель — улучшение видимости в поисковой выдаче.
+      </p>
+    </article>
+
+    <!-- 📌 Статья 2 -->
+
+    <article>
+      <h2>Скорость сайта и SEO</h2>
+
+      <div class="author">
+        <address>
+          <strong>Автор:</strong> Анна Смирнова<br />
+          <a href="https://example.com/authors/anna-smirnova">Профиль автора</a
+          ><br />
+          anna@example.com
+        </address>
+      </div>
+
+      <p>
+        Скорость загрузки сайта напрямую влияет на поведенческие факторы и может
+        влиять на ранжирование.
+      </p>
+    </article>
+  </body>
+</html>
+```

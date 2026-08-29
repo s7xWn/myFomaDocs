@@ -1,0 +1,130 @@
+---
+title: Store
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+— это центральный объект, который хранит всё состояние приложения и управляет тем, как это состояние изменяется.
+
+1. Хранит всё состояние приложения (`State`)
+2. Позволяет получить текущее состояние (`getState()`, `useSelector`)
+3. Позволяет изменять состояние только через `actions`
+4. Уведомляет UI об изменениях
+
+Можно представить `Store` как «единый источник правды» (single source of truth) для всего состояния приложения.
+
+:::danger
+`Store` нельзя менять напрямую <br/>
+Только через `action` + `reducer`.
+:::
+
+`Store` сам хранит `State` внутри себя. <br/>
+В него мы передаём `Reducer`, который описывает, как новое состояние должно вычисляться из текущего `State` и `Action` при каждом `Dispatch`.
+
+Чтобы понять как изменить состояние (`state`), он получает её через `action`
+
+Как всё работает вместе (поток данных):
+
+1. UI вызывает `dispatch`(`action`)
+2. `action` попадает в `middleware` (если есть)
+3. затем в `reducer`
+4. `reducer` создаёт новое состояние
+5. `store` обновляется
+6. UI перерисовывается
+
+<Tabs items={["Без middleware", "С middleware"]}>
+  <Tab value="without" label="Без middleware" default>
+    ![Working](../assets/ReduxDataFlowDiagram-49fa8c3968371d9ef6f2a1486bd40a26.gif)
+  </Tab>
+  <Tab value="with" label="С middleware" default>
+    ![Working](../assets/ReduxAsyncDataFlowDiagram-d97ff38a0f4da0f327163170ccc13e80.gif)
+  </Tab>
+</Tabs>
+
+<hr />
+
+## Создание
+
+В большинстве **React** + **Redux** (или **Redux** **Toolkit**) проектов файл `store.ts` нужен, но это не обязательное требование — скорее стандарт организации кода.
+
+```ts
+import { createStore, combineReducers } from "redux";
+
+const rootReducer = combineReducers({
+  // сюда добавляются reducers
+});
+
+export const store = createStore(rootReducer);
+```
+
+Создаём [`State`](/docs/frontend/frameworks/react/state-managers/redux/store/state) <br/>
+Создаём на основании каких [`Action`](/docs/frontend/frameworks/react/state-managers/redux/action) будет меняться [`State`](/docs/frontend/frameworks/react/state-managers/redux-toolkit/store/state) <br/>
+После нам надо создать [`Reducer`](/docs/frontend/frameworks/react/state-managers/redux/store/reducer)
+
+Должно получиться:
+
+```ts
+import { createStore, combineReducers } from "redux";
+
+type CounterState = {
+  counter: number;
+};
+
+const initialState: CounterState = {
+  counter: 0,
+};
+
+type CounterAction = { type: "INCREMENT" } | { type: "DECREMENT" };
+
+function counterReducer(
+  state: CounterState = initialState,
+  action: CounterAction,
+): CounterState {
+  switch (action.type) {
+    case "INCREMENT":
+      return {
+        ...state,
+        counter: state.counter + 1,
+      };
+
+    case "DECREMENT":
+      return {
+        ...state,
+        counter: state.counter - 1,
+      };
+
+    default:
+      return state;
+  }
+}
+
+const rootReducer = combineReducers({
+  counterState: counterReducer,
+});
+
+export const store = createStore(rootReducer);
+```
+
+Теперь у нас будет `state`:
+
+```ts
+{
+  counterState: {
+    counter: 0;
+  }
+}
+```
+
+Чтобы был только `counter` не будем использовать `combineReducers`:
+
+```ts
+export const store = createStore(counterReducer);
+```
+
+Итоговый `state`:
+
+```ts
+{
+  counter: 0;
+}
+```

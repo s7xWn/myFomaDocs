@@ -1,0 +1,116 @@
+---
+title: <Route>
+---
+
+— это компонент, который связывает URL с тем, что должно быть отрисовано.<br/>
+Обычно `Route` используется внутри [`Routes`](./routes).
+
+```tsx
+import { Route, Routes } from "react-router";
+```
+
+```tsx
+<Routes>
+  <Route path="/" element={<Component />} />
+</Routes>
+```
+
+## Как это работает
+
+<hr />
+
+## Свойства
+
+### `path`
+
+Путь, которому должен соответствовать URL.
+
+```tsx
+<Route path="/users" ... />
+```
+
+#### Динамические параметры
+
+Можно получать части URL используя хук [`useParams`](../hooks/useparams)
+
+```tsx
+<Route path="/users/:id" ... />
+```
+
+<details>
+  <summary> Пример </summary>
+
+    ```tsx
+    <Route path="/users/:id" element={<User />} />
+    ```
+
+    Если открыть `/users/42`, то внутри компонента `id` будет равен `"42"`:
+
+    ```tsx
+    import { useParams } from "react-router";
+
+    function User() {
+        const { id } = useParams();
+
+        return <h1>User {id}</h1>;
+    }
+    ```
+
+</details>
+
+#### `/*` Splat route
+
+Означает маршрут с wildcard (так называемый splat route) — он совпадает с любым путём, который начинается с текущего уровня.
+
+<hr />
+
+### `element`
+
+React-элемент, который нужно отобразить.
+
+```tsx
+<Route path="/profile" element={<Profile />} />
+```
+
+<hr />
+
+### `index`
+
+— это маршрут по умолчанию для родительского маршрута.
+
+<hr />
+
+## Вложенные маршруты || Layout
+
+`Route` может содержать другие `Route`.
+
+Для создания **layout route** необходимо определить `Route` с указанным `path` и дочерними маршрутами. Компонент этого маршрута должен содержать [`Outlet`](../components/outlet), через который будут отображаться вложенные маршруты. Такой `Route` будет использоваться как layout для своих дочерних маршрутов.
+
+```tsx
+<Route path="/" element={<RootLayout />}>
+  <Route index element={<App />} />
+  <Route path="login" element={<Login />} />
+</Route>
+```
+
+`<Route index ...` — это маршрут по умолчанию для родительского маршрута:
+
+- когда URL совпадает с родительским маршрутом `/`,
+- и нет более глубокого совпадения,
+- внутри RootLayout через [`<Outlet />`](../components/outlet) будет отрендерен компонент `<App />`
+
+Эквивалентно:
+
+```tsx
+<Route path="/" element={<RootLayout />}>
+  <Route path="" element={<App />} />
+</Route>
+```
+
+<hr />
+
+## `*` Catch-all route (маршрут «поймать всё»)
+
+— это маршрут-ловушка (catch-all route), который совпадает с любым URL, который не был обработан другими маршрутами. Символ `*` называется splat (или wildcard).
+
+Чаще всего его используют для страницы 404 Not Found

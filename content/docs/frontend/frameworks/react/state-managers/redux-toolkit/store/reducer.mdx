@@ -1,0 +1,232 @@
+---
+title: Reducer
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+— это чистая функция, которая описывает, как изменяется состояние приложения в ответ на действие (`action`).
+
+или
+
+— это чистая функция, которая принимает предыдущее состояние приложения (`state`) и `action`, и на их основе возвращает новое состояние приложения.
+
+:::important
+**Чистая функция (pure function)** — это функция, которая:
+
+1.  <details>
+
+    <summary>
+      **Детерминированность** — Для одинаковых входных данных всегда возвращает
+      одинаковый результат.
+    </summary>
+    Например:
+
+    ```js
+    function add(a, b) {
+      return a + b;
+    }
+    add(2, 3); // 5
+    add(2, 3); // 5
+    add(2, 3); // 5
+    ```
+
+    Функция детерминирована.
+
+    Не детерминирована:
+
+    ```js
+    function getRandom() {
+      return Math.random();
+    }
+
+    getRandom(); // 0.12
+    getRandom(); // 0.84
+    ```
+
+    </details>
+
+2.  <details>
+
+    <summary>
+      **Отсутствие побочных эффектов (side effects)** — Не имеет побочных
+      эффектов (не изменяет внешние переменные, не делает запросы в сеть, не
+      пишет в localStorage, не меняет переданные объекты и т.д.).
+    </summary>
+    Это про то, что функция делает помимо вычисления результата.
+
+    ```js
+    let counter = 0;
+
+    function increment() {
+      counter++;
+      return counter;
+    }
+    ```
+
+    Функция меняет внешнюю переменную counter. <br/>
+    Это побочный эффект.
+
+    </details>
+
+Reducer остаётся чистой функцией в том числе благодаря иммутабельным обновлениям. — это обновление данных без изменения существующего объекта, а путём создания нового объекта с нужными изменениями.
+
+:::
+
+<hr />
+
+## Создание
+
+Redux (классический) → иммутабельные обновления вручную <br/>
+Redux Toolkit → “мутационный” код под капотом через **Immer**
+
+<Tabs items={["Redux", "Redux Toolkit"]}>
+    <Tab value="redux" >
+      <Tabs items={["Без payload", "С payload + immutable"]}>
+        <Tab value="without">
+        ```ts
+        const reducer = (state: CounterState = initialState, action: CounterAction): CounterState => {};
+        ```
+
+        Теперь реализовываем логику `reducer'а`
+
+        ```ts
+        const reducer = (state: CounterState = initialState, action: CounterAction): CounterState => {
+        switch (action.type) {
+            case "INCREMENT":
+            return {
+                ...state,
+                counter: state.counter + 1,
+            };
+            case "DECREMENT":
+            return {
+                ...state,
+                counter: state.counter - 1,
+            };
+            default:
+            return state;
+        }
+        };
+        ```
+        </Tab>
+        <Tab value="with">
+        ```ts
+        const reducer = (state: CounterStates = initialState, action: CounterAction): CounterStates => {};
+        ```
+
+        Теперь реализовываем логику `reducer'а`
+
+        ```ts
+        const reducer = (state: CounterStates = initialState, action: CounterAction): CounterStates => {
+        switch (action.type) {
+
+            case "INCREMENT": {
+              const { counterId } = action.payload;
+              const currentCounter = state.counters[counterId] ?? initialCounterState;
+              return {
+                ...state,
+                counters: {
+                  ...state.counters,
+                  [counterId]: {
+                    ...currentCounter,
+                    counter: currentCounter.counter + 1,
+                  },
+                },
+              };
+            }
+
+            case "DECREMENT": {
+              const { counterId } = action.payload;
+              const currentCounter = state.counters[counterId] ?? initialCounterState;
+              return {
+                ...state,
+                counters: {
+                  ...state.counters,
+                  [counterId]: {
+                    ...currentCounter,
+                    counter: currentCounter.counter - 1,
+                  },
+                },
+              };
+            }
+
+            default:
+              return state;
+        }
+        };
+        ```
+
+      </Tab>
+      </Tabs>
+    </Tab>
+    <Tab value="rtx">
+    ```ts
+    import { createSlice } from "@reduxjs/toolkit";
+
+    const slice = createSlice({
+    name: "counter",
+    initialState,
+    reducers: {
+        increment(state) {
+        state.counter += 1;
+        },
+        decrement(state) {
+        state.counter -= 1;
+        },
+    },
+    });
+
+    export const { increment, decrement } = slice.actions;
+    export default slice.reducer;
+    ```
+    </Tab>
+
+</Tabs>
+
+<hr />
+
+## Иммутабельное обновление
+
+Вместо изменения старого объекта создаём новый
+
+```js
+const state = {
+  user: {
+    name: "John",
+    address: {
+      city: "Warsaw",
+    },
+  },
+};
+```
+
+Нельзя
+
+```js
+state.user.address.city = "Krakow";
+```
+
+Нужно копировать каждый уровень, который меняется:
+
+```js
+const newState = {
+  ...state,
+  user: {
+    ...state.user,
+    address: {
+      ...state.user.address,
+      city: "Krakow",
+    },
+  },
+};
+```
+
+### Необходимость иммутабельности
+
+Понимание этого приходит с опытом и столкновениями с необычными ситуациями.
+
+1. Гарантия того, того что данные не изменятся
+   > **!Иммутабельность!** гарантирует, что существующие данные не будут случайно изменены.
+   >
+   > История изменений — одно из самых красивых следствий иммутабельности.
+2. Возможны чистые функции.
+3. React и Redux работают эффективнее

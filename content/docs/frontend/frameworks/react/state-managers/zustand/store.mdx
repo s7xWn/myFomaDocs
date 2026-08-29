@@ -1,0 +1,208 @@
+---
+title: Store
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+— это центральное хранилище состояния приложения (`state`), которое создаётся через функцию `create` и содержит:
+
+- текущее состояние (`state`)
+- методы для его изменения (`actions`)
+
+Доступ к данным хранилища осуществляется через **React-хук**, который возвращает функция `create`
+
+## Создание
+
+Создаём `store`
+
+```jsx
+import { create } from "zustand";
+
+const useStore = create((set) => ({}));
+```
+
+Объявляем данные (`state`) и функции для взаимодействия с данными (`state`).
+
+<Tabs items={["Javascript", "Typescript"]}>
+  <Tab value="js">
+    
+    ```jsx
+    import { create } from "zustand";
+
+    const useStore = create((set) => ({
+      count: 0,
+      increment: () => set((state) => ({ count: state.count + 1 })),
+      decrement: () => set((state) => ({ count: state.count - 1 })),
+    }));
+    ```
+
+  </Tab>
+  <Tab value="ts">
+    
+    ```jsx
+    import { create } from "zustand";
+
+    interface newState{
+        count: number;
+        increment: () => void;
+        decrement: () => void;
+    }
+
+    const useStore = create<newState>((set) => ({
+      count: 0,
+      increment: () => set((state) => ({ count: state.count + 1 })),
+      decrement: () => set((state) => ({ count: state.count - 1 })),
+    }));
+    ```
+
+  </Tab>
+
+</Tabs>
+
+`State` напрямую не меняем, либо используем [Immer](#immer):
+
+```ts
+interface User {
+  id: number;
+  username: string;
+}
+
+interface UsersState {
+  users: User[];
+  addUser: (username: string) => void;
+}
+
+const useStore = create<UsersState>((set) => ({
+  users: [],
+  addUser: (username: string) =>
+    set((state) => ({
+      users: [...state.users, { id: Date.now(), username }],
+    })),
+}));
+```
+
+## Middleware
+
+### Devtools
+
+— это middleware, которое подключает ваш `store` к расширению **Redux DevTools** в браузере. Благодаря этому можно:
+
+- видеть все изменения состояния;
+- отслеживать экшены (действия);
+- смотреть историю изменений;
+- делать time-travel debugging (перематывать состояние назад и вперед);
+- инспектировать текущее состояние store.
+
+```ts
+import { devtools } from "zustand/middleware";
+```
+
+Обернув условно `immer`:
+
+```tsx
+const useStore = create<UsersState>()(
+  devtools(
+    immer((set) => ({
+      users: [],
+      addUser: (username: string) =>
+        set((state) => {
+          state.users.push({ id: Date.now(), username });
+        }),
+    })),
+  ),
+);
+```
+
+Сейчас в **Redux DevTools** действие будет отображаться как **anonymous**. <br/>
+Можно передать имя экшена третьим аргументом:
+
+```ts
+addUser: (username: string) =>
+  set(
+    (state) => {
+      state.users.push({
+        id: Date.now(),
+        username,
+      });
+    },
+    false,
+    'users/addUser'
+  ),
+```
+
+### Immer
+
+Immer — это библиотека для удобного иммутабельного обновления состояния.
+
+```ts
+import { immer } from "zustand/middleware/immer";
+```
+
+:::note
+`Immer` создает новую версию состояния с минимально необходимыми копиями.
+:::
+
+С `immer` нужно мутировать `state` напрямую и ничего не возвращать <br/>
+`set((state) => {` вместо `set((state) => ({` <br/>
+Пример использования:
+
+<Tabs items={["Новая рекомендуемая запись", "Старая запись"]}>
+  <Tab value='new'>
+    ```ts
+    const useStore = create<UsersState>()(immer((set) => ({
+      users: [],
+      addUser: (username: string) =>
+        set((state) => {
+          state.users.push({id: Date.now(), username})
+        }),
+    })));
+    ```
+  </Tab>
+  <Tab value="old">
+    ```ts
+    const useStore = create<UsersState>(
+      immer((set) => ({
+        users: [],
+
+        addUser: (username: string) =>
+          set((state) => {
+            state.users.push({
+              id: Date.now(),
+              username,
+            });
+          }),
+      }))
+    );
+    ```
+
+  </Tab>
+</Tabs>
+
+### Persist
+
+— это middleware Zustand, который автоматически сохраняет состояние между перезагрузками страницы.
+
+```ts
+import { persist } from "zustand/middleware";
+```
+
+```ts
+const useStore = create<UsersState>()(
+  persist(
+    immer((set) => ({
+      users: [],
+
+      addUser: (username: string) =>
+        set((state) => {
+          state.users.push({
+            id: Date.now(),
+            username,
+          });
+        }),
+    })),
+    {
+      name: "users-storage",
+    },
+  ),
+);
+```

@@ -1,0 +1,58 @@
+---
+title: <Routes>
+---
+
+— это компонент, который сопоставляет текущий URL с набором маршрутов ([`Route`](./route)) и отображает подходящий компонент.
+
+`Routes` — это контейнер для компонентов [`Route`](./route), который:
+
+- сравнивает текущий URL с описанными маршрутами;
+- выбирает наиболее подходящий маршрут;
+- отображает соответствующий компонент;
+- поддерживает вложенные маршруты, индексные маршруты и маршрут `*` для страницы **404**.
+
+```tsx
+import { Routes } from "react-router";
+```
+
+```tsx
+<Routes></Routes>
+```
+
+## Конфигурация маршрутов
+
+1. Подключаем [`BrowserRouter`](./browser-router)
+2. Создаём `routes/routes.tsx`
+
+   ```tsx
+   import { Route, Routes } from "react-router";
+   import AuthPage from "../pages/Auth";
+   import HomePage from "../pages/Home";
+
+   export default function AppRoutes() {
+     const navigationRoutes = [
+       { path: "/", element: <HomePage /> },
+       { path: "/login", element: <AuthPage /> },
+     ];
+     return (
+       <Routes>
+         {navigationRoutes.map((route) => (
+           <Route key={route.path} path={route.path} element={route.element} />
+         ))}
+       </Routes>
+     );
+   }
+   ```
+
+3. Импортируем наш `AppRoutes` (`routes/routes.tsx`) в например `App.tsx`
+
+   ```tsx
+   import "./App.css";
+   import AppRoutes from "./routes/routes";
+
+   function App() {
+     return <AppRoutes />;
+   }
+
+   export default App;
+   ```

@@ -1,0 +1,52 @@
+---
+title: useRef
+---
+
+— это хук в React, который позволяет хранить изменяемое значение между рендерами компонента, не вызывая повторный рендер при его изменении. <br/>
+`useRef` всегда возвращает объект с одним свойством — `current`.
+
+Он также часто используется для получения прямого доступа к DOM-элементам.
+
+```jsx
+import { useRef } from "react";
+```
+
+```jsx
+const ref = useRef(initialValue);
+```
+
+`initialValue` - указывается начальное значение, которое будет записано в свойство `current`.
+
+<details>
+
+<summary>
+  Для понимания принципа эта реализация считается практически идеальной:
+</summary>
+
+```jsx
+const useRef = (initialValue) => {
+  return useState({ current: initialValue })[0];
+};
+```
+
+</details>
+
+## Доступ к DOM-элементу
+
+```jsx
+const ref = useRef(null);
+
+useEffect(() => {
+  console.log(ref.current);
+});
+
+return <div ref={ref}></div>;
+```
+
+После монтирования у переменной можно обратить к `current`
+
+## Хранение мутабильного значения между рендерами
+
+## Ссылки
+
+- [Евгений Паромов | Front-end | #36 Погружаемся в useRef - ReactJS Полный курс](https://www.youtube.com/watch?v=O6rtFhbiFwA)

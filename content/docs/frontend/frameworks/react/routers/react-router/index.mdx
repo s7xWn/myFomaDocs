@@ -1,0 +1,128 @@
+---
+title: React Router (v. 7+)
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+## Установка
+
+<Tabs items={['npm', 'yarn', "pnpm"]}>
+  <Tab value="npm">
+    
+    ```bash
+    npm install react-router
+    ```
+
+  </Tab>
+  <Tab value="yarn">
+    
+    ```bash
+    yarn add react-router
+    ```
+
+  </Tab>
+  <Tab value="pnpm">
+    
+    ```bash
+    pnpm add react-router
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## Режимы использования роутера
+
+- **Declarative** — если у вас обычное SPA и данные вы уже загружаете через React Query, RTK Query, SWR или useEffect.
+- **Data** — если хотите использовать встроенные возможности React Router для загрузки данных, форм и обработки навигации без перехода на полноценный фреймворк.
+- **Framework** — если начинаете новый проект и хотите получить опыт, близкий к Remix или Next.js: файловый роутинг, SSR, серверные функции и другие возможности "из коробки".
+
+<hr />
+
+### Использование Declarative Mode (декларативный)
+
+Вы просто описываете маршруты как React-компоненты.
+
+Подходит, если:
+
+- приложение небольшое;
+- данные загружаются через useEffect, React Query, SWR и т.п.;
+- не нужны встроенные механизмы загрузки данных.
+
+Минусы
+
+- загрузку данных приходится организовывать самостоятельно;
+- нет встроенных `loader`, `action`, обработки форм и т.д.
+
+1. Обернуть приложение в [`<BrowserRouter>`](./declarative-mode/browser-router)
+2. Создать [`Routes`](./declarative-mode/routes) и использовать [`Route`](./declarative-mode/route) по необходимости с [`layout`](./declarative-mode/route#вложенные-маршруты--layout)
+3. Для навигации использовать [`useNavigate`](./hooks/usenavigate) или [`<Link>`](./components/link)
+
+<hr />
+
+### Использование Data Mode
+
+1. Создаём файл(`./routes/router.ts`) с [`createBrowserRouter`](./data-mode/create-browser-router) и настриваем в нём роуты с помощью [`RouteObject`](./data-mode/route-object)
+   - настриаваем [`loader`](./data-mode/route-object#loader), [`action`](./data-mode/route-object#action)
+2. Подключаем [`RouterProvider`](./data-mode/router-provider) в главном файле приложения.
+3. Для навигации использовать [`useNavigate`](./hooks/usenavigate) или [`<Link>`](./components/link)
+
+#### Pending UI (loader)
+
+В Data Mode **pending UI** обычно реализуется через состояние навигации из [`useNavigation()`](./hooks/usenavigation). В отличие от Framework Mode, где есть `HydrateFallback` и `pending UI` на уровне маршрутов, в Data Mode вы сами контролируете отображение загрузки через `navigation.state`.
+
+1. Глобальный Pending UI через Layout
+
+<details>
+  <summary> Пример </summary>
+
+```tsx
+import { Outlet, useNavigation } from "react-router";
+
+export default function RootLayout() {
+  const navigation = useNavigation();
+  const isNavigating = Boolean(navigation.location);
+
+  return <>{isNavigating ? <Spinner /> : <Outlet />}</>;
+}
+```
+
+</details>
+
+2. Локальный Pending UI для конкретной страницы
+
+<details>
+  <summary> Пример </summary>
+
+```tsx
+import { useNavigation } from "react-router";
+
+export default function Users() {
+  const navigation = useNavigation();
+
+  const pending =
+    navigation.state === "loading" && navigation.location.pathname === "/users";
+
+  return (
+    <>
+      {pending && <Spinner />}
+
+      <UsersTable />
+    </>
+  );
+}
+```
+
+</details>
+
+<hr />
+
+### Использование Framework
+
+<hr />
+
+## Ссылки
+
+- [Салимов Руслан IT | Учимся работать с React Router DOM v7 - делаем роутинг страниц, изучаем хуки, работаем с меню](https://www.youtube.com/watch?v=iuY791JBKZw)
+- [Михаил Непомнящий | Три режима React Router v8 — какой подойдёт именно вам?](https://www.youtube.com/watch?v=JrdLWPmJlQc)

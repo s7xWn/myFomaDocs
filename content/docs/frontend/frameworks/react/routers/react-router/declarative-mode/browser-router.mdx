@@ -1,0 +1,89 @@
+---
+title: <BrowserRouter>
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+— это компонент, который позволяет создавать маршрутизацию (навигацию между страницами) в React-приложении без полной перезагрузки страницы.
+
+```tsx
+import { BrowserRouter } from "react-router";
+```
+
+```tsx
+<BrowserRouter></BrowserRouter>
+```
+
+## Как это работает
+
+Когда пользователь переходит по адресу: `/home` или `/about` <br/>
+`BrowserRouter` отслеживает изменения URL через **History API** браузера (`pushState`, `replaceState`) и отображает соответствующий компонент.
+
+## Использование
+
+Обычно приложение выглядит так:
+
+<Tabs items={['Вариант 1', 'Вариант 2']}>
+  <Tab value="var1">
+    
+`main.tsx`
+
+```tsx
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router";
+
+import "./index.css";
+import App from "./App.tsx";
+
+createRoot(document.getElementById("root")!).render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
+);
+```
+
+`App.tsx`
+
+```tsx
+import { Routes, Route } from "react-router";
+
+import Home from "./Home";
+
+import "./App.css";
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+    </Routes>
+  );
+}
+
+export default App;
+```
+
+  </Tab>
+  <Tab value="var2">
+    
+`main.tsx`
+
+```tsx
+import { createRoot } from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router";
+
+import "./index.css";
+import App from "./App.tsx";
+
+createRoot(document.getElementById("root")!).render(
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<App />} />
+    </Routes>
+  </BrowserRouter>,
+);
+```
+
+  </Tab>
+</Tabs>
+
+Таким образом, `BrowserRouter` является "контейнером" для всей системы маршрутизации: он отслеживает изменения URL, а компоненты [`Routes`](./routes) и [`Route`](./route) определяют, какой React-компонент нужно отобразить для каждого пути.

@@ -1,0 +1,106 @@
+---
+title: RouteObject
+---
+
+## Свойства
+
+| Свойство                 | Назначение                                     |
+| ------------------------ | ---------------------------------------------- |
+| `path`                   | Путь маршрута (`"/users/:id"`)                 |
+| `Component`              | Альтернатива `element` (в современных версиях) |
+| `element`                | React-компонент, который будет отрисован       |
+| `children`               | Вложенные маршруты                             |
+| `index`                  | Делает маршрут индексным (`true`)              |
+| `loader`                 | Загружает данные до рендера                    |
+| `action`                 | Обрабатывает отправку формы                    |
+| `errorElement`           | Компонент для отображения ошибок               |
+| `lazy`                   | Ленивая загрузка маршрута                      |
+| `handle`                 | Произвольные пользовательские данные           |
+| `shouldRevalidate`       | Управляет повторным вызовом `loader`           |
+| `id`                     | Уникальный идентификатор маршрута              |
+| `hydrateFallbackElement` | Компонент во время гидратации (SSR)            |
+| `ErrorBoundary`          | Альтернатива `errorElement`                    |
+
+## `loader`
+
+— это функция, которая загружает данные до рендера компонента маршрута. Это одна из ключевых возможностей Data Router API.
+
+:::tip
+Исползуется вместе с [`useLoaderData`](../hooks/useloaderdata)
+:::
+
+```tsx
+async function loader({ request, params, context }) {
+  // ...
+}
+```
+
+| -         | -                                                                                                                                                        |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `params`  | Параметры маршрута, обычно когда есть динамический сегмент. Параметры маршрута:`/users/:id`, url: `/users/42`, то `params.id === "42"`                   |
+| `request` | Это стандартный объект `Request` из **Fetch API**.                                                                                                       |
+| `context` | Используется реже. Позволяет передавать зависимости (например, сервисы или объекты окружения) в загрузчики, если приложение или сервер их предоставляет. |
+
+### Зачем нужен `loader`
+
+Без `loader` обычно приходится делать так:
+
+```tsx
+function UserPage() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    fetch("/api/user/1")
+      .then((r) => r.json())
+      .then(setUser);
+  }, []);
+
+  if (!user) return <Spinner />;
+
+  return <div>{user.name}</div>;
+}
+```
+
+При таком подходе:
+
+- сначала рендерится компонент;
+- потом начинается запрос;
+- после получения данных происходит повторный рендер.
+
+С `loader` данные загружаются до того, как маршрут станет активным.
+
+### Примеры
+
+```jsx
+import { createBrowserRouter } from "react-router";
+
+const router = createBrowserRouter([
+  {
+    path: "/users/:id",
+    loader: async ({ params }) => {
+      const response = await fetch(`/api/users/${params.id}`);
+
+      if (!response.ok) {
+        throw new Response("Not Found", { status: 404 });
+      }
+
+      return response.json();
+    },
+    Component: UserPage,
+  },
+]);
+```
+
+В компоненте:
+
+```jsx
+import { useLoaderData } from "react-router";
+
+function UserPage() {
+  const user = useLoaderData();
+
+  return <h1>{user.name}</h1>;
+}
+```
+
+## `action`

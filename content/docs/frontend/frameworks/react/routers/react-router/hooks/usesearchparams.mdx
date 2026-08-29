@@ -1,0 +1,81 @@
+---
+title: useSearchParams
+---
+
+— это хук для работы с query-параметрами URL (частью после `?`).
+
+`useSearchParams()` возвращает массив из двух элементов:
+
+- `searchParams` — Это объект `URLSearchParams`, у которого есть методы:
+
+  ```tsx
+  searchParams.get("name"); // получить значение
+  searchParams.has("name"); // проверить наличие
+  searchParams.getAll("tag"); // получить несколько значений
+  ```
+
+- `setSearchParams` — Функция для изменения параметров. Можно также менять существующие параметры.
+
+```tsx
+import { useSearchParams } from "react-router";
+```
+
+```tsx
+const [searchParams, setSearchParams] = useSearchParams();
+```
+
+## `searchParams`
+
+<details>
+  <summary> Пример </summary>
+
+    URL: `/users?role=admin`
+
+    Код:
+
+    ```tsx
+    const role = searchParams.get("role");
+
+    console.log(role); // "admin"
+    ```
+
+</details>
+
+<hr />
+
+## `setSearchParams`
+
+<details>
+  <summary> Пример </summary>
+
+    Код:
+
+    ```tsx
+    setSearchParams({
+        q: "react",
+        page: "2"
+    });
+    ```
+
+    Получится: `?q=react&page=2`
+
+</details>
+
+<details>
+  <summary> Пример с изменениями существующих параметров </summary>
+
+    Было: `?q=react&page=2`
+
+
+    Код:
+
+    ```tsx
+    setSearchParams(prev => {
+        prev.set("page", "3");
+        return prev;
+    });
+    ```
+
+    Получится: `?q=react&page=3`
+
+</details>

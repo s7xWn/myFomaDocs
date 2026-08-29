@@ -1,0 +1,92 @@
+---
+title: Form management
+---
+
+— это библиотеки, которые помогают управлять состоянием форм, валидацией, обработкой ошибок и отправкой данных без необходимости писать много однотипного кода.
+
+Без такой библиотеки форма обычно выглядит так:
+
+```jsx
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  if (!email) {
+    alert("Email required");
+    return;
+  }
+
+  // отправка данных
+};
+```
+
+Когда полей становится 10–20, появляются:
+
+- множество `useState`;
+- сложная валидация;
+- зависимости между полями;
+- отслеживание ошибок;
+- работа с асинхронной отправкой.
+
+## Form management или Form manager
+
+- Form management — устоявшийся термин, обозначающий управление состоянием формы, валидацией, обработкой отправки и т.п.
+- Form manager — обычно означает конкретный объект, класс, компонент или библиотеку, которая занимается управлением формой ("менеджер формы").
+
+Примеры:
+
+> _React Hook Form is a form management library for React._
+
+> _The application uses a custom form manager to handle validation and submission._
+
+## Что обычно дают такие библиотеки
+
+### Управление состоянием
+
+Вы получаете единый объект формы, вместо:
+
+```jsx
+const [name, setName] = useState("");
+const [age, setAge] = useState("");
+```
+
+### Валидация
+
+```jsx
+register("email", {
+  required: true,
+  pattern: /^\S+@\S+$/,
+});
+```
+
+или через схемы Zod или Yup
+
+### Ошибки
+
+Вместо ручного хранения ошибок в состоянии.
+
+```jsx
+errors.email?.message;
+```
+
+### Отправка формы
+
+```jsx
+handleSubmit(async (data) => {
+  await api.login(data);
+});
+```
+
+## Примеры инструментов
+
+- React Hook Form
+- Formik
+- TanStack Form
+- Final Form
+
+### Валидация отдельно от формы
+
+- Zod
+- Yup

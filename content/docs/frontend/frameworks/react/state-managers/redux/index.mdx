@@ -1,0 +1,49 @@
+---
+title: Redux
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+| [Off. website](https://redux.js.org) | NPM > [Redux](https://www.npmjs.com/package/redux) & [React Redux](https://www.npmjs.com/package/react-redux) |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
+
+Как всё работает вместе (поток данных):
+
+1. UI вызывает `dispatch`(`action`)
+2. `action` попадает в `middleware` (если есть)
+3. затем в `reducer`
+4. `reducer` создаёт новое состояние
+5. `store` обновляется
+6. UI перерисовывается
+
+<Tabs items={["Без middleware", "С middleware"]}>
+  <Tab value="without">
+    ![Working](./assets/ReduxDataFlowDiagram-49fa8c3968371d9ef6f2a1486bd40a26.gif)
+  </Tab>
+  <Tab value="with">
+    ![Working](./assets/ReduxAsyncDataFlowDiagram-d97ff38a0f4da0f327163170ccc13e80.gif)
+  </Tab>
+</Tabs>
+
+## Установка
+
+:::important
+Команда **Redux** сделала [**Redux Toolkit (RTK)**](../redux-toolkit) официальным рекомендуемым способом использования Redux
+:::
+
+<hr />
+
+## Создание
+
+Для начала создаём [`Store`](/docs/frontend/frameworks/react/state-managers/redux-toolkit/store/) <br/>
+Импортируем наш `store.ts`
+
+```ts
+import { store } from "./store";
+```
+
+И через `getState()` обращаемся к полям (например `counter`)
+
+```ts
+store.getState().counter;
+```

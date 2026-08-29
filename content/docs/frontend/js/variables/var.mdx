@@ -1,0 +1,50 @@
+---
+title: var
+---
+
+## Область видимости (Scope)
+
+Обладает **функциональной областью** видимости, также называемой **глобальной областью видимости**. <br/>
+Переменная, объявленная с помощью `var`, доступна в **пределах функции**, в которой она объявлена.
+
+```js
+function scopeEx() {
+  if (true) {
+    var funScope = "var";
+    let blockScope = "let";
+    const blockConst = "const";
+  }
+  console.log(funScope); // var
+  console.log(blockScope); // RefError
+  console.log(blockConst); // RefError
+}
+```
+
+### Всплытие (Hoisting)
+
+Все переменные в JavaScript **“поднимаются”** к верхушке своей области видимости. Однако `var` инициализируется значением `undefined` в момент всплытия.
+
+```js
+console.log(x); // undefiend
+var x = 5;
+```
+
+### Переопределение и объявление
+
+`var` - Позволяет повторное объявление переменной в одной и той же области видимости.
+
+```js
+let b = 1;
+let b = 2; // Error
+```
+
+`var` - позволяют изменять значение переменной после объявления.
+
+```js
+var d = 1;
+d = 2; // ok
+```
+
+### Почему `var` не устарел
+
+[YouTube](https://www.youtube.com/live/msrbSSZQApI)

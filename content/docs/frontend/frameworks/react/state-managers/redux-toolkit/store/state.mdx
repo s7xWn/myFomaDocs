@@ -1,0 +1,56 @@
+---
+title: State
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+— это единый JavaScript-объект, который хранит всё текущее состояние приложения.
+
+## Создание
+
+<Tabs items={["Один", "Несколько"]}>
+  <Tab value="one">
+
+    Типизация
+
+    ```ts
+    type CounterState = {
+      counter: number;
+    };
+    ```
+
+    и создание
+
+    ```ts
+    const initialState: CounterState = {
+      counter: 0,
+    };
+    ```
+
+  </Tab>
+  <Tab value="two">
+    
+    Типизация
+
+    ```ts
+    type CounterState = {
+      counter: number;
+    };
+    export type CounterId = string;
+
+    type CounterStates ={
+      counters: Record<CounterId, CounterState | undefined>
+    }
+    ```
+
+    и создание
+
+    ```ts
+    const inititalCounterState: CounterState = { counter: 0 };
+    const initialState: CounterStates = {
+      counters: {},
+    };
+    ```
+
+  </Tab>
+</Tabs>

@@ -7,12 +7,12 @@
     "terminal-emulators",
     "linux",
     "linux-family",
-    "---Инструменты---",
+    "---[PencilRuler]Инструменты---",
     "web-servers",
     "containers",
     "ci-cd",
     "...",
-    "---Доп. пакеты---",
+    "---[Blocks]Доп. пакеты---",
     "panels-vpn-proxy"
   ]
 }

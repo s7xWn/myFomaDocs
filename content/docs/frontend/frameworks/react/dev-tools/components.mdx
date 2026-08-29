@@ -1,0 +1,44 @@
+---
+title: Components
+---
+
+Вкладка **Components** предназначена для изучения дерева React-компонентов.
+
+<details>
+  <summary>Пример</summary>
+
+Если приложение выглядит так:
+
+```jsx
+<App>
+  <Header />
+  <Main>
+    <UserList />
+    <Sidebar />
+  </Main>
+</App>
+```
+
+Во вкладке Components ты увидишь примерно такую же иерархию:
+
+```
+App
+ ├── Header
+ └── Main
+      ├── UserList
+      └── Sidebar
+```
+
+</details>
+
+## props
+
+Если выбрать компонент, можно увидеть его входные данные (`props`).
+
+## hooks
+
+Можно посмотреть состояние компонента.
+
+## context
+
+Если используется `useContext`, DevTools покажет текущее значение контекста.

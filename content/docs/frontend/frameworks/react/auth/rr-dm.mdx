@@ -1,0 +1,49 @@
+---
+title: Авторизация (React Router, Data Mode)
+---
+
+Установить и настроить [React Router](../routers/react-router) используя [Data Mode](../routers/react-router#использование-data-mode)
+
+> В этом случае не нужен [`AuthProvider`]().
+> Лучше вынести проверку авторизации в route [`loader`](../routers/react-router/data-mode/route-object#loader). [`loader`](../routers/react-router/data-mode/route-object#loader) будет выполняться до рендера страницы.
+
+**Общий вид**
+
+1. Пользователь открывает `/`.
+2. [`Loader`](../routers/react-router/data-mode/route-object#loader) берёт `accessToken` из `localStorage`. Если `accessToken` нет то возвращает `null`, если есть:<br/>
+   Отправляет запрос на backend (`/me`, `/profile`, `/auth/check`).<br/>
+   [Ситуации для продумывания логики описанные в Access token + Refresh token](/docs/computer-science/auth-identification/implementation-options#ситуации-для-продумывания-логики)
+3. [`Loader`](../routers/react-router/data-mode/route-object#loader) отдаёт данные компоненту или [редиректит](../routers/react-router/data-mode/utils#redirect).
+
+**Login / Register**
+
+1. Пользователь открывает `/login` или `/register`.
+2. [`Loader`](../routers/react-router/data-mode/route-object#loader) берёт `accessToken` из `localStorage`. Если `accessToken` нет то возвращает `null` идём дальше, если есть:<br/>
+   редиректит на `/`
+3. Заполняет форму
+
+## Пример
+
+### Настройка `loader` для отправки `accessToken` с `localStorage`
+
+```ts
+loader: async () => {
+    const user = getCurrentUser()
+    .then((user) => {
+        console.log(`Route /: ${JSON.stringify(user)}`);
+        return user;
+    })
+    .catch((error) => {
+        if (error instanceof Response && error.status === 401) {
+        localStorage.removeItem("accessToken");
+        }
+
+        // console.error("Profile loading failed", error);
+        return null;
+    });
+
+    return {
+    user,
+    };
+},
+```

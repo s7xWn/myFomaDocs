@@ -1,0 +1,52 @@
+---
+title: Статические методы
+---
+
+## Получение информации об объекте
+
+### `Object.keys(obj)`
+
+Возвращает массив ключей объекта.
+
+```js
+const user = { name: "Alice", age: 25 };
+
+console.log(Object.keys(user)); // ["name", "age"]
+```
+
+### `Object.values(obj)`
+
+Возвращает массив значений объекта.
+
+```js
+console.log(Object.values(user)); // ["Alice", 25]
+```
+
+### `Object.entries(obj)`
+
+Возвращает массив пар [ключ, значение].
+
+```js
+console.log(Object.entries(user)); // [["name", "Alice"], ["age", 25]]
+```
+
+### `Object.fromEntries(iterable)`
+
+Делает объект из массива пар.
+
+```js
+const entries = [
+  ["name", "Alice"],
+  ["age", 25],
+];
+
+console.log(Object.fromEntries(entries)); // { name: "Alice", age: 25 }
+```
+
+### `Object.hasOwn(obj, key)`
+
+Проверяет, есть ли у объекта собственное свойство.
+
+```js
+console.log(Object.hasOwn(user, "name")); // true
+```

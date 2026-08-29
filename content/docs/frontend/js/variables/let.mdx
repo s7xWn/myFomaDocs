@@ -1,0 +1,50 @@
+---
+title: let
+---
+
+:::warning
+Появился в версии EcmaScript 2015 года (ES6)
+:::
+
+## Область видимости (Scope)
+
+Обладает **блочной областью видимости**. <br/>
+Переменные, объявленные с помощью `let`, доступны только **внутри блока**, в котором они объявлены.
+
+```js
+function scopeEx() {
+  if (true) {
+    var funScope = "var";
+    let blockScope = "let";
+    const blockConst = "const";
+  }
+  console.log(funScope); // var
+  console.log(blockScope); // RefError
+  console.log(blockConst); // RefError
+}
+```
+
+### Всплытие (Hoisting)
+
+Все переменные в JavaScript **“поднимаются”** к верхушке своей области видимости. `let` попадет в так называемую **"временную мертвую зону" (TDZ)** до тех пор, пока не будут инициализированы явно в коде.
+
+```js
+console.log(y); // referr, cannot access before init
+let y = 10;
+```
+
+### Переопределение и объявление
+
+`let` - Не позволяет повторное объявление переменной в одной и той же области видимости.
+
+```js
+let b = 1;
+let b = 2; // Error
+```
+
+`let` - позволяют изменять значение переменной после объявления.
+
+```js
+let e = 1;
+e = 2; // ok
+```

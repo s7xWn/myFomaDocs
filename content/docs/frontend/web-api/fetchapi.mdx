@@ -1,0 +1,62 @@
+---
+title: Fetch API
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+<Tabs items={["Javascript", "Typescript"]}>
+  <Tab value="Javascript">
+
+    ```js
+    fetch(url, options)
+    ```
+
+  </Tab>
+  <Tab value="Typescript">
+
+    ```ts
+    declare function fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
+    ```
+
+  </Tab>
+</Tabs>
+
+— это встроенный Web API для выполнения HTTP-запросов (GET, POST и т.д.). Он пришёл на замену старому `XMLHttpRequest` и работает на основе [`Promise`](/docs/frontend/js/data-type/Objects/Promise/).
+
+`fetch()` — это функция браузера, которая позволяет отправлять запросы на сервер и получать ответы.
+
+```
+fetch('http://example.com/movies.json')
+  .then((response) => {
+    return response.json()
+  })
+  .then((data) => {
+    console.log(data)
+  })
+```
+
+Браузер формирует объект запроса (`Request`) с:
+
+- URL
+- методом (GET, POST, PUT…)
+- заголовками
+- телом (если есть)
+
+## Response
+
+Когда сервер отвечает, `fetch` возвращает `Promise`, который резолвится в объект `Response`, который содержит:
+
+- [`status`](/docs/computer-science/http/http-status-codes) (200, 404, 500…)
+- [`headers`](/docs/computer-science/http/http-headers)
+- `body` (поток данных — stream)
+
+## Обработка `body`
+
+Тело ответа — это поток (ReadableStream), а не готовые данные.<br/>
+Эти методы асинхронно читают **stream** и преобразуют его.
+
+### `json()`
+
+### `text()`
+
+### `blob()`

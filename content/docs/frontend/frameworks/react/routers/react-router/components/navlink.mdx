@@ -1,0 +1,58 @@
+---
+title: <NavLink>
+---
+
+— это компонент для создания навигационных ссылок, который умеет определять, является ли ссылка активной, и позволяет менять её отображение в зависимости от текущего URL.
+
+:::important
+Он является расширением обычного [`Link`](./link)
+:::
+
+```tsx
+import { NavLink } from "react-router";
+```
+
+## Свойства
+
+### `end`
+
+По умолчанию: `<NavLink to="/users">Пользователи</NavLink>` будет активен и для: `/users`, `/users/123`, `/users/settings`
+
+Если нужно только `/users`:
+
+```tsx
+<NavLink to="/users" end>
+  Пользователи
+</NavLink>
+```
+
+<hr />
+
+## Состояния
+
+— это значения, которые React Router передаёт в функции `className`, `style` или `children`, чтобы вы могли менять отображение ссылки в зависимости от её состояния.
+
+### `isActive`
+
+показывает, соответствует ли текущий URL маршруту этой ссылки.
+
+```tsx
+<NavLink to="/profile" className={({ isActive }) => (isActive ? "active" : "")}>
+  Профиль
+</NavLink>
+```
+
+<hr />
+
+### `isPending`
+
+показывает, что переход по ссылке начался, но новый маршрут ещё не готов.
+
+```tsx
+<NavLink
+  to="/dashboard"
+  className={({ isPending }) => (isPending ? "loading" : "")}
+>
+  Dashboard
+</NavLink>
+```

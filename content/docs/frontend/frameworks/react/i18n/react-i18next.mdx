@@ -1,0 +1,457 @@
+---
+title: React-i18next
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+| [Off. website](https://react.i18next.com/) | [NPM](https://www.npmjs.com/package/react-i18next) |
+| ------------------------------------------ | -------------------------------------------------- |
+
+<Tabs items={['npm']}>
+  <Tab value="npm">
+    
+    ```bash
+    npm install react-i18next i18next i18next-http-backend i18next-browser-languagedetector --save
+    ```
+
+  </Tab>
+</Tabs>
+
+— это библиотека для интернационализации (i18n) приложений на React. Она связывает React с [i18next]()
+
+С ее помощью можно:
+
+- переводить текст интерфейса на разные языки;
+- переключать язык без перезагрузки страницы;
+- подставлять переменные в переводы;
+- работать с множественным числом и форматированием;
+- загружать переводы динамически.
+
+## Установка
+
+<Tabs items={['npm', 'yarn', "pnpm"]}>
+  <Tab value="npm">
+    
+    ```bash
+    npm install react-i18next i18next --save
+    ```
+
+  </Tab>
+  <Tab value="yarn">
+    
+    ```bash
+    yarn add react-i18next i18next
+    ```
+
+  </Tab>
+  <Tab value="pnpm">
+    
+    ```bash
+    pnpm add react-i18next i18next
+    ```
+
+  </Tab>
+</Tabs>
+
+После установки обычно:
+
+1. Создают файл `src/i18n.ts` (или `src/i18n.js`) с настройкой `i18next`.
+
+```jsx
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+
+i18n.use(initReactI18next).init({});
+
+export default i18n;
+```
+
+2. Импортируем в наш главный файл (`main.tsx`):
+
+   ```jsx
+   import "./i18n.ts";
+   ```
+
+### Установка `i18next-http-backend`
+
+```bash
+npm install i18next-http-backend --save
+```
+
+нужен для того, чтобы загружать файлы переводов по HTTP, а не хранить их внутри бандла приложения.
+
+Если вы используете `i18next`, то ему нужен источник, откуда брать переводы. По умолчанию вы можете импортировать JSON-файлы вручную, а `i18next-http-backend` позволяет получать их автоматически с сервера.
+
+| +                               | -                                                     |
+| ------------------------------- | ----------------------------------------------------- |
+| простота                        | все переводы попадают в бандл                         |
+| не нужны дополнительные запросы | при изменении переводов нужно пересобирать приложение |
+
+### Установка `i18next-browser-languagedetector`
+
+```bash
+npm install i18next-browser-languagedetector --save
+```
+
+<hr />
+
+## Использование переводов `useTranslation()`
+
+1. Создаём папку (`./src/locales`)
+2. Создаём в ней папки для языков (`./ru`, `./en`)
+3. В них создаём `translation.json`
+4. И в этих файлах добавляем переводы `key: value`
+   - en
+
+   ```json
+   {
+     "hello": "Hello my friend."
+   }
+   ```
+
+   - ru
+
+   ```json
+   {
+     "hello": "Привет мой друг."
+   }
+   ```
+
+5. Импортируем в наш конфиг (1ый пункт в установке) и инициализируем в `init({})`:
+
+   ```jsx
+   import ru from "./locales/ru/translation.json";
+   import en from "./locales/en/translation.json";
+   ```
+
+   ```jsx
+   i18n.use(initReactI18next).init({
+     resources: {
+       ru: {
+         translation: ru,
+       },
+       en: {
+         translation: en,
+       },
+     },
+     lng: "ru",
+     fallbackLng: "en",
+     interpolation: {
+       escapeValue: false,
+     },
+   });
+   ```
+
+6. Используем `useTranslation`
+
+   ```jsx
+   import { useTranslation } from "react-i18next";
+   ```
+
+   ```jsx
+   const { i18n, t } = useTranslation();
+   ```
+
+   ```jsx
+   <span>{t("hello")}</span>
+   ```
+
+### `debug`
+
+Параметр `debug` включает режим отладки `i18next`. Он выводит в консоль информацию о работе библиотеки.
+
+При включенном `debug` в консоли появляются сообщения о:
+
+- инициализации i18next;
+- текущем языке;
+- загруженных namespace;
+- попытках загрузить файлы переводов;
+- отсутствующих ключах;
+- смене языка.
+
+```jsx
+i18n.init({
+  debug: true,
+});
+```
+
+### `fallbackLng`
+
+определяет, какой язык использовать, если нужный перевод недоступен.
+
+```jsx
+i18n.init({
+  lng: "ru",
+  fallbackLng: "en",
+});
+```
+
+### `ns` (namespaces)
+
+В i18next есть понятие namespace (пространство имен). Это отдельные файлы переводов. <br/>
+Если они используются сразу, библиотека может загрузить их при старте. Если не использовать - то `i18next` будет загружать namespace по мере необходимости (`const { t } = useTranslation("main");`)
+
+Редактируем в файле-конфиге старые импорты и добавляем namespaces:
+
+```jsx
+import enMain from "./locales/en/main.json";
+import enAbout from "./locales/en/about.json";
+
+import ruMain from "./locales/ru/main.json";
+import ruAbout from "./locales/ru/about.json";
+```
+
+```jsx
+.init({
+    lng: "ru",
+    fallbackLng: "en",
+    interpolation: {
+        escapeValue: false,
+    },
+
+    ns: ["main", "about"],     // список namespace
+    defaultNS: "main",         // namespace по умолчанию
+
+    resources: {
+      en: {
+        main: enMain,
+        about: enAbout,
+      },
+      ru: {
+        main: ruMain,
+        about: ruAbout,
+      },
+    },
+  });
+```
+
+Чтобы испольовать:
+
+```jsx
+const { i18n, t } = useTranslation("about");
+const { t: tSecond } = useTranslation();
+```
+
+```jsx
+<p>{tSecond("text.hello")}</p>
+<p>
+    {t("userInfo", {
+    name: "Alice",
+    age: 25,
+    })}
+</p>
+```
+
+- `useTranslation();` будет использовать указанный в файле-конфиге `defaultNS: ...,`
+- `useTranslation("name");` будет использовать `name` файл переводов.
+
+### `ns` (namespaces `i18next-http-backend`)
+
+В i18next есть понятие namespace (пространство имен). Это отдельные файлы переводов.
+
+:::danger
+Надо хрнаить файлы в `public/`
+
+Если файлы переводов находятся в `src`, то `i18next-http-backend` обычно использовать не стоит.
+
+Причина в том, что `i18next-http-backend` загружает файлы через HTTP-запросы. Браузер не может напрямую получить доступ к файлам из `src` — они попадают в сборку приложения и не доступны как отдельные ресурсы.
+:::
+
+Удаляем в файле-конфиге старые импорты и `resources: {...}`:
+
+```jsx
+i18n.use(initReactI18next).init({
+  lng: "ru",
+  fallbackLng: "en",
+  interpolation: {
+    escapeValue: false,
+  },
+});
+```
+
+1. Импортируем `i18next-http-backend` и регистрируем плагин `.use(HttpBackend)`
+
+   ```jsx
+   import HttpBackend from "i18next-http-backend";
+   ```
+
+   ```jsx
+   i18n.use(HttpBackend);
+   ```
+
+   :::warning
+   В документации чаще сначала подключают backend. <br/>
+   Такой порядок считается более привычным: сначала регистрируются плагины, отвечающие за загрузку данных, затем — интеграция с React.
+
+   ```jsx
+   i18n.use(HttpBackend).use(initReactI18next);
+   ```
+
+   :::
+
+2. Настраиваем backend loadPath, указав путь к папке где находятся переводы:
+
+```jsx
+  backend: {
+    loadPath: "/locales/{{lng}}/{{ns}}.json",
+  },
+```
+
+3. Подключим `ns` (namespaces, название наших файлов):
+
+```jsx
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import HttpBackend from "i18next-http-backend";
+
+i18n
+  .use(HttpBackend)
+  .use(initReactI18next)
+  .init({
+    lng: "ru",
+    fallbackLng: "en",
+    interpolation: {
+      escapeValue: false,
+    },
+    ns: ["about", "main"],
+    backend: {
+      loadPath: "./locales/{{lng}}/{{ns}}.json",
+    },
+  });
+
+export default i18n;
+```
+
+```jsx
+{
+  t("userInfo", {
+    name: "Alice",
+    age: 25,
+  });
+}
+```
+
+:::tip
+Так же можно использовать `defaultNS: ..,` для использования пространство имен по умолчанию без указания в `const { i18n, t } = useTranslation();`
+:::
+
+<hr />
+
+## Сменя языка чере функцию `i18n.changeLanguage()`
+
+Примеры переключения ru/en языков
+
+```jsx
+const handleChangeLanguage = () => {
+  const newLanguage = i18n.language === "ru" ? "en" : "ru";
+  i18n.changeLanguage(newLang);
+};
+```
+
+<hr />
+
+## Пространство ключей (иерархии ключей)
+
+Вместо плоского списка переводов можно группировать их в объект.
+
+```jsx
+const { t } = useTranslation();
+
+<h1>{t('auth.login.title')}</h1>
+<button>{t('auth.login.button')}</button>
+```
+
+<details>
+<summary>Пример</summary>
+
+Например, вместо:
+
+```json
+{
+  "loginTitle": "Вход",
+  "loginButton": "Войти",
+  "registerTitle": "Регистрация"
+}
+```
+
+используют иерархию:
+
+```json
+{
+  "auth": {
+    "login": {
+      "title": "Вход",
+      "button": "Войти"
+    },
+    "register": {
+      "title": "Регистрация"
+    }
+  }
+}
+```
+
+</details>
+
+<hr />
+
+## Передача параметров
+
+В i18next можно передавать параметры (интерполяцию) в строку перевода через второй аргумент функции `t()`.
+
+```json
+{
+  "userInfo": "Name: {{name}}, Age: {{age}}"
+}
+```
+
+```jsx
+const { t } = useTranslation();
+
+<p>
+  {t("userInfo", {
+    name: "Alice",
+    age: 25,
+  })}
+</p>;
+```
+
+### Плюрализация
+
+Если передать параметр `count`, i18next автоматически выберет нужную форму слова (если для языка настроены соответствующие ключи).
+
+```json
+{
+  "item_one": "{{count}} item",
+  "item_other": "{{count}} items"
+}
+```
+
+```jsx
+t("item", { count: 1 }); // 1 item
+t("item", { count: 5 }); // 5 items
+```
+
+### Передача объекта
+
+Можно передать целый объект и обращаться к его полям.
+
+```json
+{
+  "profile": "User: {{user.name}}, Age: {{user.age}}"
+}
+```
+
+```jsx
+t("profile", {
+  user: {
+    name: "Bob",
+    age: 30,
+  },
+});
+```
+
+<hr />
+
+## Ссылки
+
+- [gorbatkoff | i18next С Нуля до Результата | Мультиязычность На Сайте](https://www.youtube.com/watch?v=1ZcXAvfT-vw)

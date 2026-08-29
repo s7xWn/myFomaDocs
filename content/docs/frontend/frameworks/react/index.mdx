@@ -1,0 +1,196 @@
+---
+title: React
+---
+
+| [Off. website](https://react.dev/) |
+| ---------------------------------- |
+
+Использует [JSX](/docs/frontend/jsx/)
+
+## Создание приложения
+
+### Create React App
+
+Для создания нового React-проекта <br/>
+Если не указывать `--template`, то шаблон по умолчанию будет `cra-template`
+
+```bash
+npx create-react-app[@<версия>] <имя проекта> [--template <имя шаблона>]
+```
+
+```bash
+npx create-react-app my-app
+```
+
+```bash
+npx create-react-app my-app --template typescript
+```
+
+Примеры
+
+```bash
+npx create-react-app@5.0.1 my-app --template typescript
+```
+
+#### Запуск
+
+```bash
+npm start
+```
+
+#### Структура
+
+:::important
+При запуске проекта на выполнение, папка `public` выступает в качестве корневой папки веб-приложения.
+Все пути к файлам, присутствующие в интернет-адресах, отсчитываются от нее;
+:::
+
+**public** — папка, предназначенная для хранения файлов, которые не подвергаются никакой обработке перед отправкой веб-обозревателю. Изначально в ней находятся следующие файлы:
+
+- index.html — единственная веб-страница, на который выводится интерфейс приложения (страница приложения).
+- favicon.ico — значок приложения.
+- robots.txt — файл с указаниями для поисковых служб;
+- manifest.json — манифест прогрессивного веб-приложения (PWA). Требуется при программировании такого веб-приложения;
+- logo192.png — значок PWA размерами 192×192 пиксела;
+- logo512.png — значок PWA размерами 512×512 пикселов.
+
+  :::note
+  Если разрабатываемое приложение не планируется превращать в **PWA**, файлы `manifest.json`, `logo192.png` и `logo512.png` могут быть удалены.
+  При этом необходимо также удалить из HTML-кода страницы приложения `index.html` ссылки на файлы.
+  :::
+
+**src** — папка для хранения файлов, которые обрабатываются перед отправкой
+веб-обозревателю. Изначально содержит файлы:
+
+- index.js — стартовый модуль;
+- index.css — таблица стилей приложения. Импортируется в модуле index.js;
+- App.js — модуль с кодом компонента приложения App;
+- App.css — таблица стилей компонента приложения. Импортируется в модуле App.js;
+- logo.svg — логотип React, выводимый компонентом приложения. Импортируется в модуле App.js;
+- App.test.js — тестовый модуль для компонента приложения. <br/>
+  :::note
+  Если средства автоматизированного тестирования, устанавливаемые в составе инструментальных программ, использовать не планируется, может быть удален.
+  :::
+- reportWebVitals.js — модуль встроенного в React измерителя производительности приложения.
+  :::note
+  Если измеритель производительности не нужен, его можно удалить.
+  При этом также необходимо удалить из модуля `index.js` выражение, вызывающее
+  функцию `reportWebVitals()`, которая импортируется из этого модуля, а также
+  выражение, импортирующее эту функцию;
+  :::
+- setupTests.js — модуль, инициализирующий средства автоматизированного тестирования React.
+  :::note
+  Если эти средства использоваться не будут, модуль может быть удален;
+  :::
+
+**node_modules** — папка с установленными зависимостями (библиотеками, включая сам React, и инструментальными программами); <br/>
+**.gitignore** — список исключений для системы управления версиями Git. <br/>
+**package.json** — манифест проекта Node.js <br/>
+**package-lock.json** — снимок дерева зависимостей (или реестр) проекта Node.js; <br/>
+**README.MD** — краткое описание проекта в формате Markdown. <br/>
+
+#### Минимально чистая структура
+
+- public:
+  - index.html
+
+    <details>
+
+    ```html
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>React App</title>
+      </head>
+      <body>
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <div id="root"></div>
+      </body>
+    </html>
+    ```
+
+    </details>
+
+- src:
+  - App.js
+
+    <details>
+
+    ```jsx
+    function App() {
+      return (
+        <div className="App">
+          <header className="App-header">
+            <p>
+              Edit <code>src/App.js</code> and save to reload.
+            </p>
+            <a
+              className="App-link"
+              href="https://reactjs.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Learn React
+            </a>
+          </header>
+        </div>
+      );
+    }
+
+    export default App;
+    ```
+
+    </details>
+
+  - index.js
+
+    <details>
+
+    ```jsx
+    import React from "react";
+    import ReactDOM from "react-dom/client";
+    import App from "./App";
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>,
+    );
+    ```
+
+    </details>
+
+### Vite
+
+```bash
+npm create vite@latest my-app
+```
+
+<hr />
+
+## `import React from 'react';`
+
+:::warning
+В современных React-проектах обычно не нужно писать.
+:::
+
+### React 16 и ниже
+
+До React 17 JSX компилировался примерно так:
+
+```jsx
+<div>Hello</div>
+```
+
+в
+
+```jsx
+React.createElement("div", null, "Hello");
+```
+
+### React 17+
+
+Начиная с React 17 появился новый JSX Transform. Теперь JSX компилируется иначе, и компилятор автоматически импортирует необходимые функции.

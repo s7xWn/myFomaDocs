@@ -1,0 +1,48 @@
+---
+title: createBrowserRouter()
+---
+
+— это функция из современного React Router (начиная с архитектуры Data Router, появившейся в v6.4 ), которая создает роутер, работающий через **History API** браузера. В отличие от старого подхода с `<BrowserRouter>`, она позволяет определять маршруты как конфигурацию и использовать загрузчики данных, действия форм и обработку ошибок.
+
+```tsx
+import { createBrowserRouter } from "react-router";
+```
+
+```tsx
+const router = createBrowserRouter([RouteObject]);
+```
+
+## Использование
+
+Создаётся отдельный файл (например `router.ts`)<br/>
+Создаётся в нём router через `createBrowserRouter` в который передадим [`RouteObjects`](./route-object) :
+
+```tsx
+import { createBrowserRouter } from "react-router";
+import HomePage from "../pages/Home";
+import AboutPage from "../pages/About";
+import AuthPage from "../pages/Auth";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    Component: RootLayout,
+    children: [
+      {
+        index: true,
+        Component: HomePage,
+      },
+      {
+        path: "about",
+        Component: AboutPage,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    Component: AuthPage,
+  },
+]);
+
+export default router;
+```

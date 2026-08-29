@@ -1,0 +1,38 @@
+---
+title: Private Route
+---
+
+— это распространённый пользовательский паттерн для создания защищённых маршрутов (protected routes).
+
+Идея: если пользователь авторизован — показать страницу, если нет — отправить его на страницу входа.
+
+`private.route.tsx`
+
+```tsx
+import { Navigate, Outlet } from "react-router";
+
+function PrivateRoute() {
+  const isAuthenticated = true; // например, проверка токена или состояния пользователя
+
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+}
+
+export default PrivateRoute;
+```
+
+`routes.tsx`
+
+```tsx
+const navigationRoutes = [
+  { path: "/", element: <HomePage /> },
+  { path: "/login", element: <AuthPage /> },
+  {
+    path: "/me",
+    element: (
+      <PrivateRoute>
+        <AuthPage />
+      </PrivateRoute>
+    ),
+  },
+];
+```

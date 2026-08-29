@@ -1,0 +1,800 @@
+---
+title: React Hook Form
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+| [Off. website](https://react-hook-form.com/) | [NPM](https://www.npmjs.com/package/react-hook-form) |
+| -------------------------------------------- | ---------------------------------------------------- |
+
+— это популярная библиотека для работы с формами в React.
+Она помогает собирать данные из полей ввода, валидировать их и управлять состоянием формы с минимальным количеством перерисовок компонентов.
+
+Без RHF часто приходится:
+
+- хранить состояние каждого поля через `useState`;
+- вручную писать обработчики `onChange`;
+- самостоятельно реализовывать валидацию;
+- следить за ошибками и состоянием отправки формы.
+
+## Установка
+
+<Tabs items={['npm', 'yarn', "pnpm"]}>
+  <Tab value="npm">
+    
+    ```bash
+    npm install react-hook-form
+    ```
+
+  </Tab>
+  <Tab value="yarn">
+    
+    ```bash
+    yarn add react-hook-form
+    ```
+
+  </Tab>
+  <Tab value="pnpm">
+    
+    ```bash
+    pnpm add react-hook-form
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## Создание и использование `useForm()`
+
+```tsx
+import { useForm } from "react-hook-form";
+```
+
+Для создания нам нужно создать объект управления формой.<br/>
+Главный хук библиотеки создает этот объект. - `useForm()`
+
+```tsx
+useForm(options?)
+```
+
+<Tabs groupId="language" items={['Javascript', 'Typescript']}>
+  <Tab value="Javascript">
+  
+    ```jsx
+    const methods = useForm();
+    ```
+
+    или с деструктуризацией
+
+    ```jsx
+    const { register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+    ```
+
+  </Tab>
+  <Tab value="Typescript">
+    
+    ```tsx
+    type FormValues = {
+        name: string;
+        email: string;
+        age: number;
+    };
+
+    const methods = useForm<FormValues>();
+    ```
+
+    или с деструктуризацией
+
+    ```tsx
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<FormValues>();
+    ```
+
+  </Tab>
+</Tabs>
+
+Возвращает методы управления формой:
+
+- `register` — регистрация поля с валидацией.
+- `handleSubmit` — обработка отправки.
+- `watch` — отслеживание значений.
+- `setValue` — программная установка значения.
+- `getValues` — получение значений.
+- `reset` — сброс формы.
+- `formState` — ошибки, состояние загрузки и т.д.
+
+<hr />
+
+### options
+
+#### `defaultValues`
+
+Начальные значения формы.
+
+```jsx
+useForm({
+  defaultValues: {
+    firstName: "John",
+    age: 25,
+  },
+});
+```
+
+#### `resolver`
+
+Интеграция с внешними схемами валидации (Zod, Yup и т.д.)
+
+#### `context`
+
+Любые дополнительные данные для resolver'а.
+
+#### `mode`
+
+Когда происходит валидация (показывает ошибку):
+
+- `"onSubmit"` (по умолчанию)
+- `"onChange"`
+- `"onBlur"`
+- `"all"`
+- `"onTouched"`
+
+```jsx
+useForm({
+  mode: "onChange",
+});
+```
+
+#### `reValidateMode`
+
+Когда повторно валидировать после ошибки:
+
+- `"onChange"` (по умолчанию)
+- `"onBlur"`
+- `"onSubmit"`
+
+#### `criteriaMode`
+
+Как показывать ошибки:
+
+- `"firstError"` (по умолчанию)
+- `"all"`
+
+#### `shouldFocusError`
+
+Фокус на первое поле с ошибкой (по умолчанию `true`)
+
+#### `shouldUnregister`
+
+Удалять поле из формы при unmount:
+
+```jsx
+useForm({
+  shouldUnregister: true,
+});
+```
+
+#### `delayError`
+
+Задержка перед показом ошибки (мс)
+
+<hr />
+
+## Методы управления формой
+
+### `register()`
+
+Регистрирует поле в форме.
+
+```tsx
+register(name: string, rules?: RegisterOptions)
+```
+
+`name` — имя поля. <br/>
+`rules` (`RegisterOptions`) — объект с правилами валидации (необязательный параметр).
+
+:::warning
+`register` не подходит для полностью controlled компонентов (там нужен Controller)
+:::
+
+<Tabs groupId="language" items={['Javascript', 'Typescript']}>
+  <Tab value="Javascript">
+    
+    ```jsx
+    <input {...register("name")} />
+    ```
+
+    Имя поля будет ключом в объекте данных:
+
+    ```js
+    {
+        name: "Иван"
+    }
+    ```
+
+    ```jsx
+    <input
+      {...register("name", {
+        required: "Введите name",
+        minLength: {
+          value: 5,
+          message: "Минимум 5 символов",
+        },
+      })}
+    />
+    ```
+
+  </Tab>
+  <Tab value="Typescript">
+    
+    ```tsx
+    type Props = {
+        register: UseFormRegister<FormValues>
+    }
+    ```
+
+    ```tsx
+    <input {...register("name")} />
+    ```
+
+  </Tab>
+</Tabs>
+
+#### `required`
+
+— это правило валидации, которое означает: поле обязательно для заполнения.
+
+`required` может быть:
+
+1. Просто `boolean`:
+   ```jsx
+   register("email", {
+     required: true,
+   });
+   ```
+2. Строка (сообщение об ошибке)
+   ```jsx
+   register("email", {
+     required: "Email обязателен",
+   });
+   ```
+3. Объект (более явный вариант)
+   ```jsx
+   register("email", {
+     required: {
+       value: true,
+       message: "Email обязателен",
+     },
+   });
+   ```
+
+#### `min` / `max`
+
+— это правила валидации, которые ограничивают числовое значение поля. <br/>
+`min`/`max` работают для чисел, для строк есть аналоги `minLength`/`maxLength`
+
+```jsx
+register("age", {
+  min: {
+    value: 18,
+    message: "Минимальный возраст 18",
+  },
+  max: {
+    value: 60,
+    message: "Максимальный возраст 60",
+  },
+});
+```
+
+#### `minLength` / `maxLength`
+
+— это правила валидации для длины строки. <br/>
+`minLength`/`maxLength` работают для строк, для чисел есть аналоги `min`/`max`
+
+```jsx
+register("username", {
+  minLength: {
+    value: 3,
+    message: "Минимум 3 символа",
+  },
+  maxLength: {
+    value: 10,
+    message: "Максимум 10 символов",
+  },
+});
+```
+
+#### `pattern`
+
+— это правило валидации, которое проверяет значение поля по регулярному выражению (RegExp).
+
+```jsx
+register("email", {
+  pattern: {
+    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    message: "Некорректный email",
+  },
+});
+```
+
+#### `validate`
+
+— это самое гибкое правило валидации. Оно позволяет писать свою кастомную логику проверки поля.
+
+Проверяет поле через вашу функцию (или несколько функций)
+Возвращает:
+
+- `true` → если всё ок
+- строку → если ошибка (это сообщение)
+- `false` → тоже ошибка (но без кастомного текста)
+
+```jsx
+validate: {
+  noAdmin: v => v !== "admin" || "Запрещено",
+  noSpaces: v => !v.includes(" ") || "Без пробелов"
+}
+```
+
+#### `valueAsNumber` / `valueAsDate`
+
+— это опции, которые говорят библиотеке: преобразовать значение input из строки в число или дату автоматически
+
+HTML input ВСЕГДА возвращает строку:
+
+```ts
+"123"; // даже если type="number"
+"2026-01-01"; // даже если type="date"
+```
+
+```tsx
+register("age", {
+  valueAsNumber: true,
+});
+
+// "25" было
+// 25 станет
+```
+
+```tsx
+register("age", {
+  valueAsDate: true,
+});
+
+// "2026-01-01" было
+// Date("2026-01-01T00:00:00.000Z") станет
+```
+
+#### `setValueAs`
+
+— это функция преобразования значения до того, как оно попадёт в форму.
+
+```tsx
+register("fieldName", {
+  setValueAs: (value) => value.trim(),
+});
+```
+
+#### `deps`
+
+Перевалидация при изменении других полей:
+
+```tsx
+register("confirmPassword", {
+  deps: ["password"],
+});
+```
+
+<hr />
+
+### `handleSubmit()`
+
+Проверяет форму и вызывает обработчик.<br/>
+`handleSubmit(newOnSubmit)` создаёт обработчик события (`newOnSubmit`) отправки формы.
+
+Создаём функцию (в нашем случае будет `onSubmit`), и передаём её в обработчик `onSubmit` формы через `handleSubmit`.
+
+<Tabs groupId="language" items={['Javascript', 'Typescript']}>
+  <Tab value="Javascript">
+    
+    ```jsx
+    const onSubmit = (data) => {
+        console.log(data);
+    };
+
+    <form onSubmit={handleSubmit(onSubmit)}>
+    ```
+
+    Если валидация успешна:
+
+    ```js
+    {
+        name: "Иван",
+        email: "ivan@mail.com"
+    }
+    ```
+
+  </Tab>
+  <Tab value="Typescript">
+  
+    Обычно типизируют через `FormValues` (объявляли тип перед использование `useForm()`) + `SubmitHandler`.
+
+    ```tsx
+    const onSubmit: SubmitHandler<FormValues> = (data) => {
+        console.log(data);
+    };
+
+    <form onSubmit={handleSubmit(onSubmit)}>
+    ```
+
+    Если валидация успешна:
+
+    ```js
+    {
+        name: "Иван",
+        email: "ivan@mail.com"
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+### `setValue()`
+
+— это функция, которая позволяет программно изменить значение поля формы, без участия пользователя.
+
+```jsx
+setValue(name, value, options?)
+```
+
+- `name` — имя поля.
+- `value` — новое значение.
+- `options` — необязательные параметры.
+
+#### Заполнить форму данными с сервера
+
+Или использовать `reset`
+
+```jsx
+useEffect(() => {
+  fetchUser().then((user) => {
+    setValue("name", user.name);
+    setValue("email", user.email);
+  });
+}, []);
+```
+
+#### Изменить поле после выбора другого
+
+```jsx
+<select
+  onChange={(e) => {
+    setValue("country", e.target.value);
+
+    if (e.target.value === "Польша") {
+      setValue("city", "Варшава");
+    }
+  }}
+>
+```
+
+<hr />
+
+### `getValues()`
+
+— позволяет получить текущие значения полей формы, не вызывая повторный рендер компонента.
+
+Это удобно, когда нужно просто прочитать данные формы в какой-то момент времени.
+
+```jsx
+const { getValues } = useForm();
+```
+
+```jsx
+const values = getValues();
+```
+
+<hr />
+
+### `watch`
+
+Получение значения поля (после каждого изменения)
+
+```jsx
+const { watch } = useForm();
+```
+
+```jsx
+...
+return (
+  <>
+    <input {...register("name")} />
+    <p>Вы вводите: {name}</p>
+  </>
+);
+```
+
+<hr />
+
+### `reset`
+
+Сброс формы
+
+- `values` — новые значения полей (необязательно).
+- `options` — какие части состояния формы сохранить при сбросе (необязательно).
+
+```jsx
+reset(values?, options?)
+```
+
+```jsx
+const { reset } = useForm();
+```
+
+```jsx
+const anyFunc = () => {
+  reset();
+};
+```
+
+#### Заполнить форму данными с сервера
+
+```jsx
+useEffect(() => {
+  reset({
+    email: "myEmail@mail.com",
+    athrField: "Some text",
+    data: "10.10.2010",
+  });
+}, []);
+```
+
+Или
+
+```jsx
+useEffect(() => {
+  fetchUser().then((user) => {
+    reset(user);
+  });
+}, []);
+```
+
+<hr />
+
+### `control`
+
+— это объект-«движок» формы, который управляет состоянием формы внутри библиотеки.
+
+Проще: это внутренний “контроллер”, через который RHF:
+
+- хранит значения полей
+- отслеживает изменения
+- управляет `useFieldArray`, `Controller`, `watch` и т.д.
+
+```jsx
+const { control } = useForm();
+```
+
+<hr />
+
+### `formState`
+
+— это объект, который содержит текущее состояние формы и её полей.
+Он позволяет отслеживать, что происходит с формой: изменялись ли поля, есть ли ошибки, валидна ли форма, идёт ли отправка и т.д.
+
+```jsx
+const { formState } = useForm();
+```
+
+Чаще его используют так:
+
+```jsx
+const {
+  formState: { errors, isDirty, isValid },
+} = useForm();
+```
+
+#### `errors`
+
+Все ошибки находятся в `formState.errors`.
+
+```jsx
+errors.fieldName?.message;
+```
+
+```jsx
+{
+  errors.password?.message;
+}
+```
+
+#### `isDirty`
+
+#### `isValid`
+
+#### `isSubmitting`
+
+<hr />
+
+### `Controller`
+
+— это компонент-обертка, который позволяет подключать контролируемые компоненты (controlled components) к React Hook Form.
+
+По умолчанию RHF лучше всего работает с неконтролируемыми полями (input, select, textarea), которые можно зарегистрировать через register.
+Но многие UI-библиотеки (например, MUI, Ant Design, React Select) используют контролируемые компоненты, которым нужно передавать value и onChange.
+
+Для этого и нужен `Controller`.
+
+```jsx
+const { control } = useForm();
+```
+
+- `name` — это ключ поля в состоянии формы. <br/>
+- `render((props) => )` — это функция, в которую RHF передает всё необходимое для управления полем. Внутри `props` есть несколько объектов:
+  - `field` — это объект, который связывает твой компонент с React Hook Form.
+    - `value`
+    - `onChange`
+    - `onBlur`
+    - `ref`
+  - `fieldState`
+  - `formState`
+
+<Tabs groupId="language" items={['Javascript', 'Typescript']}>
+  <Tab value="Javascript">
+    
+    ```jsx
+    const { control } = useForm();
+
+    <Controller
+        control={control}
+        name="country"
+        render={({ field }) => (
+            <MySelect
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                ref={field.ref}
+            />
+        )}
+    />;
+    ```
+
+  </Tab>
+  <Tab value="Typescript">
+    
+    ```tsx
+    const { control } = useForm();
+
+    interface Props {
+        control: Control<FormValues>
+    }
+
+    export function MyCompo({control} : Props) {
+        return(
+            <Controller
+            control={control}
+            name="country"
+            render={ ( { field } ) =>
+            (
+                <MySelect
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    ref={field.ref}
+                />
+            )}
+            />
+        )}
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## Вывод ошибки
+
+Все ошибки находятся в `formState.errors`.
+
+### Базовый пример (required)
+
+```jsx
+const {
+  register,
+  handleSubmit,
+  formState: { errors }, // получаем errors
+} = useForm();
+```
+
+```jsx
+<input {...register("email", { required: "Email обязателен" })} />
+```
+
+```jsx
+{
+  errors.email && <p style={{ color: "red" }}>{errors.email.message}</p>;
+}
+```
+
+<hr />
+
+## `useFieldArray()`
+
+<Tabs groupId="language" items={['Javascript', 'Typescript']}>
+  <Tab value="Javascript">
+    
+    ```jsx
+    const onSubmit = (data) => {
+        console.log(data);
+    };
+
+    <form onSubmit={handleSubmit(onSubmit)}>
+    ```
+
+    Если валидация успешна:
+
+    ```js
+    {
+        name: "Иван",
+        email: "ivan@mail.com"
+    }
+    ```
+
+  </Tab>
+  <Tab value="Typescript"></Tab>
+</Tabs>
+
+<hr />
+
+## Context и provider для форм
+
+### `FormProvider`
+
+— это компонент, который позволяет передать объект, возвращаемый `useForm()`, через React Context. <br/>
+Благодаря этому вложенные компоненты могут получить доступ к форме через `useFormContext()`, не прокидывая `register`, `control`, `errors` и другие методы через `props`.
+
+```jsx
+import { FormProvider } from "react-hook-form";
+```
+
+```jsx
+...
+const methods = useForm();
+
+return (
+  <FormProvider {...methods}>
+    <Form />
+  </FormProvider>
+);
+```
+
+<hr />
+
+### `useFormContext`
+
+```jsx
+import { useFormContext } from "react-hook-form";
+```
+
+Внутри любого дочернего компонента:
+
+```jsx
+function Input() {
+  const { register } = useFormContext();
+
+  return <input {...register("email")} />;
+}
+```
+
+<hr />
+
+## Ссылки
+
+[RED Group + | Курс React Hook Form для новичков — просто и понятно!](https://www.youtube.com/watch?v=HINcYkdFKHY)

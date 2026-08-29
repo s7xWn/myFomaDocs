@@ -1,0 +1,16 @@
+---
+title: subscribe()
+---
+
+`subscribe()` позволяет "подписаться" на изменения store.
+
+Она вызывается каждый раз при `dispatch action` <br/>
+Возвращает функцию `unsubscribe`, чтобы отписаться
+
+```ts
+const unsubscribe = store.subscribe(() => {
+  console.log("State changed:", store.getState());
+});
+```
+
+`unsubscribe()` - прекращает слежение

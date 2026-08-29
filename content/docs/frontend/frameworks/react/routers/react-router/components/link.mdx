@@ -1,0 +1,79 @@
+---
+title: <Link>
+---
+
+— это компонент для создания внутренних ссылок между маршрутами React-приложения без полной перезагрузки страницы.
+
+```tsx
+import { Link } from "react-router";
+```
+
+```tsx
+<Link to="/">Link</Link>
+```
+
+## Свойства
+
+### `to`
+
+Куда перейти
+
+Или передать объект
+
+```tsx
+<Link
+  to={{
+    pathname: "/users",
+    search: "?page=2",
+  }}
+>
+  Пользователи
+</Link>
+```
+
+Получится `/users?page=2`
+
+#### Абсолютный путь
+
+```tsx
+<Link to="/users/123">Пользователь</Link>
+```
+
+Если сейчас вы находитесь здесь: `/dashboard/settings`, клик приведёт именно сюда: `/users/123`
+
+#### Относительный путь
+
+Не начинается с `/` и строится относительно текущего маршрута.
+
+```tsx
+<Link to="settings">Настройки</Link>
+```
+
+Если сейчас вы находитесь здесь: `/dashboard`, клик приведёт именно сюда: `/dashboard/settings`
+
+#### Переход на уровень выше `(..)`
+
+<hr />
+
+### `state` передача состояния
+
+Можно передать данные в новый маршрут:
+
+```tsx
+<Link to="/profile" state={{ from: "dashboard" }}>
+  Профиль
+</Link>
+```
+
+```tsx
+import { useLocation } from "react-router";
+
+function Profile() {
+  const location = useLocation();
+
+  console.log(location.state);
+  // { from: "dashboard" }
+
+  return <h1>Профиль</h1>;
+}
+```

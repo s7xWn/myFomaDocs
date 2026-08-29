@@ -1,0 +1,60 @@
+---
+title: for..in
+---
+
+— это цикл, который перебирает перечисляемые свойства объекта (ключи). Может захватывать свойства из прототипа.
+
+```js
+for (let key in object) {
+  // код
+}
+```
+
+Пример:
+
+```js
+Object.prototype.test = 123;
+
+const obj = { a: 1 };
+
+for (let key in obj) {
+  console.log(key);
+}
+// a test
+```
+
+Часто используют проверку `if (obj.hasOwnProperty(key))`, чтобы избежать унаследованных свойств:
+
+```js
+Object.prototype.test = 123;
+
+const obj = { a: 1 };
+
+for (let key in obj) {
+  if (obj.hasOwnProperty(key)) console.log(key);
+}
+// a
+```
+
+## Вывод массива
+
+```js
+const arr = ["a", "b", "c"];
+
+for (let i in arr) {
+  console.log(i, arr[i]);
+}
+```
+
+```js
+0 a
+1 b
+2 c
+```
+
+## Отличие от `for...of`
+
+| Цикл       | Что перебирает                                         |
+| ---------- | ------------------------------------------------------ |
+| `for...in` | ключи объекта                                          |
+| `for...of` | значения (итерируемые объекты: массивы, строки и т.д.) |

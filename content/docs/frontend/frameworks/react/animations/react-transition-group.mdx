@@ -1,0 +1,38 @@
+---
+title: React Transition Group (! не работает в React 19)
+---
+
+| [Off. website](https://reactcommunity.org/react-transition-group/) | [NPM](https://www.npmjs.com/package/react-transition-group) |
+| ------------------------------------------------------------------ | ----------------------------------------------------------- |
+
+— это библиотека для React, которая помогает добавлять анимации и переходы (transitions) при появлении, исчезновении или изменении компонентов. Она сама не рисует анимации, а управляет состояниями жизненного цикла элементов, чтобы вы могли применять CSS-анимации или подключать другие анимационные решения.
+
+## Установка
+
+```bash
+npm install react-transition-group --save
+```
+
+## `TransitionGroup`
+
+Используется для списков элементов, когда они добавляются или удаляются.
+
+```jsx
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+
+function List({ items }) {
+  return (
+    <TransitionGroup>
+      {items.map((item) => (
+        <CSSTransition key={item.id} timeout={300} classNames="fade">
+          <div>{item.name}</div>
+        </CSSTransition>
+      ))}
+    </TransitionGroup>
+  );
+}
+```
+
+Когда элемент удаляется из `items`, `TransitionGroup` не даёт React мгновенно его убрать, а ждёт окончания анимации.
+
+## `CSSTransition`

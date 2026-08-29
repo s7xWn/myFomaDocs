@@ -1,0 +1,230 @@
+---
+title: FSD (Feature-Sliced Design)
+---
+
+— это архитектурная методология для фронтенд-приложений, которая помогает организовать код по бизнес-логике, а не по типам файлов.
+Она особенно хорошо подходит для средних и крупных проектов.
+
+:::important
+Главная идея FSD — разделить приложение на независимые части (features, entities, widgets и т.д.), чтобы код было проще поддерживать, тестировать и масштабировать.
+:::
+
+Состоит из слоев (layers), слайсов (slices) и сегментов (segments).
+
+```mermaid
+flowchart TB
+
+    subgraph Layers
+        direction TB
+        L1["app"]
+        L2["processes"]
+        L3["pages"]
+        L4["widgets"]
+        L5["features"]
+        L6["entities"]
+        L7["shared"]
+    end
+
+    L6 --> S2
+
+    subgraph Slices
+        direction TB
+        S1["user"]
+        S2["post"]
+        S3["comment"]
+    end
+
+    S2 --> G2
+
+    subgraph Segments
+        direction TB
+        G1["ui"]
+        G2["model"]
+        G3["api"]
+    end
+
+    classDef app fill:#ece4ff,stroke:#000,stroke-width:2px,color:#000;
+    classDef processes fill:#b8d7f2,stroke:#000,stroke-width:2px,color:#000;
+    classDef pages fill:#d6eef7,stroke:#000,stroke-width:2px,color:#000;
+    classDef widgets fill:#dcf3dd,stroke:#000,stroke-width:2px,color:#000;
+    classDef features fill:#fff6bf,stroke:#000,stroke-width:2px,color:#000;
+    classDef entities fill:#ffe0b8,stroke:#000,stroke-width:2px,color:#000;
+    classDef shared fill:#f7c9c9,stroke:#000,stroke-width:2px,color:#000;
+    classDef segment fill:#fff,stroke:#000,stroke-width:2px,color:#000;
+
+    class L1 app;
+    class L2 processes;
+    class L3 pages;
+    class L4 widgets;
+    class L5 features;
+    class L6 entities;
+    class L7 shared;
+
+    class S1,S2,S3 entities;
+    class G1,G2,G3 segment;
+```
+
+```mermaid
+flowchart LR
+
+    subgraph Layers
+        direction TB
+        app
+        processes
+        pages
+        widgets
+        features
+        entities
+        shared
+    end
+
+    entities --> User
+    entities --> Post
+    entities --> Comment
+
+    subgraph User["user"]
+        direction TB
+        UserUI["ui"]
+        UserModel["model"]
+        UserAPI["api"]
+    end
+
+    subgraph Post["post"]
+        direction TB
+        PostUI["ui"]
+        PostModel["model"]
+        PostAPI["api"]
+    end
+
+    subgraph Comment["comment"]
+        direction TB
+        CommentUI["ui"]
+        CommentModel["model"]
+        CommentAPI["api"]
+    end
+```
+
+## Layers
+
+— это уровень архитектуры, который определяет роль кода в приложении и от каких частей приложения ему разрешено зависеть.<br/>
+Это папки, которые хранят код по определённому признаку (одинаковой ответственностью).
+
+:::danger[Правило импортов между слоями]
+Нижележащие слои не могут импортировать выше лежащие
+
+Зависимости направлены только сверху вниз.
+
+```
+app
+↓
+pages
+↓
+widgets
+↓
+features
+↓
+entities
+↓
+shared
+```
+
+:::
+
+### app
+
+- Инициализация приложения.
+- Провайдеры.
+- Роутинг.
+- Глобальные стили.
+- Конфигурация.
+
+### processes (устарел)
+
+### pages
+
+Сбор страницы из виджетов, фич и сущностей.
+
+### widgets
+
+Большие независимые блоки интерфейса.( Header, Sidebar, UserProfile, Comments )
+
+### features
+
+Завершенные пользовательские действия.
+
+- Авторизация
+- Лайк статьи
+- Добавление в корзину
+- Поиск
+
+### entities
+
+Бизнес-сущности приложения.
+
+- User
+- Article
+- Product
+- Comment
+
+### shared
+
+Переиспользуемый код без бизнес-логики.
+
+- UI Kit
+- API клиент
+- Хуки
+- Утилиты
+- Константы
+
+## Slices
+
+— это структурная единица внутри слоя FSD, объединяющая весь код, относящийся к одной бизнес-сущности, пользовательской возможности или части приложения.
+
+Слайс — это папка внутри слоя, в которой собран весь код, связанный с одной конкретной задачей или бизнес-объектом.
+
+:::danger[Запрет кросс-импортов]
+
+Слайсы одного слоя не должны зависеть друг от друга.
+
+```
+// ❌ Плохо
+entities/article -> import { User } from "../user";
+```
+
+:::
+
+:::danger[Public API]
+
+Каждый слайс должен предоставлять единую точку входа — файл `index.ts`.
+
+:::
+
+```
+features/ ← слой
+└── AddToCart/ ← слайс
+
+entities/ ← слой
+└── User/ ← слайс
+```
+
+Здесь `AddToCart` и `User` — это слайсы, потому что каждый из них инкапсулирует всё, что относится к одной конкретной функции или сущности.
+
+## Segments
+
+— это структурная единица внутри слайса, объединяющая код по его техническому назначению
+
+Сегмент — это папка внутри слайса, содержащая код одного типа ответственности.
+
+```
+AddToCart/
+├── ui/
+├── model/
+├── api/
+├── lib/
+└── index.ts
+```
+
+- `ui` — сегмент пользовательского интерфейса;
+- `model` — сегмент бизнес-логики и состояния;
+- `api` — сегмент взаимодействия с сервером;
+- `lib` — сегмент вспомогательных функций.

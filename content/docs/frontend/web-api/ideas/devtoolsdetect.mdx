@@ -1,0 +1,144 @@
+---
+title: Детекции DevTools
+---
+
+## 1) Вариант через сравнение `outer` и `iner`
+
+```js
+function windowSizeCheck(params) {
+  let windowWidthDiff = 0;
+  let windowHeightDiff = 0;
+
+  windowWidthDiff = window.outerWidth - window.innerWidth;
+  windowHeightDiff = window.outerHeight - window.innerHeight;
+
+  return windowWidthDiff >= 80 || windowHeightDiff >= 120;
+}
+
+if (windowSizeCheck()) {
+  // что делать при детекции
+}
+```
+
+`80` и `120` нужно выбирать аккуратно, т.к. могут быть ложные срабатывания
+
+- Появляется панель закладок (сверху или сбоку)
+- Или zoom страницы (через зажатый ctrl и колёсико), особый кейс в других браузерах
+
+Фикс zoom этого через `devicePixelRatio`
+
+```js
+function windowSizeCheck(params) {
+  let windowWidthDiff = 0;
+  let windowHeightDiff = 0;
+
+  windowWidthDiff =
+    window.outerWidth - window.innerWidth * window.devicePixelRatio;
+  windowHeightDiff =
+    window.outerHeight - window.innerHeight * window.devicePixelRatio;
+
+  return windowWidthDiff >= 80 || windowHeightDiff >= 120;
+}
+
+if (windowSizeCheck()) {
+  // что делать при детекции
+}
+```
+
+Фикс zoom для Firefox
+
+```js
+function windowSizeCheck(params) {
+  let windowWidthDiff = 0;
+  let windowHeightDiff = 0;
+
+  if (isFireFox) {
+    windowWidthDiff =
+      (window.outerWidth - window.innerWidth) * window.devicePixelRatio;
+    windowHeightDiff =
+      (window.outerHeight - window.innerHeight) * window.devicePixelRatio;
+  } else {
+    windowWidthDiff =
+      window.outerWidth - window.innerWidth * window.devicePixelRatio;
+    windowHeightDiff =
+      window.outerHeight - window.innerHeight * window.devicePixelRatio;
+  }
+
+  return windowWidthDiff >= 80 || windowHeightDiff >= 120;
+}
+
+if (windowSizeCheck()) {
+  // что делать при детекции
+}
+```
+
+<hr />
+
+## 2) Вариант через `debugger` ловушки
+
+При откытых dev tools срабатывает `debugger`
+
+```js
+function debuggerChek() {
+  const t1 = perfomance.now();
+  debugger;
+  const t2 = perfomance.now();
+  return t2 - t1 > 5;
+}
+```
+
+Можно добавить анонимную функцию вместо `debugger`:
+
+```js
+new Function("debugger")();
+```
+
+<hr />
+
+## 3) Вариант через trap object в консоли
+
+```js
+function consoleGetterChecker() {
+  const trapObj = {};
+  Object.defineProperty(trapObj, "CLIENT_TOKEN", {
+    get: () => {
+      // что делать при детекции
+      return "df92948989";
+    },
+    enumerable: true,
+  });
+  console.log("%c Debug:", "color: green; font-size:20px; font-weight: bold;");
+  console.log(trapObj);
+}
+consoleGetterChecker();
+```
+
+<hr />
+
+## 4) Вариант через перехват функции
+
+В нашем случае будем перехватывать API `console.log`
+
+```js
+function overrideTraceCheck() {
+    const originalConsoleLog = console.log
+    console.log = function (...args){
+        try {
+            throw new Error();
+        } catch (e) {
+            const stackLines = e.stack.trim().split("\n");
+            if ( stackLines[stackLines.length - 1].includes("<anonymous>:") || stackLines[stackLines.length - 1].includes("eval code:")) {
+                // что делать при детекции
+            }
+        }
+        return originalConsoleLog.apply(this, args)
+    }
+}
+
+
+<hr />
+
+## Ссылки
+
+[Методы детекции DevTools (часть 1)](https://www.youtube.com/watch?v=1lAuOCIXhJs)
+```

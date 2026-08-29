@@ -1,0 +1,98 @@
+---
+title: Inverted Border Radius
+---
+
+Создание эффекта вогнутого скругления углов с помощью CSS.
+
+```html
+<div className="container">
+  <div className="tag">
+    <p>
+      <span>200,000</span>
+    </p>
+  </div>
+  <div className="curve_one"></div>
+  <div className="curve_two"></div>
+</div>
+```
+
+- Квадрат размером `25rem`
+- Граница: `border-radius: 1.25rem;` `border: 1px solid white;`
+- Позиция `position: relative;` для внутренних `position: absolute;`
+
+```css
+.container {
+  width: 25rem;
+  height: 25rem;
+  border-radius: 1.25rem;
+  border: 1px solid white;
+  position: relative;
+}
+```
+
+- Здаём размер тэгу `width: 12.5rem;` `height: 3.75rem;`
+- Отображаем контент внутри тэга по центру `display: flex;` `align-items: center;` `justify-content: center;`
+- Позиционируем в правый нижний угол `position: absolute;` `bottom: -1px;` `right: -1px;` (`-1px` в зависимостри от размера border)
+- Если располагаем справа снизу то границы: `border-top: 1px solid white;` `border-left: 1px solid white;` `border-radius: 1.25rem 0 0 0;`
+
+```css
+.tag {
+  width: 12.5rem;
+  height: 3.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  background-color: var(--bg);
+  border-top: 1px solid white;
+  border-left: 1px solid white;
+  border-radius: 1.25rem 0 0 0;
+}
+```
+
+Скругление границ тэга и контейнера `::after` для внешних `::before` для внутренних
+
+- `calc(-1.125rem - 1px);` 1.125 rem - размер; 1px - толщина border
+
+```css
+.tag::after,
+.tag::before {
+  width: 1.125rem;
+  height: 1.125rem;
+  content: "";
+  position: absolute;
+}
+
+.tag::after {
+  background-color: transparent;
+  top: calc(-1.125rem - 1px);
+  right: 0;
+  border-bottom: 1px solid white;
+  border-right: 1px solid white;
+  border-radius: 1.25rem 0 0 0;
+  border-bottom-right-radius: 0.8rem;
+  box-shadow: 0.375rem 0.375rem var(--bg);
+}
+
+.tag::before {
+  background-color: transparent;
+  top: -1.125rem;
+  right: 0;
+  border-bottom-right-radius: 0.8rem;
+  box-shadow: 0.375rem 0.375rem white;
+}
+```
+
+```css
+.curve_one {
+  background-color: transparent;
+  left: calc(12.5rem - 1rem + 0.5px);
+  bottom: -1px;
+  border-bottom-right-radius: 0.8rem;
+  box-shadow: 0.375rem 0.375rem var(--bg);
+  border-bottom: 1px solid white;
+  border-right: 1px solid white;
+}
+```

@@ -1,0 +1,51 @@
+---
+title: Операторы работы с объектами
+---
+
+## `new`
+
+## `delete`
+
+## `instanceof`
+
+## `in`
+
+— это оператор, который проверяет, существует ли свойство в объекте (или индекс в массиве). <br/>
+Возвращает:
+
+- `true` - если свойство есть (даже если значение undefined)
+- `false`
+
+```js
+"key" in object;
+```
+
+:::important
+В **массивах** `in` проверяет **индексы**
+:::
+
+:::note
+Чтобы проверить собственное (не унаследованное) свойство, часто используют: <br/>
+[`obj.hasOwnProperty("key")`](/docs/frontend/js/data-type/Objects/Object/instanceMethods#objhasownpropertykey)
+:::
+
+Примеры:
+
+```js
+const user = {
+  name: "Alex",
+  age: 25,
+};
+
+console.log("name" in user); // true
+console.log("email" in user); // false
+```
+
+```js
+const arr = [10, 20, 30];
+
+console.log(1 in arr); // true (есть индекс 1)
+console.log(5 in arr); // false
+```
+
+## `this`
