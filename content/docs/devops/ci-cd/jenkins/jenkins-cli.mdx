@@ -1,0 +1,31 @@
+---
+title: Jenkins CLI
+---
+
+— это командная строка для управления Jenkins (CI/CD) из терминала.
+
+С её помощью можно выполнять действия, которые обычно доступны через веб-интерфейс Jenkins.
+
+## Установка
+
+```bash
+curl -O https://<твой-jenkins>/jnlpJars/jenkins-cli.jar
+```
+
+Проверка работы:
+
+```bash
+java -jar jenkins-cli.jar \
+  -s https://<твой-jenkins> \
+  help
+```
+
+## Подключение
+
+```bash
+java -jar jenkins-cli.jar \
+  -s https://<твой-jenkins> \
+  -http \
+  -auth 's7xWn:116f2516d260a96c270fc40a35afbfb534' \
+  who-am-i
+```

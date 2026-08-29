@@ -1,0 +1,181 @@
+---
+title: Конфигурация (`config`)
+---
+
+**Где хранятся настройки**
+
+- Локальные: `.git/config`
+- Глобальные:
+  - Linux/macOS: `~/.gitconfig`
+  - Windows: `%USERPROFILE%\.gitconfig`
+- Системные:
+  - Linux: `/etc/gitconfig`
+
+## Область действия
+
+Git хранит настройки на трех уровнях.
+
+:::important[Приоритет]
+Локальные > глобальные > системные.
+:::
+
+### Локально
+
+Только для текущего репозитория
+
+```bash
+git config user.name "Local User"
+```
+
+### Глобально
+
+Для текущего пользователя
+
+```bash
+git config --global user.name "Global User"
+```
+
+### Системно
+
+Для всех пользователей
+
+```bash
+git config --system core.editor vim
+```
+
+<hr />
+
+## Ручное редактирование конфига (`--edit`)
+
+```bash
+git config [scope] --edit
+```
+
+<hr />
+
+## Просмотреть параметры
+
+### Все (`--list`)
+
+```bash
+git config --list
+```
+
+#### Из какого файла или источника (`--show-origin`)
+
+```bash
+git config --list --show-origin
+```
+
+Пример вывода
+
+```
+file:/etc/gitconfig                 core.autocrlf=input
+file:/home/alex/.gitconfig          user.name=Alex Ivanov
+file:/home/alex/.gitconfig          user.email=alex@example.com
+file:.git/config                    remote.origin.url=https://github.com/user/repo.git
+file:.git/config                    branch.main.remote=origin
+```
+
+### Конкретный
+
+```bash
+git config [scope] param
+```
+
+Пример:
+
+```bash
+git config user.name
+```
+
+<hr />
+
+## Утсановить параметр
+
+```bash
+git config [scope] param value
+```
+
+<hr />
+
+## Удалить параметр
+
+```bash
+git config [scope] --unset param
+```
+
+<hr />
+
+## Параметры
+
+### Редактор кода (`core.editor`)
+
+Vim
+
+```bash
+git config --global core.editor vim
+```
+
+### Имя основной ветки (`init.defaultBranch`)
+
+Для новых репозиториев:
+
+```bash
+git config --global init.defaultBranch main
+```
+
+### Цветной вывод (`color.ui`)
+
+```bash
+git config --global color.ui auto
+```
+
+### Перенос строк (`core.autocrlf`)
+
+Для Windows:
+
+```bash
+git config --global core.autocrlf true
+```
+
+Для Linux/macOS:
+
+```bash
+git config --global core.autocrlf input
+```
+
+### Кэшировать учетные данные (`credential.helper`)
+
+```bash
+git config --global credential.helper store
+```
+
+или (временный кэш):
+
+```bash
+git config --global credential.helper cache
+```
+
+<hr />
+
+## Alias
+
+```bash
+git config [scope] alias.[name] command
+```
+
+Например:
+
+```bash
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.cm commit
+git config --global alias.lg "log --oneline --graph --decorate"
+```
+
+```bash
+git st
+git lg
+```

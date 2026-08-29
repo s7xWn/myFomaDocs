@@ -1,0 +1,51 @@
+---
+title: Docker
+---
+
+Docker — это платформа для запуска приложений в контейнерах. Контейнер упаковывает приложение вместе с его зависимостями и настройками, чтобы оно предсказуемо работало на разных машинах.
+
+## Основные понятия Docker
+
+| Термин             | Что означает                                  |
+| ------------------ | --------------------------------------------- |
+| **Image**          | Шаблон, из которого создаются контейнеры      |
+| **Container**      | Запущенный экземпляр image                    |
+| **Dockerfile**     | Инструкция, как собрать image                 |
+| **Registry**       | Хранилище образов, например Docker Hub        |
+| **Volume**         | Постоянное хранилище данных                   |
+| **Network**        | Сеть между контейнерами                       |
+| **Docker Compose** | Инструмент для запуска нескольких контейнеров |
+
+<hr />
+
+## Установка
+
+### Linux Ubuntu
+
+Удаляем старые/конфликтующие пакеты
+
+```bash
+sudo apt remove -y docker.io docker-doc docker-compose podman-docker containerd runc
+```
+
+Обновляем систему
+
+```bash
+sudo apt update
+sudo apt upgrade -y
+```
+
+Устанавливаем необходимые пакеты (`ca-certificates`, `curl`)
+
+```bash
+sudo apt install -y ca-certificates curl
+```
+
+Добавляем официальный GPG-ключ Docker
+
+```bash
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+  -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+```

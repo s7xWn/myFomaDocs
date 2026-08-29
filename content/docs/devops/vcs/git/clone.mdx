@@ -1,0 +1,30 @@
+---
+title: Клонирование удалённого репозитория (`clone`)
+---
+
+```bash
+git clone <URL_репозитория>
+```
+
+После выполнения команды Git:
+
+1. Создаёт папку с именем проекта.
+2. Скачивает все файлы проекта.
+3. Скачивает всю историю коммитов.
+4. Настраивает связь с удалённым репозиторием (origin).<br/>
+   Git не просто скачивает файлы. Он запоминает, откуда они были получены.<br/>
+   После клонирования: `git remote -v` <br/>
+   Будет что-то вроде:
+   ```
+   origin  https://github.com/user/project.git (fetch)
+   origin  https://github.com/user/project.git (push)
+   ```
+5. Автоматически переключается на основную ветку (обычно main или master).
+
+В папке проекта есть скрытая папка `.git`. Внутри неё находится файл: `.git/config`
+
+```ini
+[remote "origin"]
+    url = https://github.com/user/project.git
+    fetch = +refs/heads/*:refs/remotes/origin/*
+```

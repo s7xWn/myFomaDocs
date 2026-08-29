@@ -1,0 +1,18 @@
+{
+  "root": true,
+  "pages": [
+    "index",
+    "---Основа---",
+    "shell",
+    "terminal-emulators",
+    "linux",
+    "linux-family",
+    "---Инструменты---",
+    "web-servers",
+    "containers",
+    "ci-cd",
+    "...",
+    "---Доп. пакеты---",
+    "panels-vpn-proxy"
+  ]
+}

@@ -1,0 +1,114 @@
+---
+title: Jenkins
+---
+
+Jenkins — отдельный сервер автоматизации.
+
+Jenkins особенно популярен в старых и крупных инфраструктурах, где много различных систем и сложных pipeline.
+
+Он может работать практически с чем угодно:
+
+```
+GitHub ──┐
+GitLab ──┼──> Jenkins ──> Tests ──> Build ──> Deploy
+Bitbucket┘
+```
+
+Pipeline можно описывать, например, через `Jenkinsfile`
+
+```groovy
+pipeline {
+    stages {
+        stage('Test') {
+            steps {
+                sh 'npm test'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+    }
+}
+```
+
+Jenkins — это сервер автоматизации: он может забирать код из Git, собирать проект, запускать тесты, собирать Docker-образы, выкладывать приложения на серверы/Kubernetes и т. д. Основной современный механизм для этого — Pipeline + Jenkinsfile.
+
+## Установка
+
+### Docker
+
+```bash
+docker volume create jenkins_home
+
+docker run \
+  --name jenkins \
+  --restart=on-failure \
+  -d \
+  -p 8080:8080 \
+  -p 50000:50000 \
+  -v jenkins_home:/var/jenkins_home \
+  jenkins/jenkins:lts-jdk21
+```
+
+<hr />
+
+### Linux
+
+```bash
+sudo apt update
+sudo apt upgrade
+```
+
+Установка `fontconfig` и `Java 21`:
+
+```bash
+sudo apt install -y fontconfig openjdk-21-jre
+```
+
+Добавка официального репозитория Jenkins:
+
+```bash
+sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key
+
+echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/" | \
+  sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+```
+
+Установка Jenkins:
+
+```bash
+sudo apt install -y jenkins
+```
+
+#### Запуск
+
+```bash
+sudo systemctl enable --now jenkins
+```
+
+Откройте в браузере: `http://IP_СЕРВЕРА:8080`
+
+Получите первоначальный пароль: `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
+
+Что выбрать - На этом экране обычно есть два варианта:
+
+- **Install suggested plugins** — рекомендую выбрать этот вариант.
+  - `Folders`, `OWASP Markup Formatter`, `Build Timeout`, `Credentials Binding`, `Timestamper`, `Workspace Cleanup`, `Ant`, `Gradle`, `Pipeline`, `GitHub Branch Source`, `Pipeline: GitHub Groovy Libraries`, `Pipeline Graph View`, `Git`, `SSH Build Agents`, `Matrix Authorization Strategy`, `LDAP`, `Email Extension`, `Mailer`, `Dark Theme`
+- **Select plugins to install** — ручной выбор плагинов.
+
+<hr />
+
+### Ошибки при установке
+
+<hr />
+
+## Создание токена
+
+Пользователь → Security → API Token → Add new Token
+
+<hr />

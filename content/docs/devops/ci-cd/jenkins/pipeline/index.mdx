@@ -1,0 +1,25 @@
+---
+title: Pipeline
+---
+
+Создаём Pipeline
+
+> New Item → Вводим название → Pipeline → OK
+
+## Config Pipeline
+
+- Definition: [Pipeline script](./jenkinsfile)
+- Use Groovy Sandbox
+
+## Triggers
+
+### GitHub
+
+Включаем триггер для webhook: `GitHub hook trigger for GITScm polling`
+Создай Webhook в GitHub: Repository → Settings → Webhooks → Add webhook
+
+- Payload URL: `https://"domain"/github-webhook/`
+- Content type: `application/json`
+- SSL verification: `Enable (https)` / `Disable (http)` || Зависит от Payload URL
+- Which events would you like to trigger this webhook?: `Just the push event`
+- `Active`

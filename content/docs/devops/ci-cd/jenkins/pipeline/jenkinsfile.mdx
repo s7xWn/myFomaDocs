@@ -1,0 +1,337 @@
+---
+title: Jenkinsfile
+---
+
+— это pipeline script на языке Declarative Pipeline.
+
+Jenkinsfile — это файл, в котором описывается Jenkins Pipeline. Для Declarative Pipeline он имеет определённую структуру: сверху находятся общие настройки pipeline, затем этапы (stages), а внутри этапов — конкретные действия (steps).
+
+## `pipeline`
+
+```groovy
+pipeline {
+    ...
+}
+```
+
+Это начало Jenkins Pipeline (корневой блок Declarative Pipeline)
+
+Всё, что находится внутри, описывает процесс CI/CD.
+
+```
+pipeline
+├── agent
+├── options
+├── environment
+├── parameters
+├── triggers
+├── stages
+│   └── stage
+│       ├── when
+│       ├── environment
+│       ├── input
+│       ├── steps
+│          ├── sh
+│          ├── echo
+│          ├── checkout
+│          └── ...
+│       ├── agent
+│       └── ...
+└── post
+```
+
+<hr />
+
+## `stages`
+
+```groovy
+stages {
+    ...
+}
+```
+
+Здесь описываются этапы pipeline.
+
+<hr />
+
+## `stage`
+
+```groovy
+stage('Build') {
+    ...
+}
+```
+
+— это отдельный логический этап pipeline.
+
+Название отображается в Jenkins как название этапа.
+
+Обычно `stages` соответствуют крупным действиям CI/CD.<br/>
+Но Jenkins не требует использовать именно эти названия.
+
+<details>
+  <summary>Пример</summary>
+
+```
+Checkout
+Build
+Test
+Package
+Deploy
+```
+
+</details>
+
+<hr />
+
+## `steps`
+
+```groovy
+stage('...') {
+    steps {
+        ...
+    }
+}
+```
+
+`steps` содержит конкретные действия, которые Jenkins должен выполнить.
+
+Внутри `steps` можно выполнять Jenkins steps.
+
+### `echo`
+
+```groovy
+echo 'Hello'
+```
+
+вывести сообщение в лог;
+
+### `sh`
+
+```groovy
+sh 'npm test'
+```
+
+выполнить команду Linux shell;
+
+### `bat`
+
+```groovy
+bat 'npm test'
+```
+
+выполнить команду Windows CMD;
+
+### `checkout`
+
+```groovy
+checkout scm
+```
+
+получить код из SCM;
+
+### `junit`
+
+```groovy
+junit 'reports/*.xml'
+```
+
+опубликовать результаты JUnit-тестов.
+
+<hr />
+
+## `psot`
+
+```groovy
+post {
+    ...
+}
+```
+
+`post` определяет действия, которые выполняются после выполнения `pipeline` или `stage`.
+
+### `always`
+
+### `success`
+
+### `failure`
+
+### `unstable`
+
+### `cleanup`
+
+<hr />
+
+## `environment`
+
+```groovy
+environment {
+    APP_NAME = 'my-app'
+    NODE_ENV = 'production'
+}
+```
+
+`environment` задаёт переменные окружения.
+
+Область действия может быть разной:
+
+```
+pipeline
+│
+├── environment ← весь pipeline
+│
+└── stages
+    │
+    └── stage
+        │
+        └── environment ← только этот stage
+```
+
+### Доступны всему pipeline
+
+```groovy
+pipeline {
+    agent any
+
+    environment {
+        APP_NAME = 'my-app'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'echo $APP_NAME'
+            }
+        }
+    }
+}
+```
+
+### Доступны только для конкретного stage
+
+```groovy
+stage('Build') {
+    environment {
+        NODE_ENV = 'production'
+    }
+
+    steps {
+        sh 'npm run build'
+    }
+}
+```
+
+<hr />
+
+## `parameters`
+
+```groovy
+parameters {
+    string(
+        name: 'VERSION',
+        defaultValue: '1.0.0'
+    )
+}
+```
+
+`parameters` позволяют передавать значения в pipeline при запуске.
+
+<details>
+  <summary>Пример</summary>
+
+```groovy
+parameters {
+    choice(
+        name: 'ENVIRONMENT',
+        choices: ['dev', 'stage', 'prod']
+    )
+}
+```
+
+При запуске Jenkins попросит выбрать:
+
+```
+○ dev
+○ stage
+● prod
+```
+
+Затем значение можно использовать:
+
+```
+steps {
+    echo "Deploying to ${params.ENVIRONMENT}"
+}
+```
+
+</details>
+
+<hr />
+
+## `options`
+
+```groovy
+options {
+    ...
+}
+```
+
+`options` содержит настройки поведения pipeline.
+
+<details>
+  <summary>Пример</summary>
+
+Это ограничит выполнение pipeline 30 минутами.
+
+```groovy
+options {
+    timeout(time: 30, unit: 'MINUTES')
+}
+```
+
+Запрещает одновременно запускать несколько экземпляров одного pipeline.
+
+```
+options {
+    disableConcurrentBuilds()
+}
+```
+
+Например, если первый build ещё выполняется:
+
+```
+Build #101  → RUNNING
+
+Build #102  → ждёт
+```
+
+</details>
+
+<hr />
+
+## `triggers`
+
+<hr />
+
+## `when`
+
+<hr />
+
+## `input`
+
+<hr />
+
+## `script`
+
+<hr />
+
+## `agent any`
+
+```groovy
+pipeline {
+    agent any
+    ...
+}
+```
+
+Jenkins, запусти этот pipeline на любом доступном Jenkins agent.

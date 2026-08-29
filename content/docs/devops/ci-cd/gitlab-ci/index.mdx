@@ -1,0 +1,26 @@
+---
+title: Gitlab CI
+---
+
+GitLab — платформа для работы с Git, и в ней уже встроен CI/CD.
+
+GitLab CI удобно использовать, если код уже хранится в GitLab.
+
+Например, в репозитории лежит файл:
+
+```
+.gitlab-ci.yml
+```
+
+```yaml
+test:
+  script:
+    - npm install
+    - npm test
+
+build:
+  script:
+    - npm run build
+```
+
+Когда разработчик делает `git push`, GitLab автоматически запускает эти шаги.

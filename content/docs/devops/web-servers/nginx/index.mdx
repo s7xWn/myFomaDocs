@@ -1,0 +1,78 @@
+---
+title: Nginx
+---
+
+Nginx — это веб-сервер и reverse proxy (обратный прокси), который умеет:
+
+- Раздавать статические файлы — HTML, CSS, JS, изображения.
+- Reverse proxy — принимать запросы и передавать их приложению.
+- Балансировать нагрузку между несколькими серверами.
+- HTTPS/TLS — принимать HTTPS-соединения и управлять сертификатами.
+- Кэшировать ответы.
+- Ограничивать запросы (rate limiting).
+- Маршрутизировать запросы по доменам и URL.
+
+<hr />
+
+## Установка
+
+### Docker
+
+<hr />
+
+### Linux/Ubuntu
+
+```bash
+sudo apt update
+sudo apt upgrade
+```
+
+```bash
+sudo apt install nginx
+```
+
+После нужно:
+
+- настроить/сделать ротацию логов.
+- автоматизировать создание нескольких пользователей, выдать доступы к группам и настроить вход по SSH.
+
+#### Проверка
+
+```bash
+sudo systemctl status nginx
+```
+
+Если всё хорошо: `Active: active (running)`
+
+Открыть: `http://IP_ТВОЕГО_СЕРВЕРА` <br/>
+Должна появиться стандартная страница Welcome to nginx!
+
+<hr />
+
+## Управление через `systemctl`
+
+### Запустить
+
+```bash
+sudo systemctl start nginx
+```
+
+### Остановить
+
+```bash
+sudo systemctl stop nginx
+```
+
+### Перезапустить
+
+```bash
+sudo systemctl restart nginx
+```
+
+### Перечитать конфиг без остановки сервера
+
+```
+sudo systemctl reload nginx
+```
+
+<hr />

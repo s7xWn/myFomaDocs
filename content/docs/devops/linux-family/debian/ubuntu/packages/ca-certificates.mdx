@@ -1,0 +1,93 @@
+---
+title: ca-certificates
+---
+
+```bash
+sudo apt install -y ca-certificates
+```
+
+— это пакет с корневыми сертификатами удостоверяющих центров (CA, Certificate Authorities), которым система доверяет при установлении TLS/HTTPS-соединений.
+
+> «Могу ли я доверять сертификату, который предъявил этот HTTPS-сервер?»
+
+После установки они доступны системе примерно здесь: `/etc/ssl/certs/` <br/>
+А объединлённый bundle часто находится здесь: `/etc/ssl/certs/ca-certificates.crt`
+
+:::danger
+`ca-certificates` не содержит сертификаты конкретных сайтов. Он содержит сертификаты центров сертификации, которым доверяет Ubuntu.
+
+Например, сертификат `google.com` туда не кладётся. Ubuntu хранит корневой CA, который в конечном счёте подписал цепочку сертификата Google.
+:::
+
+<hr />
+
+## Обновить список сертификатов
+
+```bash
+sudo update-ca-certificates
+```
+
+<hr />
+
+## Что находится в пакете
+
+Обычно там находится набор публичных сертификатов доверенных CA, например:
+
+- Let's Encrypt
+- DigiCert
+- GlobalSign
+- Sectigo
+- и других удостоверяющих центров.
+
+<hr />
+
+## Как Ubuntu выбирает CA из `/etc/ssl/certs` и как `curl`, `wget`, Python и Java используют эти сертификаты.
+
+Ubuntu сама по себе не «выбирает CA» для каждого соединения.
+ОС предоставляет системное хранилище доверенных CA, а конкретная программа — curl, wget, Python, Java и т. д. — решает, какое хранилище использовать и как проверять цепочку сертификатов.
+
+| Программа         | Типичное хранилище                                      |
+| ----------------- | ------------------------------------------------------- |
+| `curl`            | `/etc/ssl/certs/ca-certificates.crt` + `/etc/ssl/certs` |
+| `wget`            | системное/OpenSSL CA-хранилище                          |
+| Python `ssl`      | системное OpenSSL CA-хранилище                          |
+| Python `requests` | часто `certifi`                                         |
+| Node.js           | собственный набор/настройки Node.js + OpenSSL           |
+| Java              | `$JAVA_HOME/lib/security/cacerts`                       |
+
+> «Я установил корпоративный CA в Ubuntu, curl работает, а Java/Python всё ещё говорит certificate verify failed.»
+
+Это вполне нормальная ситуация.
+
+### `curl`
+
+```
+curl
+  │
+  ▼
+TLS/SSL библиотека
+(OpenSSL)
+  │
+  ▼
+/etc/ssl/certs/ca-certificates.crt
+  │
+  ▼
+проверка цепочки сертификатов
+  │
+  ▼
+Trusted / Not trusted
+```
+
+### `wget`
+
+На Ubuntu `wget` также обычно использует системное CA-хранилище через TLS-библиотеку.
+
+### Python
+
+### Java
+
+<hr />
+
+## Добавление своего корпоративного CA в Ubuntu
+
+### `/usr/local/share/ca-certificates`

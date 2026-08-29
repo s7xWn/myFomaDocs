@@ -1,0 +1,171 @@
+---
+title: curl
+---
+
+```bash
+sudo apt install curl
+```
+
+— это командная утилита для передачи данных по сети. Чаще всего её используют для HTTP/HTTPS-запросов к сайтам и API.
+
+| Короткий              | Длинный                  | Назначение                         |
+| --------------------- | ------------------------ | ---------------------------------- |
+| `-4`                  | `--ipv4`                 | Использовать IPv4                  |
+| `-6`                  | `--ipv6`                 | Использовать IPv6                  |
+| `-A`                  | `--user-agent`           | User-Agent                         |
+| `-b`                  | `--cookie`               | Cookie                             |
+| `-B`                  | `--use-ascii`            | ASCII-режим                        |
+| `-c`                  | `--cookie-jar`           | Сохранить cookies в файл           |
+| `-C`                  | `--continue-at`          | Продолжить загрузку с позиции      |
+| `-d`                  | `--data`                 | HTTP POST-данные                   |
+| —                     | `--data-ascii`           | ASCII POST-данные                  |
+| —                     | `--data-binary`          | Бинарные POST-данные               |
+| —                     | `--data-raw`             | POST без специальной обработки `@` |
+| —                     | `--data-urlencode`       | URL-encoded POST                   |
+| `-D`                  | `--dump-header`          | Записать response headers          |
+| `-e`                  | `--referer`              | HTTP Referer                       |
+| `-E`                  | `--cert`                 | Клиентский сертификат              |
+| `-f`                  | `--fail`                 | Не выводить тело при HTTP-ошибке   |
+| —                     | `--fail-with-body`       | Ошибка, но сохранить тело ответа   |
+| `-F`                  | `--form`                 | `multipart/form-data`              |
+| `-G`                  | `--get`                  | Отправить данные через GET         |
+| `-g`                  | `--globoff`              | Отключить URL globbing             |
+| `-h`                  | `--help`                 | Справка                            |
+| `-H`                  | `--header`               | Добавить HTTP-заголовок            |
+| `-I`                  | `--head`                 | Только HTTP headers                |
+| `-j`                  | `--junk-session-cookies` | Не использовать session cookies    |
+| `-k`                  | `--insecure`             | Не проверять TLS-сертификат        |
+| `-K`                  | `--config`               | Читать настройки из файла          |
+| `-L`                  | `--location`             | Следовать redirect                 |
+| `-m`                  | `--max-time`             | Максимальное время операции        |
+| `-M`                  | `--manual`               | Полная документация                |
+| `-n`                  | `--netrc`                | Использовать `.netrc`              |
+| `-N`                  | `--no-buffer`            | Отключить buffering                |
+| `-o`                  | `--output`               | Записать результат в файл          |
+| `-O`                  | `--remote-name`          | Сохранить под именем из URL        |
+| `-P`                  | `--proxytunnel`          | HTTP proxy tunnel                  |
+| `-q`                  | `--disable`              | Отключить `.curlrc`                |
+| `-Q`                  | `--quote`                | Выполнить команду протокола        |
+| `-r`                  | `--range`                | Запросить диапазон                 |
+| `-R`                  | `--remote-time`          | Время файла = время сервера        |
+| `-s`                  | `--silent`               | Тихий режим                        |
+| `-S`                  | `--show-error`           | Показывать ошибки вместе с `-s`    |
+| `-T`                  | `--upload-file`          | Upload файла                       |
+| `-u`                  | `--user`                 | Логин/пароль                       |
+| `-U`                  | `--proxy-user`           | Логин/пароль proxy                 |
+| `-v`                  | `--verbose`              | Подробный вывод                    |
+| `-V`                  | `--version`              | Версия curl                        |
+| `-w`                  | `--write-out`            | Форматированный вывод результата   |
+| `-x`                  | `--proxy`                | Использовать proxy                 |
+| `-X`                  | `--request`              | Указать HTTP method                |
+| `-Y`                  | `--speed-limit`          | Минимальная скорость               |
+| `-y`                  | `--speed-time`           | Время проверки скорости            |
+| `-z`                  | `--time-cond`            | Условие по времени                 |
+| `--compressed`        | —                        | Запросить сжатый ответ             |
+| `--json`              | —                        | Удобная отправка JSON              |
+| `--http1.1`           | —                        | Использовать HTTP/1.1              |
+| `--http2`             | —                        | Использовать HTTP/2                |
+| `--http3`             | —                        | Использовать HTTP/3                |
+| `--tlsv1.2`           | —                        | TLS 1.2                            |
+| `--tlsv1.3`           | —                        | TLS 1.3                            |
+| `--retry`             | —                        | Количество повторов                |
+| `--retry-all-errors`  | —                        | Повторять после любых ошибок       |
+| `--retry-delay`       | —                        | Задержка между retry               |
+| `--retry-max-time`    | —                        | Максимальное время retry           |
+| `--connect-timeout`   | —                        | Timeout подключения                |
+| `--limit-rate`        | —                        | Ограничить скорость                |
+| `--max-filesize`      | —                        | Максимальный размер файла          |
+| `--max-redirs`        | —                        | Максимум redirect                  |
+| `--location-trusted`  | —                        | Redirect с передачей credentials   |
+| `--resolve`           | —                        | Принудительный DNS mapping         |
+| `--interface`         | —                        | Использовать конкретный интерфейс  |
+| `--unix-socket`       | —                        | Unix socket                        |
+| `--socks4`            | —                        | SOCKS4 proxy                       |
+| `--socks4a`           | —                        | SOCKS4a proxy                      |
+| `--socks5`            | —                        | SOCKS5 proxy                       |
+| `--socks5-hostname`   | —                        | SOCKS5 с DNS через proxy           |
+| `--dns-servers`       | —                        | Указать DNS-серверы                |
+| `--dns-interface`     | —                        | Интерфейс для DNS                  |
+| `--cacert`            | —                        | CA certificate                     |
+| `--capath`            | —                        | Каталог CA                         |
+| `--cert-status`       | —                        | Проверять certificate status       |
+| `--ciphers`           | —                        | TLS cipher list                    |
+| `--key`               | —                        | Private key                        |
+| `--key-type`          | —                        | Тип private key                    |
+| `--tls-max`           | —                        | Максимальная версия TLS            |
+| `--trace`             | —                        | Полный trace                       |
+| `--trace-ascii`       | —                        | ASCII trace                        |
+| `--trace-time`        | —                        | Добавить timestamp в trace         |
+| `--trace-ids`         | —                        | Добавить IDs в trace               |
+| `--stderr`            | —                        | Куда выводить ошибки               |
+| `--progress-bar`      | —                        | Progress bar                       |
+| `--no-progress-meter` | —                        | Отключить progress meter           |
+| `--parallel`          | —                        | Параллельные запросы               |
+| `--parallel-max`      | —                        | Максимум параллельных запросов     |
+| `--rate`              | —                        | Ограничить частоту запросов        |
+| `--next`              | —                        | Начать новый набор параметров      |
+| `--url`               | —                        | URL                                |
+| `--variable`          | —                        | Создать переменную                 |
+| `--expand-url`        | —                        | URL с переменными                  |
+| `--libcurl`           | —                        | Сгенерировать C-код libcurl        |
+
+## GET-запрос
+
+```bash
+curl <url>
+```
+
+<hr />
+
+## POST-запрос (`-X POST`)
+
+```bash
+curl -X POST <url>
+```
+
+### Передать данные (`-d`)
+
+```bash
+curl -X POST -d "name=Alex" <url>
+```
+
+<hr />
+
+## Посмотреть только HTTP-заголовки: (`-I`)
+
+```bash
+curl -I <url>
+```
+
+<hr />
+
+## Скачать файл (`-O`)
+
+```bash
+curl -O <url>
+```
+
+### Скачать файл и переименовать (`-o`)
+
+```bash
+curl -o <file_name> <url>
+```
+
+<hr />
+
+## Тихий надёжный curl с редиректами (`-fsSL`)
+
+— очень популярная комбинация флагов curl, особенно в командах установки ПО.
+
+> «Скачай содержимое по URL, следуй редиректам, не засоряй вывод, но сообщи об ошибке и считай HTTP-ошибки ошибкой команды».
+
+```bash
+curl -fsSL <url>
+```
+
+| Флаг | Длинная форма  | Что делает                                                                         |
+| ---- | -------------- | ---------------------------------------------------------------------------------- |
+| `-f` | `--fail`       | При HTTP-ошибке (`4xx`, `5xx`) завершает работу с ошибкой и не выводит тело ответа |
+| `-s` | `--silent`     | Убирает progress bar и лишний вывод                                                |
+| `-S` | `--show-error` | **Возвращает показ ошибок**, несмотря на `-s`                                      |
+| `-L` | `--location`   | Следует за HTTP redirects (`301`, `302`, `307`, `308`)                             |

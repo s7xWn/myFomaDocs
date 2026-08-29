@@ -1,0 +1,62 @@
+---
+title: Plugin Installation Manager
+---
+
+| [GitHub](https://github.com/jenkinsci/plugin-installation-manager-tool/releases) |
+| -------------------------------------------------------------------------------- |
+
+## Установка
+
+```bash
+cd /tmp
+```
+
+Можно получить актуальный JAR через GitHub API:
+
+```bash
+curl -fsSL https://api.github.com/repos/jenkinsci/plugin-installation-manager-tool/releases/latest \
+  | grep browser_download_url \
+  | grep '\.jar"' \
+  | cut -d '"' -f 4
+```
+
+```bash
+curl -fL 'URL_КОТОРЫЙ_ВЫВЕЛА_ПРЕДЫДУЩАЯ_КОМАНДА' \
+  -o jenkins-plugin-manager.jar
+```
+
+## Скачивание и установка плагина
+
+Используя зеркало:
+
+```bash
+sudo java -jar /tmp/jenkins-plugin-manager.jar \
+  --war /usr/share/java/jenkins.war \
+  --plugin-download-directory /var/lib/jenkins/plugins \
+  --jenkins-update-center-download-url \
+    "https://mirror.yandex.ru/mirrors/jenkins" \
+  --plugins git workflow-aggregator \
+  --verbose
+```
+
+или
+
+```bash
+sudo java -jar /tmp/jenkins-plugin-manager.jar \
+  --war /usr/share/java/jenkins.war \
+  --plugin-download-directory /var/lib/jenkins/plugins \
+  --jenkins-update-center-download-url \
+    "https://mirror.yandex.ru/mirrors/jenkins/plugins" \
+  --plugins \
+    gradle \
+    junit \
+    github \
+    pipeline-graph-view \
+    theme-manager \
+    email-ext \
+  --verbose
+
+```
+
+- `https://mirror.yandex.ru/mirrors/jenkins` \ `https://mirror.yandex.ru/mirrors/jenkins/plugins` - зеркало
+- `git`, `workflow-aggregator` - плагины
