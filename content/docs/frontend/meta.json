@@ -1,4 +1,19 @@
 {
   "root": true,
-  "pages": ["index", "---Основа---", "..."]
+  "pages": [
+    "index",
+    "ui-components",
+    "architecture-patterns-methodologies",
+    "micro-frontends",
+    "---Основа---",
+    "html",
+    "css",
+    "js",
+    "web-api",
+    "---Tools---",
+    "jsx",
+    "...tools",
+    "---Frameworks---",
+    "...frameworks"
+  ]
 }
