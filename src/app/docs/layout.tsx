@@ -10,7 +10,6 @@ export default function Layout({ children }: LayoutProps<"/docs">) {
           title: "Computer Science",
           description: "База всего",
           url: "/docs/computer-science",
-          urls: new Set(["/docs", "/docs/computer-science"]),
         },
         {
           title: "DevOps",
