@@ -1,0 +1,27 @@
+---
+title: CORS (Cross-Origin Resource Sharing)
+---
+
+— это механизм безопасности браузера, который определяет, может ли веб-страница делать запросы к серверу, находящемуся на другом источнике (origin).
+
+Origin:
+
+```
+protocol://subdomain.domain.tld:port
+│              ├────────┴────┘    │
+│              │                  └── Порт (80, 443, 8080...)
+│              └─── Хост (Host)
+│                ├── subdomain (поддомен)
+│                ├── domain (домен)
+│                └── tld (домен верхнего уровня: .com, .ru, .org)
+└─── Протокол (http, https)
+```
+
+<details>
+  <summary>Примеры</summary>
+
+- `https://site.com` → `https://api.site.com` — разные origin (разные поддомены).
+- `https://site.com` → `http://site.com` — разные origin (разные протоколы).
+- `https://site.com:3000` → `https://site.com:8080` — разные origin (разные порты).
+
+</details>

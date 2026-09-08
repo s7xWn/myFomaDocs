@@ -1,0 +1,44 @@
+---
+title: CORS
+---
+
+## Access-Control-Allow-Origin
+
+Это заголовок ответа сервера, который говорит браузеру, каким сайтам разрешено обращаться к этому ресурсу.
+
+```http
+Access-Control-Allow-Origin: https://domain.tld
+```
+
+<details>
+  <summary>Примеры</summary>
+
+«Разрешаю сайту `https://site-a.com` читать мой ответ.»
+
+```http
+Access-Control-Allow-Origin: https://site-a.com
+```
+
+<hr />
+
+«Разрешаю доступ любому сайту.»
+
+```http
+Access-Control-Allow-Origin: *
+```
+
+Однако `*` нельзя использовать вместе с передачей учетных данных (cookies, HTTP-аутентификация и т. п.).
+
+</details>
+
+## Access-Control-Allow-Credentials
+
+Это заголовок ответа сервера, который разрешает браузеру передавать и принимать учетные данные:
+
+- Cookies
+- HTTP Authentication
+- TLS Client Certificates
+
+```http
+Access-Control-Allow-Credentials: true
+```

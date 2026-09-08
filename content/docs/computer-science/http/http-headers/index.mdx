@@ -1,0 +1,102 @@
+---
+title: HTTP Headers
+---
+
+— это пары "имя: значение", которые передаются вместе с HTTP-запросом или HTTP-ответом. Они содержат дополнительную информацию о запросе, клиенте, сервере, формате данных, языке, кэшировании и многом другом.
+
+<details>
+  <summary>Пример GET HTTP-запроса + ответ</summary>
+
+```http
+GET /index.html HTTP/1.1
+Host: example.com
+Accept: text/html
+Accept-Language: ru-RU,ru;q=0.9,en;q=0.8
+User-Agent: Mozilla/5.0
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=UTF-8
+Content-Language: ru
+Content-Length: 12345
+```
+
+</details>
+
+## `Accept`
+
+Сообщает серверу, какие типы данных клиент готов принять.
+
+```http
+Accept: application/json
+```
+
+```http
+Accept: text/html, application/xhtml+xml
+```
+
+- `application/json` — хочу получить JSON.
+- `text/html` — могу принять HTML.
+
+<hr />
+
+## `Accept-Language`
+
+Сообщает серверу, какие языки предпочитает пользователь.
+
+```http
+Accept-Language: ru-RU,ru;q=0.9,en;q=0.8
+```
+
+- `ru-RU` — русский (Россия), самый предпочтительный.
+- `ru;q=0.9` — любой русский с приоритетом 0.9.
+- `en;q=0.8` — английский с приоритетом 0.8.
+
+<hr />
+
+## `Content-Language`
+
+Используется в ответе сервера и указывает, на каком языке находится содержимое.
+
+```http
+Content-Language: ru
+```
+
+```http
+Content-Language: en-US
+```
+
+<hr />
+
+## `Content-Type`
+
+<hr />
+
+## `w`
+
+<hr />
+
+## `a`
+
+<hr />
+
+## `w`
+
+<hr />
+
+## `WA`
+
+Сообщает серверу, какие языки предпочитает пользователь.
+
+<hr />
+
+## `WA`
+
+Сообщает серверу, какие языки предпочитает пользователь.
+
+<hr />
+
+## `WA`
+
+Сообщает серверу, какие языки предпочитает пользователь.

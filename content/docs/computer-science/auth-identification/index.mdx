@@ -1,0 +1,119 @@
+---
+title: Authentication, authorization, identification
+---
+
+| Название                        | Смысл                 |
+| ------------------------------- | --------------------- |
+| Identification (Идентификация)  | Кто вы?               |
+| Authentication (Аутентификация) | Докажите, что это вы  |
+| Authorization (Авторизация)     | Что вам можно делать? |
+
+<hr />
+
+## Identification (Идентификация)
+
+— это когда пользователь сообщает системе, кто он.
+
+**Вопрос системы: «Кто вы?»**
+
+Пример:
+
+- ввод логина;
+- ввод адреса электронной почты;
+- прикладывание пропуска с номером.
+
+<hr />
+
+## Authentication (Аутентификация)
+
+— это проверка, действительно ли пользователь тот, за кого себя выдаёт.
+
+**Вопрос системы: «Правда ли, что вы — это вы?»**
+
+Пример:
+
+- ввод пароля;
+- SMS-код;
+- отпечаток пальца;
+- Face ID.
+
+<hr />
+
+## Authorization (Авторизация)
+
+— это определение, что пользователю разрешено делать после успешной аутентификации.
+
+**Вопрос системы: «Что вам разрешено?»**
+
+Пример:
+
+- можно ли читать файл;
+- можно ли удалять записи;
+- есть ли права администратора.
+
+<hr />
+
+## HTTP Stateless («без сохранения состояния»)
+
+> Протокол HTTP является stateless. Это означает, что каждый HTTP-запрос независим.
+
+— это принцип, при котором система не хранит информацию о предыдущих запросах клиента. Каждый новый запрос обрабатывается независимо от предыдущих.
+
+### Сохранение состояния
+
+Чтобы «запомнить» состояние, используют:
+
+- Cookies — небольшие данные, которые браузер хранит и отправляет серверу.
+- Session (сессии) — сервер хранит данные о пользователе.
+- JWT (JSON Web Token) — токен, который клиент отправляет с каждым запросом.
+
+<hr />
+
+## Запросы
+
+### Если token в localStorage
+
+:::important
+
+- `credentials: "include"` не нужен
+- браузер не отправляет cookies
+- серверу не нужен `Access-Control-Allow-Credentials: true`
+- можно использовать:` Access-Control-Allow-Origin: *`
+
+:::
+
+При каждом запросе фронтенд сам добавляет заголовок (`Authorization: Bearer <token>`):
+
+```http
+GET /profile
+Authorization: Bearer eyJhbGci...
+```
+
+Так как используется заголовок `Authorization`, браузер сначала отправляет preflight-запрос (`OPTIONS`).
+
+```http
+OPTIONS /profile
+Origin: https://app.example.com
+Access-Control-Request-Method: GET
+Access-Control-Request-Headers: Authorization
+```
+
+Если сервер отвечает:
+
+```http
+Access-Control-Allow-Origin: https://app.example.com
+Access-Control-Allow-Headers: Authorization
+Access-Control-Allow-Methods: GET
+```
+
+то браузер разрешает основной запрос.
+
+### Если token в cookie
+
+:::important
+
+- `credentials: "include"` нужен;
+- серверу нужен `Access-Control-Allow-Credentials: true`
+- нельзя использовать `*` в:` Access-Control-Allow-Origin: *`
+
+:::
