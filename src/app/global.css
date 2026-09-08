@@ -51,3 +51,10 @@ html > body[data-scroll-locked] {
 .dark {
   --color-fd-primary: hsl(202, 100%, 65%);
 }
+
+details {
+  border: 1px solid var(--color-fd-primary);
+  border-radius: 8px;
+  padding-inline: 16px;
+  padding-block: 12px;
+}
