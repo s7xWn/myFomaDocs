@@ -5,6 +5,8 @@
     "operators",
     "conditions",
     "cycles",
+    "functions",
+    "built-in-funcs",
     "..."
   ]
 }
