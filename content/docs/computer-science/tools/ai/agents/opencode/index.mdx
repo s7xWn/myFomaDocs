@@ -1,0 +1,73 @@
+---
+title: OpenCode
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+| [GitHub](https://github.com/anomalyco/opencode) | [Off. site](https://opencode.ai) |
+| ----------------------------------------------- | -------------------------------- |
+
+OpenCode — это агент с открытым исходным кодом, который помогает писать код в терминале, IDE или на десктопе.
+
+- **Поддержка LSP** <br/>
+  Автоматически загружает нужные LSP для LLM
+- **Мульти-сессии** <br/>
+  Запускайте несколько агентов параллельно в одном проекте
+- **Общие ссылки** <br/>
+  Делитесь ссылкой на любую сессию для справки или отладки
+- **GitHub Copilot** <br/>
+  Войдите через GitHub, чтобы использовать ваш аккаунт Copilot
+- **ChatGPT Plus/Pro** <br/>
+  Войдите через OpenAI, чтобы использовать ваш аккаунт ChatGPT Plus или Pro
+- **Любая модель** <br/>
+  75+ провайдеров LLM через Models.dev, включая локальные модели
+- **Любой редактор** <br/>
+  Доступно как терминальный интерфейс, десктопное приложение и расширение для IDE
+
+## Установка CLI
+
+{/* prettier-ignore */}
+{/*
+
+<Tabs items={['brew']}>
+  <Tab value="brew" label="brew">
+    
+    ```bash
+    brew install anomalyco/tap/opencode
+    ```
+
+  </Tab>
+</Tabs> 
+*/}
+
+```bash
+# YOLO
+curl -fsSL https://opencode.ai/install | bash
+
+# Менеджеры пакетов
+npm i -g opencode-ai@latest        # или bun/pnpm/yarn
+scoop install opencode             # Windows
+choco install opencode             # Windows
+brew install anomalyco/tap/opencode # macOS и Linux (рекомендуем, всегда актуально)
+brew install opencode              # macOS и Linux (официальная формула brew, обновляется реже)
+sudo pacman -S opencode            # Arch Linux (Stable)
+paru -S opencode-bin               # Arch Linux (Latest from AUR)
+mise use -g opencode               # любая ОС
+nix run nixpkgs#opencode           # или github:anomalyco/opencode для самой свежей ветки dev
+```
+
+<hr />
+
+## Запуск
+
+Через команду в консоли:
+
+```bash
+opencode
+```
+
+<hr />
+## ССылки
+
+- [PurpleSchool | Anton Larichev | OpenCode: полный разбор open-source альтернативы Codex CLI и Claude Code](https://www.youtube.com/watch?v=iMy7jYzGeEo)
+- [NullsCode | OpenCode ТУТОРИАЛ! Minimax БЕСПЛАТНО + MCP, Skills, Rules](https://www.youtube.com/watch?v=z7901BIReGs)
