@@ -2,11 +2,10 @@
   "root": true,
   "pages": [
     "index",
-    "---IDE---",
-    "...ide",
-    "---ADE---",
     "---HTTP---",
     "...http",
+    "---[PencilRuler]Инструменты---",
+    "...tools",
     "---Others---",
     "..."
   ]
