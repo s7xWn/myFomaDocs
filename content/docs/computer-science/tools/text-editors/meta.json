@@ -1,0 +1,5 @@
+{
+  "title": "Текстовые редакторы",
+  "icon": "NotebookPen",
+  "pages": ["nvim", "vim", "vi", "nano"]
+}
