@@ -1,4 +1,12 @@
 {
   "root": true,
-  "pages": ["index", "---[SquareLibrary]Книги---", "...books"]
+  "pages": [
+    "index",
+    "---[DatabaseSearch]База знаний---",
+    "...knowledge-base",
+    "---[Lightbulb]Тренажеры---",
+    "...training",
+    "---[SquareLibrary]Книги---",
+    "...books"
+  ]
 }
