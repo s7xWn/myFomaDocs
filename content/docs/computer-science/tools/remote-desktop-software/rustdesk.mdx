@@ -1,0 +1,29 @@
+---
+title: RustDesk
+---
+
+| [Off. site](https://rustdesk.com/) | [GitHub](https://github.com/rustdesk/rustdesk) |
+| ---------------------------------- | ---------------------------------------------- |
+
+## Установка RustDesk Server OSS
+
+```bash
+bash <(wget -qO- https://get.docker.com)
+wget rustdesk.com/oss.yml -O compose.yml
+sudo docker compose up -d
+```
+
+```bash
+sudo cat /root/data/id_ed25519.pub
+```
+
+## Установка и настройка RustDesk Client
+
+Скачать и запустить RustDesk Client
+
+||| -> Сеть -> ID/Ретранслятор
+
+- Сервер ID: `<IP_ВАШЕГО_СЕРВЕРА>`
+- Ретранслятор: ` `
+- Сервер API: ` `
+- Key: [`sudo cat /root/data/id_ed25519.pub`](#установка-rustdesk-server-oss)
