@@ -36,6 +36,10 @@ export default function Layout({ children }: LayoutProps<"/docs">) {
           title: "1С",
           url: "/docs/1c",
         },
+        {
+          title: "Трудоустройство в IT",
+          url: "/docs/it-job",
+        },
       ]}
       tree={source.getPageTree()}
       {...baseOptions()}
