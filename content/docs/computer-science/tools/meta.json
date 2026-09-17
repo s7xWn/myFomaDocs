@@ -1,3 +1,10 @@
 {
-  "pages": ["ai", "ide", "text-editors", "remote-desktop-software"]
+  "pages": [
+    "ai",
+    "ide",
+    "text-editors",
+    "file-managers",
+    "command-palettes",
+    "remote-desktop-software"
+  ]
 }
