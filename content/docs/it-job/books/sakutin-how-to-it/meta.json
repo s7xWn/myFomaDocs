@@ -1,4 +1,15 @@
 {
   "title": "(Р. Сакутин) Как найти работу в IT",
-  "description": "Я посмотрел за вас 100 часов видео и вебинаров по поиску работы и сжал всё до одной книги"
+  "description": "Я посмотрел за вас 100 часов видео и вебинаров по поиску работы и сжал всё до одной книги",
+  "pages": [
+    "chapter-one",
+    "chapter-two",
+    "chapter-three",
+    "chapter-four",
+    "chapter-five",
+    "chapter-six",
+    "chapter-seven",
+    "chapter-eight",
+    "chapter-nine"
+  ]
 }
