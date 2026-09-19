@@ -1,4 +1,4 @@
 {
   "title": "Создание резюме",
-  "pages": ["skeleton-resume", "title-about", "achivments"]
+  "pages": ["skeleton-resume", "title-about", "achivments", "..."]
 }
