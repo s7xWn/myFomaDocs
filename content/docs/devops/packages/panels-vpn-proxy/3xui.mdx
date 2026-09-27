@@ -5,14 +5,106 @@ title: 3X-UI
 | [GitHub](https://github.com/MHSanaei/3x-ui) |
 | ------------------------------------------- |
 
+<hr />
+
 ## Установка
 
-:::warning[Supported Platforms]
+<Callout title="Supported Platforms" type="warn">
+
 **Operating systems**: Ubuntu, Debian, Armbian, Fedora, CentOS, RHEL, AlmaLinux, Rocky Linux, Oracle Linux, Amazon Linux, Virtuozzo, Arch, Manjaro, Parch, openSUSE (Tumbleweed / Leap), Alpine, and Windows.
 
 **Architectures**: amd64 · 386 · arm64 (aarch64) · armv7 · armv6 · armv5 · s390x.
-:::
+
+</Callout>
 
 ```bash
 bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
 ```
+
+<hr />
+
+## Команды
+
+```
+┌───────────────────────────────────────────────────────┐
+│  x-ui control menu usages (subcommands):              │
+│                                                       │
+│  x-ui              - Admin Management Script          │
+│  x-ui start        - Start                            │
+│  x-ui stop         - Stop                             │
+│  x-ui restart      - Restart                          │
+│  x-ui status       - Current Status                   │
+│  x-ui settings     - Current Settings                 │
+│  x-ui enable       - Enable Autostart on OS Startup   │
+│  x-ui disable      - Disable Autostart on OS Startup  │
+│  x-ui log          - Check logs                       │
+│  x-ui banlog       - Check Fail2ban ban logs          │
+│  x-ui update       - Update                           │
+│  x-ui legacy       - Legacy version                   │
+│  x-ui install      - Install                          │
+│  x-ui uninstall    - Uninstall                        │
+└───────────────────────────────────────────────────────┘
+```
+
+<hr />
+
+## Создание подключения
+
+- Примичание
+
+### Протокол `VLESS`
+
+#### Основное
+
+- Протокол
+- Адрес
+- Стратегия адреса для ссылок
+- Порядок в подписке
+- Отключить поток XTLS
+- Порт
+- Общий расход
+- Сброс трафика
+- Дата окончания
+
+#### Протокол
+
+- Расшифрование
+- Шифрование
+- Генерация ключей
+
+<hr />
+
+### Поток `RAW`
+
+### Поток `mKCP`
+
+### Поток `WebSocket`
+
+### Поток `gRPC`
+
+### Поток `HTTPUpgrade`
+
+### Поток `XHTTP`
+
+<hr />
+
+### Безопасность `TLS`
+
+### Безопасность `Reality`
+
+- Xver
+- uTLS
+  - chrome, edge, firefox
+- Цель
+
+<hr />
+
+### Сниффинг
+
+<hr />
+
+### Расширенный шаблон
+
+<hr />
+
+## Пример
