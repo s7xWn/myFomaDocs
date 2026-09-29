@@ -1,6 +1,7 @@
 import { source } from "@/lib/source";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { baseOptions } from "@/lib/layout.shared";
+import { Pen } from "lucide-react";
 
 export default function Layout({ children }: LayoutProps<"/docs">) {
   return (
@@ -10,6 +11,12 @@ export default function Layout({ children }: LayoutProps<"/docs">) {
           title: "Computer Science",
           description: "База всего",
           url: "/docs/computer-science",
+        },
+        {
+          title: "Программы / утилиты",
+          icon: null,
+          description: "Для Windows, Linux, Mac",
+          url: "/docs/programs",
         },
         {
           title: "DevOps",
