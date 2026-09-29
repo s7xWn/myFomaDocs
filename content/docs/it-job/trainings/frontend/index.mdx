@@ -1,0 +1,659 @@
+---
+title: Frontend-разработчик
+---
+
+import { Quiz } from "@/components/quiz";
+
+## МАССИВЫ И КОЛЛЕКЦИИ
+
+<Quiz
+  explanation=""
+  title="ЧТО ДЕЛАЕТ МЕТОД `ARRAY.PROTOTYPE.MAP`?"
+  answers={[
+    {
+      text: "Новый массив с результатами вызова функции для каждого элемента",
+      correct: true,
+    },
+    {
+      text: "Изменяет исходный массив на месте и возвращает его",
+      correct: false,
+    },
+    {
+      text: "Возвращает только элементы, для которых функция вернула true",
+      correct: false,
+    },
+    {
+      text:"Сводит массив к одному значению",
+      correct: false,
+    },
+  ]}>
+Выберите верное описание того, что возвращает `map`.
+
+</Quiz>
+
+<hr />
+
+## СТРОКИ
+
+<Quiz
+  explanation=""
+  title="РАЗВЕРНУТЬ СТРОКУ"
+  answers={[
+    {
+      text: "X",
+      correct: true,
+    },
+  ]}>
+
+Реализуйте функцию solve(str), которая возвращает строку задом наперёд.
+
+</Quiz>
+
+<hr />
+
+## JAVASCRIPT И TYPESCRIPT
+
+<Quiz
+  title="ОБЪЕКТ ОБЪЯВЛЕН ЧЕРЕЗ CONST: КАКАЯ СТРОКА ПРИВЕДЁТ К ОШИБКЕ"
+  explanation=""
+  answers={[
+  {
+    text: "Ошибка возникнет уже на строке с изменением role: const запрещает менять содержимое объекта.",
+    correct: false,
+  },
+  {
+    text: "Ошибка возникнет на добавлении элемента в roles: массив под const доступен только для чтения.",
+    correct: false,
+  },
+  {
+    text: "Ошибка возникнет только на переприсваивании limit, изменение объекта и массива пройдёт успешно.",
+    correct: true,
+  },
+  {
+    text:"Ошибок не будет: const влияет только на область видимости переменной.",
+    correct: false,
+  },
+]}>
+
+Код выполняется в модуле (строгий режим включён по умолчанию).
+
+```js
+const user = { name: "Аня", role: "editor" };
+user.role = "admin";
+
+const roles = ["editor"];
+roles.push("admin");
+
+const limit = 10;
+limit = 20;
+```
+
+Что произойдёт при выполнении?
+
+</Quiz>
+
+<Quiz
+explanation=""
+title="Обращение к свойству у значения типа unknown в strict-режиме"
+answers={[
+  {
+    text: "Компилятор сообщит об ошибке: у значения типа unknown нельзя читать свойства, тип нужно сузить проверкой.",
+    correct: true,
+  },
+  {
+    text: "Ошибки не будет: unknown ведёт себя как any и разрешает любое обращение, а проверка нужна только для объединений типов.",
+    correct: false,
+  },
+  {
+    text: "Компилятор выведет тип string автоматически, потому что видит обращение к length.",
+    correct: false,
+  },
+  {
+    text:"Ошибки не будет при сборке, но код гарантированно упадёт в рантайме на любом аргументе.",
+    correct: false,
+  },
+]}>
+Проект собирается на TypeScript со строгими проверками. Что будет при компиляции этого кода?
+
+```js
+function getLength(raw: unknown) {
+  return raw.length;
+}
+```
+
+</Quiz>
+
+<Quiz
+explanation=""
+title="Что окажется в переменной после перебора массива"
+answers={[
+  {
+    text: "[120, 240, 360]",
+    correct: false,
+  },
+  {
+    text: "undefined",
+    correct: true,
+  },
+  {
+    text: "720",
+    correct: false,
+  },
+  {
+    text:"Тот же массив [100, 200, 300]",
+    correct: false,
+  },
+]}>
+
+```js
+const prices = [100, 200, 300];
+const withTax = prices.forEach((price) => price * 1.2);
+
+console.log(withTax);
+```
+
+Что выведется в консоль?
+
+</Quiz>
+
+<Quiz
+explanation=""
+title="Проверка пустого поля количества отклоняет введённый ноль"
+answers={[
+  {
+    text: "«Укажите количество» — при == пустая строка приводится к числу 0",
+    correct: true,
+  },
+  {
+    text: "null — число 0 и пустая строка разных типов",
+    correct: false,
+  },
+  {
+    text: "null — == сравнивает значения без приведения типов",
+    correct: false,
+  },
+  {
+    text:"Ошибку TypeError — нельзя сравнивать число со строкой",
+    correct: false,
+  },
+]}>
+
+```js
+function validateQty(qty) {
+  if (qty == "") {
+    return "Укажите количество";
+  }
+  return null;
+}
+
+validateQty(0);
+```
+
+Что вернёт вызов и почему?
+
+</Quiz>
+
+<Quiz
+explanation=""
+title="ЦЕНЫ В ФИЛЬТРЕ ОТСОРТИРОВАЛИСЬ В СТРАННОМ ПОРЯДКЕ"
+answers={[
+  {
+    text: "[12000, 1500, 250, 990] — без компаратора элементы сравниваются как строки",
+    correct: true,
+  },
+  {
+    text: "[250, 990, 1500, 12000] — числа сортируются по возрастанию",
+    correct: false,
+  },
+  {
+    text: "[990, 1500, 250, 12000] — sort без аргументов не меняет массив",
+    correct: false,
+  },
+  {
+    text:"Ошибка TypeError — sort для чисел требует функцию сравнения",
+    correct: false,
+  },
+]}>
+
+```jsx
+const prices = [990, 1500, 250, 12000];
+prices.sort();
+console.log(prices);
+```
+
+Что выведет код?
+
+</Quiz>
+
+<Quiz
+explanation=""
+title="ПОРЯДОК ВЫВОДА ПРИ СМЕШИВАНИИ ТАЙМЕРА, ПРОМИСА И СИНХРОННОГО КОДА"
+answers={[
+  {
+    text: "старт, конец, таймер, промис",
+    correct: false,
+  },
+  {
+    text: "старт, таймер, промис, конец",
+    correct: false,
+  },
+  {
+    text: "старт, промис, конец, таймер",
+    correct: false,
+  },
+  {
+    text:"старт, конец, промис, таймер",
+    correct: true,
+  },
+]}>
+
+```js
+console.log("старт");
+
+setTimeout(() => console.log("таймер"), 0);
+
+Promise.resolve().then(() => console.log("промис"));
+
+console.log("конец");
+```
+
+В каком порядке строки попадут в консоль?
+
+</Quiz>
+
+<Quiz
+explanation=""
+title="ОШИБКА ИЗ АСИНХРОННОЙ ФУНКЦИИ НЕ ПОПАДАЕТ В TRY/CATCH"
+answers={[
+  {
+    text: "Сообщение об ошибке: блок try перехватывает любые ошибки, возникшие внутри вызванных из него функций.",
+    correct: false,
+  },
+  {
+    text: "Ничего: вызов без await вернул промис, отклонение улетело мимо catch и стало необработанным, showError не вызовется.",
+    correct: true,
+  },
+  {
+    text: "Сообщение об ошибке, но с задержкой: блок catch остаётся активным до завершения промиса и сработает, когда придёт отклонение.",
+    correct: false,
+  },
+  {
+    text:"Ничего: код не запустится вовсе, потому что асинхронную функцию нельзя вызывать из обычной.",
+    correct: false,
+  },
+]}>
+
+```js
+async function loadUser(id) {
+  const res = await fetch(`/api/users/${id}`);
+  if (!res.ok) throw new Error("Не удалось загрузить пользователя");
+  return res.json();
+}
+
+function handleClick() {
+  try {
+    loadUser(1);
+  } catch (e) {
+    showError(e.message);
+  }
+}
+```
+
+Сервер отвечает кодом 500. Что увидит пользователь после клика?
+
+</Quiz>
+
+<Quiz
+explanation=""
+title="КОПИРОВАНИЕ СОСТОЯНИЯ ЧЕРЕЗ SPREAD И ВЛОЖЕННЫЙ ОБЪЕКТ"
+answers={[
+  {
+    text: "2 — вложенный объект остался общим для обеих переменных",
+    correct: true,
+  },
+  {
+    text: "1 — spread делает полную копию всех уровней вложенности",
+    correct: false,
+  },
+  {
+    text: "undefined — при копировании вложенные объекты теряются",
+    correct: false,
+  },
+  {
+    text:"Ошибка: свойство скопированного объекта доступно только для чтения",
+    correct: false,
+  },
+]}>
+
+```js
+const state = { filters: { role: "admin", page: 1 }, total: 42 };
+
+const next = { ...state };
+next.filters.page = 2;
+
+console.log(state.filters.page);
+```
+
+Что выведется в консоль?
+
+</Quiz>
+
+<Quiz
+explanation=""
+title="КНОПКА «ОЧИСТИТЬ КОРЗИНУ» НЕ ОЧИЩАЕТ КОРЗИНУ И НЕ ВЫДАЁТ ОШИБОК"
+answers={[
+  {
+    text: "Метод передан без привязки: this внутри — кнопка, и items записался в неё",
+    correct: true,
+  },
+  {
+    text: "Поле items объявлено через =, поэтому метод не может его изменить",
+    correct: false,
+  },
+  {
+    text: "addEventListener вызывает обработчик только после повторного клика",
+    correct: false,
+  },
+  {
+    text:"this внутри метода класса всегда равен undefined, и присваивание игнорируется",
+    correct: false,
+  },
+]}>
+
+```js
+class Cart {
+  items = ["a", "b"];
+
+  clear() {
+    this.items = [];
+  }
+}
+
+const cart = new Cart();
+clearButton.addEventListener("click", cart.clear);
+```
+
+После клика `cart.items` по-прежнему `['a', 'b']`, в консоли ошибок нет. Что произошло?
+
+</Quiz>
+
+<Quiz
+explanation="Асинхронный колбэк возвращает промис, а forEach игнорирует возвращаемое значение. Цикл запустил все загрузки и сразу завершился, uploadAll пошла дальше. Отклонённые промисы никто не ждёт, поэтому ошибки становятся необработанными."
+title="СООБЩЕНИЕ «ВСЕ ФАЙЛЫ ЗАГРУЖЕНЫ» ПОЯВЛЯЕТСЯ ДО ОКОНЧАНИЯ ЗАГРУЗКИ"
+answers={[
+  {
+    text: "forEach не ждёт промисы из колбэка — нужен for...of с await или Promise.all",
+    correct: true,
+  },
+  {
+    text: "await внутри колбэка forEach игнорируется интерпретатором",
+    correct: false,
+  },
+  {
+    text: "showToast нужно вызывать с await, тогда он дождётся загрузки",
+    correct: false,
+  },
+  {
+    text:"Асинхронную функцию нельзя передавать как колбэк в методы массива",
+    correct: false,
+  },
+]}>
+
+```js
+async function uploadAll(files) {
+  files.forEach(async (file) => {
+    await uploadFile(file);
+  });
+  showToast("Все файлы загружены");
+}
+```
+
+Уведомление появляется сразу, пока файлы ещё грузятся, а ошибки загрузки не ловятся вызывающим кодом. Почему?
+
+</Quiz>
+
+<Quiz
+explanation=""
+title="СУММА КОРЗИНЫ В КОПЕЙКАХ БЕЗ ОШИБОК ОКРУГЛЕНИЯ"
+answers={[
+  {
+    text: "xxxxxxxxxxx",
+    correct: true,
+  },
+  {
+    text: "xxxxxxxxxxxx",
+    correct: false,
+  },
+  {
+    text: "xxxxxxxxx",
+    correct: false,
+  },
+  {
+    text:"xxxxxxxx",
+    correct: false,
+  },
+]}>
+
+Цены приходят с сервера строками в рублях: `'199.90'`, `'15'`. Сумма корзины в числах с плавающей точкой даёт хвосты вроде 30.000000000000004, поэтому считать нужно в целых копейках.
+
+Напишите функцию `sumCartKopecks(items)`.
+
+- `items` — массив `{ price, qty }`, где `price` — строка с ценой в рублях (не больше двух знаков после точки), `qty` — целое число.
+- Верните сумму `price` × `qty` по всем позициям — целое число копеек.
+- Для пустой корзины верните `0`.
+
+</Quiz>
+
+<Quiz
+explanation=""
+title="desc"
+answers={[
+  {
+    text: "xxxxxxxxxxx",
+    correct: true,
+  },
+  {
+    text: "xxxxxxxxxxxx",
+    correct: false,
+  },
+  {
+    text: "xxxxxxxxx",
+    correct: false,
+  },
+  {
+    text:"xxxxxxxx",
+    correct: false,
+  },
+]}>
+
+aaaaaaaaaaaaaaaaa
+
+</Quiz>
+
+<Quiz
+explanation=""
+title="desc"
+answers={[
+  {
+    text: "xxxxxxxxxxx",
+    correct: true,
+  },
+  {
+    text: "xxxxxxxxxxxx",
+    correct: false,
+  },
+  {
+    text: "xxxxxxxxx",
+    correct: false,
+  },
+  {
+    text:"xxxxxxxx",
+    correct: false,
+  },
+]}>
+
+aaaaaaaaaaaaaaaaa
+
+</Quiz>
+
+<Quiz
+explanation=""
+title="desc"
+answers={[
+  {
+    text: "xxxxxxxxxxx",
+    correct: true,
+  },
+  {
+    text: "xxxxxxxxxxxx",
+    correct: false,
+  },
+  {
+    text: "xxxxxxxxx",
+    correct: false,
+  },
+  {
+    text:"xxxxxxxx",
+    correct: false,
+  },
+]}>
+
+aaaaaaaaaaaaaaaaa
+
+</Quiz>
+
+<Quiz
+explanation=""
+title="desc"
+answers={[
+  {
+    text: "xxxxxxxxxxx",
+    correct: true,
+  },
+  {
+    text: "xxxxxxxxxxxx",
+    correct: false,
+  },
+  {
+    text: "xxxxxxxxx",
+    correct: false,
+  },
+  {
+    text:"xxxxxxxx",
+    correct: false,
+  },
+]}>
+
+aaaaaaaaaaaaaaaaa
+
+</Quiz>
+
+<Quiz
+explanation=""
+title="desc"
+answers={[
+  {
+    text: "xxxxxxxxxxx",
+    correct: true,
+  },
+  {
+    text: "xxxxxxxxxxxx",
+    correct: false,
+  },
+  {
+    text: "xxxxxxxxx",
+    correct: false,
+  },
+  {
+    text:"xxxxxxxx",
+    correct: false,
+  },
+]}>
+
+aaaaaaaaaaaaaaaaa
+
+</Quiz>
+
+<Quiz
+explanation=""
+title="desc"
+answers={[
+  {
+    text: "xxxxxxxxxxx",
+    correct: true,
+  },
+  {
+    text: "xxxxxxxxxxxx",
+    correct: false,
+  },
+  {
+    text: "xxxxxxxxx",
+    correct: false,
+  },
+  {
+    text:"xxxxxxxx",
+    correct: false,
+  },
+]}>
+
+aaaaaaaaaaaaaaaaa
+
+</Quiz>
+
+<Quiz
+explanation=""
+title="desc"
+answers={[
+  {
+    text: "xxxxxxxxxxx",
+    correct: true,
+  },
+  {
+    text: "xxxxxxxxxxxx",
+    correct: false,
+  },
+  {
+    text: "xxxxxxxxx",
+    correct: false,
+  },
+  {
+    text:"xxxxxxxx",
+    correct: false,
+  },
+]}>
+
+aaaaaaaaaaaaaaaaa
+
+</Quiz>
+
+<hr />
+
+## HTML, CSS И АДАПТИВНАЯ ВЁРСТКА
+
+<hr />
+
+## REACT И УПРАВЛЕНИЕ СОСТОЯНИЕ
+
+<hr />
+
+## СБОРКА, ПРОИЗВОДИТЕЛЬНОСТЬ И ТЕСТИРОВАНИЕ
+
+<hr />
+
+## TYPESCRIPT: ДЖЕНЕРИКИ И КОНТРАКТЫ С API
+
+<hr />
+
+## ДАННЫЕ И СЕТЬ: REST, TANSTACK QUERY, WEBSOCKET
+
+<hr />
+
+## АРХИТЕКТУРА ФРОНТЕНДА: FSD, ДИЗАЙН-СИСТЕМА, МИКРОФРОНТЕНДЫ
+
+<hr />
+
+## NEXT.JS И РЕНДЕРИНГ: SSR, SSG, ГИДРАТАЦИ
+
+```
+
+```
