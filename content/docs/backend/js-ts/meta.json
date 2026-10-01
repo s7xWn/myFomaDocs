@@ -1,3 +1,11 @@
 {
-  "pages": ["---JavaScript---", "...js", "--- ---", "..."]
+  "pages": [
+    "global-vars",
+    "module-vars",
+    "events",
+    "---JavaScript---",
+    "...js",
+    "--- ---",
+    "..."
+  ]
 }
