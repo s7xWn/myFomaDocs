@@ -1,0 +1,288 @@
+---
+title: npm
+---
+
+## Commands
+
+### `init`
+
+### `install`
+
+Устанавливает все зависимости, ставит **dependencies** и **devDependencies**:
+
+```bash
+npm install
+```
+
+```bash
+npm i
+```
+
+Установка пакета:
+
+```bash
+npm install <package>
+```
+
+```bash
+npm i <package>
+```
+
+#### `--save`
+
+> В современных версиях npm (начиная примерно с npm 5) больше не нужен, потому что он включён по умолчанию.
+
+Установленный пакет будет автоматически добавлен в файл `package.json` в раздел `dependencies`.
+
+```bash
+npm install <package> --save
+```
+
+#### `--save-dev` || `-D`
+
+Установленный пакет будет автоматически добавлен в файл `package.json` в раздел `devDependencies`.
+
+```bash
+npm install <package> --save-dev
+```
+
+```bash
+npm install <package> -D
+```
+
+#### `--no-save`
+
+Устанавливает пакет без записи в `package.json`
+
+```bash
+npm install <package> --no-save
+```
+
+#### `--omit=dev` / `--production`
+
+Устанавливает `dependencies` зависимости, без `devDependencies`:
+
+```bash
+npm install --omit=dev
+```
+
+Или старый, «классический» флаг
+
+```bash
+node install --production
+```
+
+### `run`
+
+#### `prepare`
+
+Скрипт `prepare` в npm вызывается в нескольких случаях:
+
+- После `npm install` (основной случай)
+  **npm** автоматически запускает `prepare` после установки зависимостей, если такой скрипт есть.
+  ```json
+  {
+    "scripts": {
+      "prepare": "husky install"
+    }
+  }
+  ```
+  ```
+  npm install
+      ↓
+  установка зависимостей
+      ↓
+  npm run prepare
+  ```
+- Перед `npm publish`
+- При установке пакета из Git-репозитория (`npm install github:user/project`)
+  Если у устанавливаемого пакета есть `prepare`, npm может выполнить его перед упаковкой пакета для установки.
+  ```
+  npm install git dependency
+          ↓
+  клонирование репозитория
+          ↓
+  npm install зависимостей пакета
+          ↓
+  npm run prepare
+          ↓
+  сборка пакета
+          ↓
+  установка
+  ```
+
+### `uninstall` / `remove` / `rm`
+
+Команда для удаления пакета из проекта.
+
+```bash
+npm uninstall <package-name>
+npm remove <package-name>
+npm rm <package-name>
+```
+
+### `update`
+
+## `package.json`
+
+— это файл описания JavaScript/Node.js проекта в экосистеме Node.js.
+Он описывает проект, управляет зависимостями, хранит команды.
+
+Чтобы создать используют :
+
+```bash
+npm init
+```
+
+или быстрый способ (почти всегда используют, создаёт `package.json` с дефолтными настройками без вопросов.)
+
+```bash
+npm init -y
+```
+
+### Описание проекта
+
+- имя проекта --> `"name": "packetmanagers"`
+- версия --> `"version": "1.0.0"`
+- описание --> `"description": ""`
+- автор --> `"author": ""`
+- лицензия --> `"license": "ISC"`
+- тэги --> `"keywords": ["express", "api", "server", "backend"]`
+
+### Настройка поведения проекта
+
+- точка входа --> `"main": "index.js"`
+- тип модулей --> `"type": "commonjs"`
+  - commonjs
+  - module
+- конфигурации инструментов (линтеры, тесты и т.д.)
+
+### Зависимости (dependencies)
+
+— это список библиотек, от которых зависит проект.
+
+При установке пакета
+
+```bash
+npm install <package>
+```
+
+он автоматически попадает в package.json:
+
+```json
+{
+  "dependencies": {
+    "express": "^4.18.0"
+  }
+}
+```
+
+#### dependencies
+
+— это список библиотек, которые нужны в продакшене.
+
+```json
+"dependencies": {
+  "express": "^4.18.0"
+}
+```
+
+Примеры таких библиотек:
+
+- серверный фреймворк Express.js
+- React (если фронтенд)
+- Axios (запросы)
+- драйверы БД
+
+Установить `dependencies` зависимости, без `devDependencies`:
+
+```bash
+npm install --omit=dev
+```
+
+Или старый, «классический» флаг
+
+```bash
+node install --production
+```
+
+#### devDependencies
+
+— это список библиотек, которые нужны только разработчику ( при разработке, тестировании, сборке, проверке кода). В продакшене не используется.
+
+```json
+"devDependencies": {
+  "jest": "^29.0.0",
+  "eslint": "^8.0.0"
+}
+```
+
+Примеры таких библиотек:
+
+- Jest (тесты)
+- ESLint (линтер)
+- Webpack / Vite (сборка)
+- Prettier (форматирование)
+
+Добавляет пакет в devDependencies:
+
+```bash
+npm install --save-dev <package>
+npm i -D <package>
+```
+
+### Скрипты
+
+— это команды, которые ты описываешь в `package.json`, чтобы удобно запускать действия в проекте.
+
+```json
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "jest"
+  }
+```
+
+Запускаются через
+
+```bash
+npm run <script_name>
+```
+
+#### Специальные (без run)
+
+— это команды в `package.json`, которые можно запускать без `npm run`. **npm** специально сделал для них сокращения.
+
+`npm start` и `npm test`
+
+```json
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  }
+```
+
+## `package-lock.json`
+
+— это автоматически создаваемый файл в проектах Node.js при использовании **npm** (_начиная с npm 5_).
+
+Когда ты устанавливаешь зависимости через `npm install`, в `package.json` обычно указаны диапазоны версий, например:
+
+```json
+"lodash": "^4.17.0"
+```
+
+Это означает: «подойдёт любая версия 4.x.x, начиная с 4.17.0».
+
+`package-lock.json` фиксирует:
+
+- точные версии всех пакетов (включая вложенные зависимости)
+- дерево зависимостей целиком
+- источники пакетов (registry URL)
+- контрольные суммы (integrity)
+
+## `node_modules`
+
+— это папка, в которой хранятся все библиотеки (зависимости) твоего проекта в экосистеме Node.js. Их не коммитят в Git, не редактируют вручную, не хранят там свой код!
+
+Когда происходит установка пакета, npm скачивает пакет -> скачивает ВСЕ его зависимости -> складывает всё в `node_modules`
