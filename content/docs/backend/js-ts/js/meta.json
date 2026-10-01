@@ -6,6 +6,7 @@
     "operators",
     "conditions",
     "cycles",
+    "modules",
     "eventloop",
     "garbage-collector",
     "literature"

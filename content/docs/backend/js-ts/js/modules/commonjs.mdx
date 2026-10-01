@@ -1,3 +1,31 @@
 ---
 title: CommonJS
 ---
+
+## Export
+
+```js
+// users.js
+const users = ["U1", "U2"];
+
+function greet(name) {
+  console.log(`Привет ${name}`);
+}
+
+module.exports = { users, greet };
+```
+
+## Import
+
+<Callout>
+
+`require` используется только в **NodeJS**
+
+Но современные **bundlers** (Webpack, Rollup, esbuild, Rspack, Vite и т. п.) умеют обрабатывать `require()` при сборке **frontend-кода**.
+
+</Callout>
+
+```js
+// app.js
+const { users, greet } = require("./users.js");
+```
