@@ -1,0 +1,122 @@
+---
+title: for..of
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+:::warning
+Появился в версии EcmaScript 2015 года (ES6)
+:::
+
+— это цикл, который используется для перебора **значений** итерируемых объектов (массивов, строк, `Map`, `Set`, и т.д.).
+
+```js
+for (const element of iterable) {
+  // тело цикла
+}
+```
+
+<Tabs items={["ES6+", "<ES6"]}>
+  <Tab value="ES6">
+
+    ```js
+    for (const value of arr) {
+        console.log(value);
+    }
+    ```
+
+  </Tab>
+  <Tab value="ES5">
+
+    ```js
+    for (let i = 0; i < arr.length; i++) {
+        console.log(arr[i]);
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+<details>
+<summary> Производительность </summary>
+
+Теоретически:
+
+- `for` чуть быстрее
+- `for...of` чуть медленнее
+
+Причина:
+
+- `for` — прямой доступ по индексу `arr[i]`
+- `for...of` — использует итератор (**iterator protocol**)
+
+Но в реальности:
+
+- современные движки (V8 в Chrome / Node.js) сильно оптимизируют оба варианта
+- разница часто микроскопическая или нулевая
+- `console.log()` внутри цикла намного медленнее самого цикл
+
+</details>
+<hr/>
+
+Пример:
+
+<Tabs items={["Массив", "Строка", "Set"]}>
+  <Tab value="arr">
+
+    ```js
+    const arr = [10, 20, 30];
+
+    for (const value of arr) {
+    console.log(value);
+    }
+
+    // 10 20 30
+    ```
+
+  </Tab>
+  <Tab value="str">
+
+    ```js
+    for (const char of "hello") {
+        console.log(char);
+    }
+
+    // h e l l o
+    ```
+
+  </Tab>
+  <Tab value="set">
+
+    ```js
+    const set = new Set([1, 2, 3]);
+
+    for (const value of set) {
+        console.log(value);
+    }
+
+    // 1 2 3
+    ```
+
+  </Tab>
+
+</Tabs>
+
+## Отличие от `for...in`
+
+| Цикл       | Что перебирает       |
+| ---------- | -------------------- |
+| `for...of` | значения (values)    |
+| `for...in` | ключи/индексы (keys) |
+
+```js
+const arr = [10, 20, 30];
+
+for (const i in arr) {
+  console.log(i); // 0, 1, 2 (индексы)
+}
+
+for (const v of arr) {
+  console.log(v); // 10, 20, 30 (значения)
+}
+```

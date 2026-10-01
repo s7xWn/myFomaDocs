@@ -1,0 +1,145 @@
+---
+title: Деструктуризация
+---
+
+В JavaScript деструктуризация работает почти со всеми структурированными типами данных, но по сути есть два основных случая: **объекты** и **массивы**.
+Остальное — производные от них.
+
+## Объекты
+
+Можно доставать свойства объекта по именам:
+
+```js
+const user = {
+  name: "Alex",
+  age: 25,
+};
+
+const { name, age } = user;
+
+console.log(name); // Alex
+console.log(age); // 25
+```
+
+Можно переименовывать и задавать значения по умолчанию:
+
+- `name: userName` — переименование; взять свойство `name` из `user`, сохранить его в переменную `userName`
+- `city = "Warsaw"` — значение по умолчанию; если в объекте нет `city`, то использовать `"Warsaw"`
+
+```js
+const user = {
+  name: "Alex",
+  age: 25,
+};
+
+const { name: userName, city = "Warsaw" } = user;
+console.log(userName); // Alex
+console.log(city); // Warsaw
+```
+
+<hr />
+
+### Вложенная деструктуризация
+
+— это когда ты “достаёшь данные внутри данных”. То есть не просто из объекта, а из объекта внутри объекта.
+
+```js
+const user = {
+  name: "Alex",
+  address: {
+    city: "Warsaw",
+    zip: 12345,
+  },
+};
+```
+
+Без деструктуризации:
+
+```js
+const city = user.address.city;
+const zip = user.address.zip;
+```
+
+С деструктуризацией: берём `user`, из него берём `address`, из `address` сразу достаём `city` и `zip`
+
+:::danger
+Переменная `address` НЕ создаётся
+:::
+
+```js
+const {
+  address: { city, zip },
+} = user;
+
+console.log(city); // Warsaw
+console.log(zip); // 12345
+console.log(address); // ReferenceError: address is not defined
+```
+
+Если нужно сохранить и объект тоже:
+
+```js
+const {
+  address,
+  address: { city, zip },
+} = user;
+
+console.log(city); // Warsaw
+console.log(zip); // 12345
+console.log(address); // { city: 'Warsaw', zip: 12345 }
+```
+
+<hr />
+
+## Массивы
+
+Деструктуризация идёт по порядку элементов:
+
+```js
+const arr = [10, 20, 30];
+const [a, b, c] = arr;
+console.log(a); // 10
+```
+
+Можно пропускать элементы:
+
+```js
+const [, second] = [1, 2, 3];
+console.log(second); // 2
+```
+
+<hr />
+
+### Вложенная деструктуризация
+
+— это когда ты “достаёшь данные внутри данных”. То есть не просто из массива, а из массива внутри массива.
+
+```js
+const data = [1, [2, 3]];
+const [, [b, c]] = data;
+
+console.log(b); // 2
+console.log(c); // 3
+```
+
+<hr />
+
+## Использование rest-оператора (`...`)
+
+Rest-оператор (`...`) при деструктуризации — это способ “собрать всё остальное, что не было вытащено явно”.
+
+```js
+const user = {
+  name: "Alex",
+  age: 25,
+  city: "Warsaw",
+  job: "dev",
+};
+
+const { name, ...rest } = user;
+
+console.log(name); // Alex
+console.log(rest); // {age: 25, city: "Warsaw", job: "dev"}
+```
+
+<hr />

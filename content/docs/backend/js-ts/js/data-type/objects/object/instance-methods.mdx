@@ -1,0 +1,31 @@
+---
+title: Методы экземпляра
+---
+
+## Проверка свойств и описателей
+
+### `obj.hasOwnProperty(key)`
+
+Проверяет, есть ли у объекта собственное (не унаследованное) свойство с таким именем.
+
+```js
+obj.hasOwnProperty("key");
+```
+
+Возвращает:
+
+- `true` → если свойство "key" есть непосредственно в объекте
+- `false` → если свойства нет или оно унаследовано через прототип
+
+Пример:
+
+```js
+const obj = {
+  name: "Alice",
+};
+
+console.log(obj.hasOwnProperty("name")); // true
+console.log(obj.hasOwnProperty("toString")); // false
+```
+
+> Почему `false` у `toString`? Потому что он приходит из `Object.prototype`, а не из самого `obj`.

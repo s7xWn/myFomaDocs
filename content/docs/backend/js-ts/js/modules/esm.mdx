@@ -1,0 +1,56 @@
+---
+title: ESM
+---
+
+ESM (ECMAScript Modules) - формата модуля в JavaScript: способ разбивать код на файлы и импортировать/экспортировать функции, классы, переменные и т.д.
+
+<Callout>
+
+Современный стандарт JavaScript
+
+ESM поддерживается браузерами и современным Node.js.
+
+</Callout>
+
+## Export
+
+```js
+// math.js
+export function sum(a, b) {
+  return a + b;
+}
+```
+
+## Import
+
+```js
+// app.js
+import { sum } from "./math.js";
+
+console.log(sum(2, 3));
+```
+
+## Export default
+
+Используется, когда из файла экспортируется одно основное значение.
+
+```js
+// user.js
+export default function getUser() {
+  return {
+    name: "Alex",
+    age: 25,
+  };
+}
+```
+
+## Import default
+
+```js
+// app.js
+import getUser from "./user.js";
+
+const user = getUser();
+
+console.log(user);
+```

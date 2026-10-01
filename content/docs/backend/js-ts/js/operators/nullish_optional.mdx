@@ -1,0 +1,48 @@
+---
+title: Nullish & Optional chaining
+---
+
+## `??` (nullish coalescing)
+
+:::warning
+Появился в версии ECMAScript 2020 (ES2020).
+:::
+
+Берёт первое НЕ `null` и НЕ `undefined`
+
+```js
+let a = null;
+let x = null ?? a ?? 10; // 10
+```
+
+<hr />
+
+## `?.` (optional chaining)
+
+:::warning
+Появился в версии ECMAScript 2020 (ES2020).
+:::
+
+Он позволяет безопасно обращаться к вложенным свойствам объекта, даже если часть пути отсутствует (null или undefined).
+
+Без `?.`:
+
+```js
+user.profile.name;
+```
+
+Если `user` или `profile` = null/undefined, будет ошибка: `Cannot read properties of undefined`
+
+С `?.`:
+
+```js
+user?.profile?.name;
+```
+
+Если `user` или `profile` = null/undefined, будет: `undefined`
+
+:::note
+Есть [старый способ `&&`](/docs/frontend/js/operators/logical#типичные-паттерны) — там есть важные различия.
+:::
+
+<hr />

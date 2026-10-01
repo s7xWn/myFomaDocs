@@ -1,0 +1,366 @@
+---
+title: Методы экземпляра
+---
+
+## Получение информации о строке
+
+### str.charAt(index) / str[index]
+
+Возвращает символ по индексу.
+
+```
+const s = "JavaScript";
+s.charAt(2); // "v"
+s[2]; // "v"
+```
+
+| Характеристика             | `charAt(index)`                     | `str[index]`                           |
+| -------------------------- | ----------------------------------- | -------------------------------------- |
+| Поддержка старых браузеров | Да, работает даже в очень старых JS | Не во всех старых браузерах (IE < 8)   |
+| Если индекс вне диапазона  | Возвращает пустую строку `""`       | Возвращает `undefined`                 |
+| Тип результата             | Всегда строка                       | Всегда строка (если индекс корректный) |
+| Возможность присваивания   | Нет (как и `[index]`)               | Нет                                    |
+
+Строки в JS неизменяемые (immutable)
+Чтобы изменить символ, нужно создавать новую строку:
+
+```
+let str = "Hello";
+str[0] = "Y";       // не работает
+str.charAt(0) = "Y"; // ошибка
+console.log(str);   // "Hello"
+
+str = "Y" + str.slice(1);
+console.log(str); // "Yello"
+```
+
+### str.charCodeAt(index)
+
+Возвращает Unicode код символа по индексу.
+
+```
+let str = "Hello";
+str.charCodeAt(3); // 108
+```
+
+### str.codePointAt(index)
+
+Возвращает полный код символа (для символов с суррогатными парами).
+
+```
+let str = "Hello";
+str.codePointAt(3); // 108
+```
+
+## Изменение регистра
+
+### str.toUpperCase()
+
+Превращает строку в верхний регистр.
+
+### str.toLowerCase()
+
+Превращает строку в нижний регистр.
+
+### str.toLocaleUpperCase([locale])
+
+### str.toLocaleLowerCase([locale])
+
+## Поиск и проверка
+
+| Метод         | Возвращает                         | Чувствительность к регистру | Особенности                  |
+| ------------- | ---------------------------------- | --------------------------- | ---------------------------- |
+| `indexOf`     | индекс первого вхождения или -1    | Да                          | Можно указать fromIndex      |
+| `lastIndexOf` | индекс последнего вхождения или -1 | Да                          | Поиск справа налево          |
+| `includes`    | true/false                         | Да                          | Простой для проверки наличия |
+| `startsWith`  | true/false                         | Да                          | Проверяет только начало      |
+| `endsWith`    | true/false                         | Да                          | Проверяет только конец       |
+
+### str.indexOf(substring[, fromIndex])
+
+Возвращает первый индекс вхождения подстроки, -1 если нет. **Чувствительно к регистру.**
+
+`substring` — подстрока, наличие которой проверяется.<br/>
+`fromIndex` — (необязательная) позиция, с которой начинается поиск (по умолчанию 0).
+
+```
+let str = "Hello, world!";
+
+// Поиск первой подстроки
+console.log(str.indexOf("Hello")); // 0
+console.log(str.indexOf("world")); // 7
+console.log(str.indexOf("o"));     // 4 (первое вхождение "o")
+
+// Подстрока отсутствует
+console.log(str.indexOf("JavaScript")); // -1
+
+// Используем fromIndex
+console.log(str.indexOf("o", 5)); // 8 (ищет "o", начиная с индекса 5)
+console.log(str.indexOf("H", 1)); // -1 (нет "H" после индекса 1)
+```
+
+### str.lastIndexOf(substring[, fromIndex])
+
+### str.includes(substring[, fromIndex])
+
+Проверяет наличие подстроки, возвращает true/false. **Чувствительно к регистру.**
+
+`substring` — подстрока, наличие которой проверяется.<br/>
+`fromIndex` — (необязательная) позиция, с которой начинается поиск (по умолчанию 0).<br/>
+Возвращает `true`, если подстрока найдена, иначе `false`.
+
+```
+let str = "Hello, world!";
+
+// Проверка наличия подстроки
+console.log(str.includes("Hello"));   // true
+console.log(str.includes("hello"));   // false (чувствительно к регистру)
+console.log(str.includes("JavaScript"));// false
+
+// Используем fromIndex
+console.log(str.includes("o", 5));    // true, ищет с индекса 5 ("o" в "world")
+console.log(str.includes("H", 1));    // false, ищет с индекса 1
+```
+
+### str.startsWith(substring[, position])
+
+Начинается ли строка с подстроки. **Чувствительно к регистру.**
+
+`substring` — подстрока, наличие которой проверяется.<br/>
+`position` — (необязательная) позиция, с которой начинается поиск (по умолчанию 0).<br/>
+Возвращает `true`, если подстрока найдена, иначе `false`.
+
+```
+let str = "Hello, world!";
+
+// Проверка начала строки
+console.log(str.startsWith("Hello")); // true
+console.log(str.startsWith("world")); // false
+
+// Используем position
+console.log(str.startsWith("world", 7)); // true (с 7-го символа начинается "world")
+console.log(str.startsWith("Hello", 1)); // false (с 1-го символа не "Hello")
+
+// Чувствительность к регистру
+console.log(str.startsWith("hello")); // false
+```
+
+### str.endsWith(substring[, length])
+
+Заканчивается ли строка с подстрокой. **Чувствительно к регистру.**
+
+`substring` — подстрока, наличие которой проверяется.<br/>
+`length` — (необязательная) рассматриваемая длина строки. Метод проверяет, оканчивается ли подстрока именно на этом “усечённом” участке.<br/>
+Возвращает `true`, если подстрока найдена, иначе `false`.
+
+```
+let str = "Hello, world!";
+
+// Проверка конца строки
+console.log(str.endsWith("!"));       // true
+console.log(str.endsWith("world!"));  // true
+console.log(str.endsWith("Hello"));   // false
+
+// Используем length (как будто строка короче)
+console.log(str.endsWith("Hello", 5)); // true ("Hello, world!" усечён до 5 символов → "Hello")
+
+// Чувствительность к регистру
+console.log(str.endsWith("World!"));   // false
+```
+
+### str.search(regexp)
+
+### str.match(regexp)
+
+### str.matchAll(regexp)
+
+### str.replace(searchValue, replaceValue)
+
+Заменяет первое совпадение.
+
+`searchValue` — подстрока или регулярное выражение, которое нужно заменить.<br/>
+`replaceValue` — строка, на которую заменяем, или функция, которая возвращает новую строку.<br/>
+Возвращает новую строку — исходная строка не изменяется (строки в JS неизменяемы).
+
+```
+let str = "foo foo foo";
+let newStr = str.replace("foo", "bar");
+console.log(newStr); // "bar foo foo"
+console.log(str);    // "foo foo foo" (исходная строка не изменилась)
+```
+
+Использование регулярного выражения для глобальной замены
+
+```
+let str = "foo foo foo";
+console.log(str.replace(/foo/g, "bar")); // "bar bar bar" — все вхождения
+```
+
+Замена с функцией
+
+```
+let str = "Price: $100";
+let newStr = str.replace(/\d+/, (match) => Number(match) * 2);
+console.log(newStr); // "Price: $200"
+```
+
+### str.replaceAll(searchValue, replaceValue)
+
+Заменяет все совпадения. Только ES2021+ — в старых браузерах не поддерживается.
+
+`searchValue` — подстрока или регулярное выражение, которое нужно заменить.<br/>
+`replaceValue` — строка, на которую заменяем, или функция, которая возвращает новую строку.<br/>
+Возвращает новую строку — исходная строка не изменяется (строки в JS неизменяемы).
+
+```
+let str = "foo foo foo";
+let newStr = str.replace("foo", "bar");
+console.log(newStr); // "bar bar bar"
+console.log(str);    // "foo foo foo" (исходная строка не изменилась)
+```
+
+### str.repeat(count)
+
+Повторяет строку `count` раз.
+
+`count` — количество повторений строки.<br/>
+Возвращает новую строку, состоящую из исходной строки, повторённой count раз.
+
+```
+let str = "Hi! ";
+console.log(str.repeat(3)); // "Hi! Hi! Hi! "
+```
+
+## Извлечение подстроки
+
+### str.slice(beginIndex[, endIndex])
+
+Извлекает часть строки, поддерживает отрицательные индексы.
+
+`beginIndex` – индекс начала извлечения (включительно). <br/>
+`endIndex` – (необязательный) индекс конца извлечения (не включая этот символ). Если `endIndex` не указан, берётся до конца строки.
+
+Поддерживаются отрицательные индексы: считаются с конца строки (-1 = последний символ).
+
+```
+let str = "Hello, world!";
+
+// С положительными индексами
+console.log(str.slice(0, 5)); // "Hello"
+
+// Без endIndex
+console.log(str.slice(7));    // "world!"
+
+// С отрицательными индексами
+console.log(str.slice(-6));   // "world!"
+console.log(str.slice(-6, -1));// "world"
+
+// beginIndex > endIndex
+console.log(str.slice(5, 0)); // "" (пустая строка)
+```
+
+### str.substring(indexStart[, indexEnd])
+
+### str.substr(start[, length])
+
+> deprecated (не рекомендуется использовать)
+
+## Разделение и объединение
+
+### str.split(separator[, limit])
+
+Превращает строку в массив по разделителю.
+
+`separator` - разделитель, по которому разбивается строка. ( строка, регулярное выражение )<br/>
+`limit` — (необязательное) максимальное количество элементов в результате. <br/>
+Возвращает массив строк.
+
+```
+let str = "apple,banana,orange";
+let fruits = str.split(",");
+console.log(fruits); // ["apple", "banana", "orange"]
+
+let str = "one,two,three,four";
+console.log(str.split(",", 2)); // ["one", "two"]
+```
+
+Разделение с использованием регулярного выражения
+
+```
+let str = "apple, banana;orange|grape";
+let fruits = str.split(/[,;|]\s*/);
+console.log(fruits); // ["apple", "banana", "orange", "grape"]
+```
+
+Разделение на отдельные символы
+
+```
+let str = "Hello";
+console.log(str.split("")); // ["H", "e", "l", "l", "o"]
+```
+
+### arr.join(separator)
+
+Объединяет массив в строку (метод массива, но часто с строками используют).
+
+`separator` - разделитель, который будет вставляться между элементами массива. По умолчанию `separator` = `","`<br/>
+Возвращает строку, полученную объединением всех элементов массива.
+
+```
+let fruits = ["apple", "banana", "orange"];
+console.log(fruits.join()); // "apple,banana,orange"
+```
+
+Превращение массива символов в строку
+
+```
+let chars = ["H","e","l","l","o"];
+console.log(chars.join("")); // "Hello"
+```
+
+## Удаление пробелов
+
+### str.trim()
+
+Удаляет пробелы в начале и конце.
+
+```
+const s = "  hello  ";
+s.trim(); // "hello"
+```
+
+### str.trimStart() / str.trimLeft()
+
+Удаляет пробелы слева.
+
+### str.trimEnd() / str.trimRight()
+
+Удаляет пробелы справа.
+
+## Шаблоны и форматирование
+
+### str.padStart(targetLength[, padString])
+
+Добавляет символы в начало строки до заданной длины.
+
+### str.padEnd(targetLength[, padString])
+
+Добавляет символы в конец строки.
+
+### str.concat(...strings)
+
+## Преобразование в массив или другой тип
+
+### str.split('')
+
+### Array.from(str)
+
+### str.valueOf()
+
+### str.toString()
+
+## Регулярные выражения
+
+### str.match(), str.search(), str.replace(), str.replaceAll()
+
+### str.matchAll()

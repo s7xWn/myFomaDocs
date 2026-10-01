@@ -1,0 +1,184 @@
+---
+title: Методы экземпляра
+---
+
+## Получение элементов и информации
+
+### arr[index]
+
+### arr.at(index)
+
+<hr />
+
+## Добавление и удаление элементов
+
+### arr.push(element)
+
+### arr.pop()
+
+### arr.unshift(element)
+
+### arr.shift()
+
+### arr.splice(start, deleteCount, ...items)
+
+<hr />
+
+## Изменение массива
+
+### arr.fill(value[, start[, end]])
+
+### arr.copyWithin(target, start[, end])
+
+### arr.reverse()
+
+### arr.sort([compareFn])
+
+— используется для сортировки элементов массива. Он изменяет исходный массив (не создает новый) и возвращает ссылку на него.
+
+`compareFn` — это функция, которую `.sort()` вызывает автоматически для сравнения двух элементов массива.
+
+> - `compareFn` — необязательная функция сравнения.<br/>
+>   Если ее не передать, элементы сортируются как строки в порядке Unicode.
+
+Она принимает два аргумента:
+`a` и `b` — два элемента, выбранные движком для сравнения. Их порядок также определяет движок. Твоя задача — лишь сказать, какой из них должен идти раньше, вернув отрицательное или положительное число.
+
+```js
+(a, b) => a - b;
+```
+
+- если результат меньше 0 → `a` ставится перед `b`
+- если больше 0 → `b` ставится перед `a`
+- если 0 → порядок не меняется
+
+| Задача          | Код                                                |
+| --------------- | -------------------------------------------------- |
+| По возрастанию  | `arr.sort((a, b) => a - b)`                        |
+| По убыванию     | `arr.sort((a, b) => b - a)`                        |
+| Строки          | `arr.sort()`                                       |
+| По полю объекта | `arr.sort((a, b) => a.age - b.age)`                |
+| По имени        | `arr.sort((a, b) => a.name.localeCompare(b.name))` |
+
+### arr.toSorted([compareFn])
+
+### arr.toReversed()
+
+### arr.with(index, value)
+
+<hr />
+
+## Поиск и проверка
+
+### arr.indexOf(element[, fromIndex])
+
+### arr.lastIndexOf(element[, fromIndex])
+
+### arr.includes(element[, fromIndex])
+
+### arr.find(callback)
+
+Проходит по массиву и находит первый элемент, который подходит под условие. Возвращает ссылку на объект внутри массива, а не его копию.
+
+### arr.findIndex(callback)
+
+### arr.findLast(callback)
+
+### arr.findLastIndex(callback)
+
+### arr.some(callback)
+
+### arr.every(callback)
+
+<hr />
+
+## Перебор элементов
+
+### arr.forEach(callback)
+
+### arr.map(callback)
+
+### arr.filter(callback)
+
+:::warning
+Добавили в **ECMAScript 5 (ES5)** — стандарт был опубликован в декабре 2009 года.
+:::
+
+Создаёт новый массив, оставляя только те элементы, для которых функция-проверка возвращает `true`.
+
+`filter` передаёт в callback обычно 3 аргумента: (`element`, `index`, `array`)
+
+```
+const numbers = [1, 2, 3, 4, 5];
+
+const evenNumbers = numbers.filter(num => num % 2 === 0);
+
+console.log(evenNumbers); // [2, 4]
+```
+
+<details>
+  <summary>Пример с объектами:</summary>
+
+```js
+const users = [
+  { name: "Alice", active: true },
+  { name: "Bob", active: false },
+  { name: "Charlie", active: true },
+];
+
+const activeUsers = users.filter((user) => user.active);
+
+console.log(activeUsers); // [ { name: 'Alice', active: true }, { name: 'Charlie', active: true } ]
+```
+
+</details>
+
+Так как `filter` возвращает массив, то у полученного массива мы можем продолжать по цепочке вызывать другие методы массива.
+
+```
+const result = nums.filter(num => num >= 5).map(...).reduce(...)
+```
+
+В `filter` в качестве функции можно передать конструктор `Boolean`. Таким образом можно легко и быстро отфильтровать все элементы, которые при приведении к `boolean` будут равны `false`
+
+```
+const num = 3
+
+const elements = [0, "", "one", "two", num === 3 && "three", null].filter(
+  Boolean
+) // ['one', 'two', 'three']
+```
+
+### arr.reduce(callback[, initialValue])
+
+### arr.reduceRight(callback[, initialValue])
+
+<hr />
+
+## Извлечение части массива
+
+### arr.slice(start[, end])
+
+### arr.splice(start[, deleteCount])
+
+<hr />
+
+## Объединение и разделение
+
+### arr.concat(...arrays)
+
+### arr.join(separator)
+
+### arr.flat([depth])
+
+### arr.flatMap(callback)
+
+<hr />
+
+## Работа с итераторами
+
+### arr.keys()
+
+### arr.values()
+
+### arr.entries()

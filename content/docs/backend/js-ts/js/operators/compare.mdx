@@ -1,0 +1,149 @@
+---
+title: Операторы сравнения
+---
+
+Операторы сравнения возвращают логическое значение `true` или `false`. Они используются в условиях (`if`), циклах, фильтрации массивов и в любой логике, где нужно сравнить значения.
+
+| Оператор          | Название                    | Что проверяет                                                        | Пример            | Результат |
+| ----------------- | --------------------------- | -------------------------------------------------------------------- | ----------------- | --------- |
+| `==`              | Равно (нестрогое сравнение) | Сравнивает значения, преобразуя типы                                 | `5 == "5"`        | `true`    |
+| `!=`              | Не равно (нестрогое)        | Значения разные после приведения типов                               | `5 != "6"`        | `true`    |
+| `===`             | Строго равно                | Сравнивает значение **и тип**                                        | `5 === "5"`       | `false`   |
+| `!==`             | Строго не равно             | Разное значение или разный тип                                       | `5 !== "5"`       | `true`    |
+| `>`               | Больше                      | Левое значение больше правого                                        | `10 > 5`          | `true`    |
+| `<`               | Меньше                      | Левое значение меньше правого                                        | `3 < 8`           | `true`    |
+| `>=`              | Больше или равно            | Левое значение больше или равно правому                              | `5 >= 5`          | `true`    |
+| `<=`              | Меньше или равно            | Левое значение меньше или равно правому                              | `4 <= 7`          | `true`    |
+| `Object.is(a, b)` | Точное сравнение значений   | Проверяет, являются ли два значения одинаковыми без приведения типов | `Object.is(5, 5)` | `true`    |
+
+<hr />
+
+## `==` / `!=` нестрогое равенство/неравенство
+
+— это оператор абстрактного сравнения
+
+`==` перед сравнением может **приводить значения к одному типу (неявное преобразование типов)**. Из-за этого результат иногда выглядит неожиданно.
+
+```js
+console.log(5 == "5"); // true  ("5" -> 5)
+console.log(false == 0); // true  (false -> 0)
+console.log("" == 0); // true  ("" -> 0)
+console.log([] == false); // true
+console.log([1, 2] == "1,2"); // true
+console.log(null == undefined); // true
+console.log(NaN == NaN); // false
+console.log(0 == -0); // true
+```
+
+<hr />
+
+## `===` / `!==` строгое равенство/неравенство
+
+`===` сравнивает значения без преобразования типов. Совпасть должны и тип, и значение.
+
+```js
+console.log(5 === 5); // true
+console.log(5 === "5"); // false
+console.log([] === false); // false
+console.log([1, 2] === "1,2"); // false
+console.log(false === 0); // false
+console.log(null === undefined); // false
+console.log(NaN === NaN); // false
+console.log(0 === -0); // true
+```
+
+Обычно в коде используют именно `===` и `!==`, потому что поведение предсказуемо.
+
+<hr />
+
+## `>` `<` `>=` `<=`
+
+### Числа
+
+```js
+console.log(10 > 2); // true
+console.log(10 < 2); // false
+console.log(10 >= 10); // true
+
+console.log("10" > 2); // true  ("10" -> 10)
+console.log("2" < 10); // true  ("2" -> 2)
+```
+
+<br />
+
+### Строки
+
+Если сравниваются две строки, используется лексикографический порядок (по кодам символов, с нюансами регистра).
+
+```js
+console.log("a" < "b"); // true
+console.log("ab" < "ac"); // true
+console.log("Z" < "a"); // true
+
+console.log("9" > "10"); // true (сравнение строк: "9" идет после "1")
+```
+
+<hr />
+
+## `Object.is()`
+
+```js
+console.log(Object.is(5, 5)); // true
+console.log(Object.is(5, "5")); // false
+console.log(Object.is(false, 0)); // false
+console.log(Object.is([], [])); // false
+console.log(Object.is(null, undefined)); // true
+console.log(Object.is(NaN, NaN)); // true
+console.log(Object.is(0, -0)); // false
+```
+
+<hr />
+
+## Особые случаи и нюансы
+
+### `NaN`
+
+`NaN` не равен ничему, включая самого себя.
+
+```js
+console.log(NaN === NaN); // false
+console.log(NaN == NaN); // false
+
+console.log(Number.isNaN(NaN)); // true
+console.log(Number.isNaN("not a number")); // false
+console.log(Number.isNaN(Number("x"))); // true
+```
+
+### `-0` и `0`
+
+В большинстве сравнений -0 и 0 считаются равными:
+
+```js
+console.log(0 === -0); // true
+console.log(0 == -0); // true
+```
+
+Если нужно различать -0 и 0, подходит `Object.is`:
+
+```js
+console.log(Object.is(0, -0)); // false
+console.log(Object.is(NaN, NaN)); // true
+```
+
+### `null` и `undefined` в сравнениях по порядку
+
+`null` и `undefined` ведут себя по-разному в `==` и в `>` `<` `>=` `<=`
+
+```js
+console.log(null == undefined); // true
+
+console.log(null > 0); // false
+console.log(null >= 0); // true  (null -> 0)
+console.log(null == 0); // false
+
+console.log(undefined > 0); // false
+console.log(undefined >= 0); // false
+console.log(undefined == 0); // false
+```
+
+Если возможны `null`/`undefined`, лучше проверять их явно, а не полагаться на правила преобразования.

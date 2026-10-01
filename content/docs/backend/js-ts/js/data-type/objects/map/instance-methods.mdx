@@ -1,0 +1,320 @@
+---
+title: Методы экземпляра
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+## Управление элементами
+
+### map.set(key, value)
+
+Добавляет или обновляет значение.
+
+<Tabs items={["ES6+", "<ES6"]}>
+  <Tab value="ES6">
+
+    ```js
+    user.set("name", "Alex");
+    user.set("age", 25);
+    ```
+
+  </Tab>
+  <Tab value="ES5">
+
+    ```js
+    user.name = "Alex";
+    user.age = 25;
+    ```
+
+    ```js
+    user["name"] = "Alex";
+    user["age"] = 25;
+    ```
+
+    ```js
+    var user = {
+        set: function (key, value) {
+            this[key] = value;
+        }
+    };
+
+    user.set("name", "Alex");
+    user.set("age", 25);
+    ```
+
+  </Tab>
+</Tabs>
+
+### map.get(key)
+
+Возвращает значение по ключу.
+
+<Tabs items={["ES6+", "<ES6"]}>
+  <Tab value="ES6">
+
+    ```js
+    user.get("name"); // "Alex"
+    ```
+
+  </Tab>
+  <Tab value="ES5">
+
+    ```js
+    user.name
+    ```
+
+    ```js
+    user["name"]
+    ```
+
+    ```js
+    var user = {
+        get: function (key) {
+            return this[key];
+        },
+    };
+
+    user.get("name");
+    ```
+
+  </Tab>
+</Tabs>
+
+### map.has(key)
+
+Проверяет существование ключа и возвращает `true` или `false`.
+
+<Tabs items={["ES6+", "<ES6"]}>
+  <Tab value="ES6">
+
+    ```js
+    user.has("name"); // true
+    ```
+
+  </Tab>
+  <Tab value="ES5">
+
+    ```js
+    user.hasOwnProperty("name"); // true
+    ```
+
+    или более надёжно (если есть шанс, что `hasOwnProperty` переопределён):
+
+    ```js
+    Object.prototype.hasOwnProperty.call(user, "name") //true
+    ```
+
+    проверяет и собственные, и унаследованные свойства
+
+    ```js
+    "name" in user // true
+    ```
+
+  </Tab>
+</Tabs>
+
+### map.delete(key)
+
+Удаляет элемент по ключу.
+
+<Tabs items={["ES6+", "<ES6"]}>
+  <Tab value="ES6" >
+
+    ```js
+    user.delete("age");
+    ```
+
+  </Tab>
+  <Tab value="ES5">
+
+    ```js
+    delete user.age;
+    ```
+
+    ```js
+    delete user["age"];
+    ```
+
+    ```js
+    var user = {
+        set: function (key, value) {
+            this[key] = value;
+        },
+        get: function (key) {
+            return this[key];
+        },
+        delete: function (key) {
+            delete this[key];
+        }
+    };
+
+    user.delete("age");
+    ```
+
+  </Tab>
+</Tabs>
+
+### map.clear()
+
+Удаляет все элементы.
+
+<Tabs items={["ES6+", "<ES6"]}>
+  <Tab value="ES6">
+
+    ```js
+    user.clear();
+    ```
+
+  </Tab>
+  <Tab value="ES5">
+
+    ```js
+    for (var key in user) {
+        if (user.hasOwnProperty(key)) {
+            delete user[key];
+        }
+    }
+    ```
+
+    Более простой (часто используемый) вариант <br/>
+    Это работает только если нет других ссылок на объект.
+
+    ```js
+    user = {};
+    ```
+
+  </Tab>
+</Tabs>
+
+## Итерация и перебор
+
+### map.keys()
+
+Возвращает итератор по ключам.
+
+Фрагмент JavaScript, который перебирает ключи объекта `Map`:
+
+<Tabs items={["ES6+", "<ES6"]}>
+  <Tab value="ES6">
+
+    ```js
+    for (const key of user.keys()) {
+        console.log(key);
+        // name
+        // age
+    }
+    ```
+
+  </Tab>
+  <Tab value="ES5">
+
+    ```js
+    Object.keys(user).forEach(function (key) {
+        console.log(key);
+    });
+    ```
+
+    ```js
+    for (var key in user) {
+        if (user.hasOwnProperty(key)) {
+            console.log(key);
+        }
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+### map.values()
+
+Возвращает итератор по значениям.
+
+Фрагмент JavaScript, который перебирает каждое значение `Map`:
+
+<Tabs items={["ES6+", "<ES6"]}>
+  <Tab value="ES6">
+
+    ```js
+    for (const value of user.values()) {
+        console.log(value);
+    }
+    ```
+
+  </Tab>
+  <Tab value="ES5">
+
+    Обычный объект
+
+    ```js
+    for (var key in user) {
+        if (user.hasOwnProperty(key)) {
+            console.log(user[key]);
+        }
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+### map.entries()
+
+Возвращает итератор пар [ключ, значение].
+
+Фрагмент JavaScript, который перебирает каждую пару ключ–значение `Map`:
+
+<Tabs items={["ES6+", "<ES6"]}>
+  <Tab value="ES6">
+
+    ```js
+    for (const [key, value] of user.entries()) {
+        console.log(key, value);
+    }
+    ```
+
+  </Tab>
+  <Tab value="ES5">
+
+    Обычный объект
+
+    ```js
+    for (var key in user) {
+        if (obj.hasOwnProperty(key)) {
+            var value = user[key];
+            console.log(key, value);
+        }
+    }
+    ```
+
+    более древний вариант
+
+    ```js
+    for (var key in user) {
+        if (Object.prototype.hasOwnProperty.call(user, key)) {
+            var value = user[key];
+            // console.log отсутствует — нужна другая логика вывода
+        }
+    }
+    ```
+
+    Массив пар `[[key, value], ...]`
+
+    ```js
+    for (var i = 0; i < arr.length; i++) {
+        var key = arr[i][0];
+        var value = arr[i][1];
+        console.log(key, value);
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+### map.forEach(callback)
+
+Перебирает все элементы.
+
+```js
+map.forEach((value, key) => {
+  console.log(key, value);
+});
+```

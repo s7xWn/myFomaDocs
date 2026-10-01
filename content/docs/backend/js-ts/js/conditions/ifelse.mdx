@@ -1,0 +1,50 @@
+---
+title: if .. else
+---
+
+Для сравнения используются [логические операторы](/docs/frontend/js/operators/logical) и [операторы сравнения](/docs/frontend/js/operators/compare).
+
+## `if`
+
+— это условный оператор. Он выполняет код только тогда, когда условие истинно (`true`).
+
+:::note
+Условие в `if (...)` не обязано быть `boolean`. JavaScript приведет значение к `boolean` по правилам `truthy/falsy`.
+:::
+
+```js
+if (condition) {
+  //code
+}
+```
+
+## else
+
+```js
+if (condition) {
+  //code
+} else {
+}
+```
+
+— позволяет выполнить другой код, если условие ложно (`false`).
+
+## `else if` - цепочка проверок
+
+Если вариантов больше двух, добавляют else if. Проверки идут сверху вниз, выполняется первый подходящий блок.
+
+Пример:
+
+```js
+const score = 72;
+
+if (score >= 90) {
+  console.log("A");
+} else if (score >= 75) {
+  console.log("B");
+} else if (score >= 60) {
+  console.log("C");
+} else {
+  console.log("D");
+}
+```

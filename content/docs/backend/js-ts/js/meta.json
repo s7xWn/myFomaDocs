@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "!index",
+    "variables",
+    "data-type",
+    "operators",
+    "conditions",
+    "cycles",
+    "eventloop",
+    "garbage-collector",
+    "literature"
+  ]
+}

@@ -1,0 +1,187 @@
+---
+title: Object
+---
+
+— это структура данных, которая хранит пары “ключ - значение”.
+
+```js
+let obj = {};
+let a_obj = new Object();
+```
+
+Ключи в объекте обычно строки (даже если записаны без кавычек). Значения могут быть любыми типами: числами, строками, массивами, другими объектами, функциями.
+
+```js
+const profile = {
+  id: 1,
+  name: "Alex",
+  tags: ["js", "web"],
+  settings: { theme: "dark" },
+};
+```
+
+Изменяемы: свойства объектов можно изменять, оно не будет пересоздаваться
+
+Сравниваются друг с другом по ссылке
+
+<hr />
+
+## Динамическое определение имен свойств и методов
+
+Синтаксис массивов открывает нам другую возможность - определение имени свойства вне объекта:
+
+```js
+const prop1 = "name";
+const prop2 = "age";
+const tom = {
+  [prop1]: "Tom",
+  [prop2]: 37,
+};
+console.log(tom); // {name: "Tom", age: 37}
+console.log(tom.name); // Tom
+console.log(tom["age"]); // 37
+```
+
+Благодая этому, например, можно динамически создавать объекты с произвольными названиями свойств:
+
+```js
+function createObject(propName, propValue) {
+  return {
+    [propName]: propValue,
+    print() {
+      console.log(`${propName}: ${propValue}`);
+    },
+  };
+}
+const person = createObject("name", "Tom");
+person.print(); // name: Tom
+
+const book = createObject("title", "JavaScript Reference");
+book.print(); // title: JavaScript Reference
+```
+
+<hr />
+
+## Методы в объекте
+
+Методы объекта определяют его поведение или действия, которые он производит. Методы представляют собой функции.
+
+```js
+const user = {
+  name: "Tom",
+  age: 26,
+  display: function () {
+    console.log(this.name);
+    console.log(this.age);
+  },
+};
+
+// вызов метода
+user.display();
+```
+
+Сокращенный способ определения методов, когда двоеточие и слово function опускаются:
+
+```js
+let user = {
+  ...
+  display(){
+      console.log(this.name, this.age);
+    },
+  move(place){
+        console.log(this.name, "goes to", place);
+    }
+}
+
+user.display(); // Tom 26
+user.move("the shop");  // Tom goes to the shop
+```
+
+<hr />
+
+## Деструктуризация
+
+В JavaScript деструктуризация работает почти со всеми структурированными типами данных, но по сути есть два основных случая: **объекты** и **массивы**.
+Остальное — производные от них.
+
+Можно доставать свойства объекта по именам:
+
+```js
+const user = {
+  name: "Alex",
+  age: 25,
+};
+
+const { name, age } = user;
+
+console.log(name); // Alex
+console.log(age); // 25
+```
+
+Можно переименовывать и задавать значения по умолчанию:
+
+- `name: userName` — переименование; взять свойство `name` из `user`, сохранить его в переменную `userName`
+- `city = "Warsaw"` — значение по умолчанию; если в объекте нет `city`, то использовать `"Warsaw"`
+
+```js
+const user = {
+  name: "Alex",
+  age: 25,
+};
+
+const { name: userName, city = "Warsaw" } = user;
+console.log(userName); // Alex
+console.log(city); // Warsaw
+```
+
+<hr />
+
+### Вложенная деструктуризация
+
+— это когда ты “достаёшь данные внутри данных”. То есть не просто из объекта, а из объекта внутри объекта.
+
+```js
+const user = {
+  name: "Alex",
+  address: {
+    city: "Warsaw",
+    zip: 12345,
+  },
+};
+```
+
+Без деструктуризации:
+
+```js
+const city = user.address.city;
+const zip = user.address.zip;
+```
+
+С деструктуризацией: берём `user`, из него берём `address`, из `address` сразу достаём `city` и `zip`
+
+:::danger
+Переменная `address` НЕ создаётся
+:::
+
+```js
+const {
+  address: { city, zip },
+} = user;
+
+console.log(city); // Warsaw
+console.log(zip); // 12345
+console.log(address); // ReferenceError: address is not defined
+```
+
+Если нужно сохранить и объект тоже:
+
+```js
+const {
+  address,
+  address: { city, zip },
+} = user;
+
+console.log(city); // Warsaw
+console.log(zip); // 12345
+console.log(address); // { city: 'Warsaw', zip: 12345 }
+```
