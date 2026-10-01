@@ -59,4 +59,20 @@ https://www.youtube.com/shorts/Jdq_UxojinQ format file detector
 https://www.youtube.com/shorts/m1kHnJFkEzU dashboard for browser
 https://www.youtube.com/shorts/yJXn5jCGsX0 извлекает текст из картинок (через ИИ)
 https://www.youtube.com/shorts/K_88NT5Z4Qk cryptolayer + cli (шифровка внутри мессенджеров)
+https://www.youtube.com/shorts/QDng40Zq8B8 cryptolayer webui
 https://www.youtube.com/shorts/9U69acnOms4 транслирует звук по протоколу shoutcast
+https://www.youtube.com/shorts/ejZRjRl8WSI rathole Reverse tunnel / проброс TCP/UDP через сервер
+https://www.youtube.com/shorts/mxchh1ZtJC4 headscale (tailscale)
+https://www.youtube.com/shorts/zym8Y8m7w4M utils redraw icons for linux
+https://www.youtube.com/shorts/gNNym2Mglkg wallpaper engine (linux)
+https://www.youtube.com/shorts/1O-oMhC3Zuk music downloader in tg
+
+sh:
+
+- обязательно ли переменные с большой буквы?
+- как использовать эти переменные
+- выражжения
+- что такое > dev/null
+
+insomnia / postman
+git clients: Fork, GitKraken
