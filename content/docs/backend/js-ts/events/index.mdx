@@ -1,0 +1,113 @@
+---
+title: Events
+---
+
+## Event Emitter
+
+```js
+const EventEmitter = require("events");
+```
+
+### Создание нового EventEmitter
+
+```js
+const myEmitter = new EventEmitter();
+```
+
+### Подписать на событие (`addListener()` / `on()` / `prependListener()`)
+
+Для `EventEmitter` в **Node.js** `addListener()` и `on()` — это одно и то же.
+
+`prependListener()` добавляет в начало массива слушателей
+
+```js
+myEmitter.addListener("name", handler);
+```
+
+```js
+myEmitter.on("name", handler);
+```
+
+```js
+myEmitter.prependListener("name", handler);
+```
+
+### Подписать на событие 1 раз (`once()`)
+
+```js
+myEmitter.once("name", handler);
+```
+
+### Вызвать событие (`emit()`)
+
+```js
+emitter.emit("name");
+```
+
+### Отписаться от события (`removeListener()` / `off()`)
+
+```js
+myEmitter.removeListener("name", handler);
+```
+
+```js
+myEmitter.off("name", handler);
+```
+
+### Отписать всех от события (`removeAllListener()`)
+
+### Кол-во слушателей
+
+По дефолту их `10`
+
+#### Ограничить (`setMaxListeners()`)
+
+```js
+myEmitter.setMaxListeners(num);
+```
+
+#### Получить кол-во возможных (`getMaxListeners()`)
+
+```js
+myEmitter.getMaxListeners();
+```
+
+#### Получить кол-во слушателей (`listenerCount()`)
+
+```js
+myEmitter.listenerCount("name");
+```
+
+#### Вывести слушателей (`listeners()`)
+
+```js
+myEmitter.listeners("name");
+```
+
+### Вывод event'ов (`eventNames()`)
+
+```js
+myEmitter.eventNames();
+```
+
+<hr />
+
+## Event Target
+
+### Создание нового EventTarget
+
+```js
+const target = new EventTarget();
+```
+
+### Подписать на событие (`addEventListener()`)
+
+```js
+target.addEventListener("name", handler);
+```
+
+### Вызвать событие (`dispatchEvent()`)
+
+```js
+target.dispatchEvent(new Event(`name`));
+```

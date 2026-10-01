@@ -3,6 +3,7 @@
     "global-vars",
     "module-vars",
     "events",
+    "node-api",
     "---JavaScript---",
     "...js",
     "--- ---",
