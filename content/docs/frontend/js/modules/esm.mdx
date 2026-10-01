@@ -55,6 +55,34 @@ const user = getUser();
 console.log(user);
 ```
 
+{/* prettier-ignore */}
+## Import * as
+
+```js
+import * as name from "./module.js";
+```
+
+Означает: импортировать все экспортируемые сущности модуля как один объект `name`.
+
+```js
+name.func();
+let a = name.variable;
+```
+
+```js
+import { userName } as name from "./module.js";
+```
+
+Означает: импортировать сущность `userName` модуля как `name`.
+
+## Async Import
+
+```js
+async function name() {
+  const { name, id } = await import("./user.js");
+}
+```
+
 <hr />
 
 ## Использование
