@@ -4,7 +4,11 @@
     "config",
     "init",
     "clone",
-    "---Ветки/Branches---",
-    "---Commits---"
+    "---Commits---",
+    "status",
+    "add",
+    "diff",
+    "commit",
+    "---Ветки/Branches---"
   ]
 }

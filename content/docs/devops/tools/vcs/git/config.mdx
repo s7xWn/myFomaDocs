@@ -15,33 +15,48 @@ title: config | Конфигурация
 
 Git хранит настройки на трех уровнях.
 
-:::important[Приоритет]
-Локальные > глобальные > системные.
-:::
+<Callout title="Приоритет">
+**Локальные** > **глобальные** > **системные**.
+</Callout>
 
 ### Локально
 
 Только для текущего репозитория
 
+<details>
+  <summary>Пример</summary>
+
 ```bash
 git config user.name "Local User"
 ```
+
+</details>
 
 ### Глобально
 
 Для текущего пользователя
 
+<details>
+  <summary>Пример</summary>
+
 ```bash
 git config --global user.name "Global User"
 ```
+
+</details>
 
 ### Системно
 
 Для всех пользователей
 
+<details>
+  <summary>Пример</summary>
+
 ```bash
 git config --system core.editor vim
 ```
+
+</details>
 
 <hr />
 
