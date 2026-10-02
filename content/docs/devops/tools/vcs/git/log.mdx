@@ -1,0 +1,51 @@
+---
+title: log | История коммитов
+---
+
+`git log` — это команда Git, которая показывает историю коммитов в репозитории.
+
+```bash
+git log
+```
+
+Покажет примерно:
+
+```
+commit a1b2c3d4
+Author: Ivan <ivan@example.com>
+Date:   Thu Oct 2 18:30:00 2026
+
+    Добавил авторизацию
+```
+
+<hr />
+
+## `--online` - Короткая история
+
+```bash
+git log --oneline
+```
+
+<hr />
+
+## `--graph` - Ветвления
+
+```bash
+git log --graph
+```
+
+<hr />
+
+## `-5` - Показывает последние n коммитов
+
+```bash
+git log -5
+```
+
+<hr />
+
+## `--author="Name"` - Показывает коммиты автора
+
+```bash
+git log --author="Name"
+```

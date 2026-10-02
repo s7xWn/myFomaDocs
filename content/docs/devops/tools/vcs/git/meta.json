@@ -4,6 +4,7 @@
     "config",
     "init",
     "clone",
+    "log",
     "---Commits---",
     "status",
     "add",
