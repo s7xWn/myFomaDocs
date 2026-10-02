@@ -2,12 +2,40 @@
 title: os
 ---
 
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
 — это встроенный модуль, который позволяет получать информацию об операционной системе и окружении, в котором запущено приложение.
 
-```js
-const os = require("os");
-```
+<Tabs groupId="modules" items={["ESM", "CommonJS"]}>
+  <Tab value="ESM">
 
-```js
-import os from "os";
-```
+    ```js
+    import os from "os";
+    ```
+
+  </Tab>
+  <Tab value="CommonJS">
+
+    ```js
+    const os = require("os");
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## Методы
+
+| Метод                    | Что возвращает                          |
+| ------------------------ | --------------------------------------- |
+| `os.platform()`          | Платформу (`linux`, `win32`, `darwin`)  |
+| `os.arch()`              | Архитектуру процессора                  |
+| `os.cpus()`              | Массив, каждый элем - информациа о ядре |
+| `os.totalmem()`          | Объём оперативной памяти                |
+| `os.freemem()`           | Свободную оперативную память            |
+| `os.hostname()`          | Имя компьютера                          |
+| `os.homedir()`           | Домашнюю директорию пользователя        |
+| `os.tmpdir()`            | Путь к временной папке                  |
+| `os.userInfo()`          | Информацию о текущем пользователе       |
+| `os.networkInterfaces()` | Сетевые интерфейсы                      |

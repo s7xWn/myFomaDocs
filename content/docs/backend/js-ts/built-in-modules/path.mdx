@@ -2,15 +2,26 @@
 title: path
 ---
 
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
 — это встроенный модуль для работы с путями к файлам и папкам.
 
-```js
-const path = require("path");
-```
+<Tabs groupId="modules" items={["ESM", "CommonJS"]}>
+  <Tab value="ESM">
 
-```js
-import path from "node:path";
-```
+    ```js
+    import path from "node:path";
+    ```
+
+  </Tab>
+  <Tab value="CommonJS">
+  
+    ```js
+    const path = require("path");
+    ```
+
+  </Tab>
+</Tabs>
 
 <hr />
 
