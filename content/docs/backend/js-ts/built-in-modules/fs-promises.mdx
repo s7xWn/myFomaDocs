@@ -1,0 +1,220 @@
+---
+title: fs/promises
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+— это API в Node.js для работы с файловой системой через Promise.
+
+Позволяет читать, создавать, изменять и удалять файлы и папки с `async`/`await`.
+
+С его помощью можно:
+
+- читать файлы;
+- создавать и изменять файлы;
+- создавать, удалять и переименовывать папки;
+- удалять файлы;
+- получать информацию о файлах.
+
+<Tabs groupId="modules" items={["ESM", "CommonJS"]}>
+  <Tab value="ESM">
+
+    ```js
+    import {
+    readFile,
+    writeFile,
+    appendFile,
+    mkdir,
+    readdir,
+    rename,
+    unlink,
+    rm,
+    } from "node:fs/promises";
+    ```
+
+  </Tab>
+  <Tab value="CommonJS">
+
+    ```js
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## `mkdir()` - Создание папки
+
+— это метод, который создаёт папку (директорию).
+
+<Tabs groupId="modules" items={["ESM", "CommonJS"]}>
+  <Tab value="ESM">
+
+    ```js
+    await mkdir("folderName");
+    ```
+
+  </Tab>
+  <Tab value="CommonJS">
+
+    ```js
+    ```
+
+  </Tab>
+</Tabs>
+
+`folderName` будет относительным путём — он будет интерпретироваться относительно текущей рабочей директории (`process.cwd()`), а не обязательно относительно файла с кодом.
+
+```js
+path.resolve(__dirname, "folderName");
+```
+
+привяжет путь к расположению относительно расположения текущего JS-файла.
+
+### Рекурсия
+
+<Tabs groupId="modules" items={["ESM", "CommonJS"]}>
+  <Tab value="ESM">
+
+    ```js
+    await mkdir("folderName/folder/fldr", { recursive: true });
+    ```
+
+  </Tab>
+  <Tab value="CommonJS">
+
+    ```js
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## `rm` - Удаление папки
+
+— это метод модуля `fs`, который удаляет директорию (папку).
+
+<Tabs groupId="modules" items={["ESM", "CommonJS"]}>
+  <Tab value="ESM">
+
+    ```js
+    await rm("folderName");
+    ```
+
+  </Tab>
+  <Tab value="CommonJS">
+
+    ```js
+    ```
+
+  </Tab>
+</Tabs>
+
+### Рекурсия
+
+<Tabs groupId="modules" items={["ESM", "CommonJS"]}>
+  <Tab value="ESM">
+
+    ```js
+    await rm("folderName/folder/fldr", { recursive: true });
+    ```
+
+  </Tab>
+  <Tab value="CommonJS">
+
+    ```js
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## `writeFile()` - Создание/перезапись файла
+
+— это метод Node.js, который записывает данные в файл.
+
+<Callout title="Важный момент" type="warn">
+  Метод перезаписывает файл
+</Callout>
+
+<Tabs groupId="modules" items={["ESM", "CommonJS"]}>
+  <Tab value="ESM">
+
+    ```js
+    await writeFile("file.txt", "Text to write");
+    ```
+
+  </Tab>
+  <Tab value="CommonJS">
+
+    ```js
+    ```
+
+  </Tab>
+</Tabs>
+
+Если `file.txt` не существует — Node.js создаст его.
+
+### Запись JSON
+
+<hr />
+
+## `appendFile()` - Добавление в конец файла
+
+<Tabs groupId="modules" items={["ESM", "CommonJS"]}>
+  <Tab value="ESM">
+
+    ```js
+    await appendFile("file.txt", " ещё текст");
+    ```
+
+  </Tab>
+  <Tab value="CommonJS">
+
+    ```js
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## `readFile()` - прочитать файл
+
+<Tabs groupId="modules" items={["ESM", "CommonJS"]}>
+  <Tab value="ESM">
+
+    ```js
+    const text = await readFile("file.txt", "encoding");
+    ```
+
+  </Tab>
+  <Tab value="CommonJS">
+
+    ```js
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## `unlink()` - удалить файл
+
+<Tabs groupId="modules" items={["ESM", "CommonJS"]}>
+  <Tab value="ESM">
+
+    ```js
+    await unlink("file.txt");
+    ```
+
+  </Tab>
+  <Tab value="CommonJS">
+
+    ```js
+    ```
+
+  </Tab>
+</Tabs>

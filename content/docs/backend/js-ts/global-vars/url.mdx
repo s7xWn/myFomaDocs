@@ -1,0 +1,91 @@
+---
+title: URL()
+---
+
+— это объект и встроенный модуль для работы с адресами в интернете.
+
+```js
+const url = new URL("https://example.com:8080/users?id=123#profile");
+```
+
+<hr />
+## Поля объекта
+
+### `href`
+
+```js
+const url = new URL("https://example.com:8080/users?id=123#profile");
+console.log(url.href); // https://example.com:8080/users?id=123#profile
+```
+
+<hr />
+
+### `origin`
+
+```js
+const url = new URL("https://example.com:8080/users?id=123#profile");
+console.log(url.origin); // https://example.com:8080
+```
+
+<hr />
+
+### `host`
+
+```js
+const url = new URL("https://example.com:8080/users?id=123#profile");
+console.log(url.host); // example.com:8080
+```
+
+<hr />
+
+### `hostname`
+
+```js
+const url = new URL("https://example.com:8080/users?id=123#profile");
+console.log(url.hostname); // example.com
+```
+
+<hr />
+
+### `port`
+
+```js
+const url = new URL("https://example.com:8080/users?id=123#profile");
+console.log(url.port); // 8080
+```
+
+<hr />
+
+### `pathname`
+
+```js
+const url = new URL("https://example.com:8080/users?id=123#profile");
+console.log(url.pathname); // /users
+```
+
+<hr />
+
+### `search`
+
+```js
+const url = new URL("https://example.com:8080/users?id=123#profile");
+console.log(url.search); // ?id=123
+```
+
+<hr />
+
+## `searchParams` - Query-параметры
+
+### `get()` - Получение query-параметра
+
+```js
+url.searchParams.get("param"); // value
+```
+
+### `set()` - Установка query-параметра
+
+```js
+url.searchParams.set("param", "value");
+```
+
+<hr />

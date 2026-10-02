@@ -1,0 +1,91 @@
+---
+title: path
+---
+
+— это встроенный модуль для работы с путями к файлам и папкам.
+
+```js
+const path = require("path");
+```
+
+```js
+import path from "node:path";
+```
+
+<hr />
+
+## `join()` - Склейка пути
+
+Объединяет части пути.
+
+<Callout title="Главное преимущество" type="success">
+
+`path` учитывает особенности операционной системы
+
+</Callout>
+
+```js
+path.join("path1", "path2", "file.txt"); // path1/path2/file.txt
+```
+
+<hr />
+
+## `resolve()` - Создания абсолютного пути
+
+Создаёт абсолютный путь. Точный результат зависит от того, из какой директории запущена программа.
+
+```js
+path.resolve("files", "file.txt"); // /home/alex/project/files/file.txt
+```
+
+`resolve()` строит путь от текущей рабочей директории (`process.cwd()`).
+
+```
+path.resolve('files', 'test.txt')
+        ↓
+относительно process.cwd()
+
+path.join(__dirname, 'files', 'test.txt')
+        ↓
+относительно расположения текущего JS-файла
+```
+
+<hr />
+
+## `parse()` - Парсинг пути
+
+Разбирает путь к файлу на отдельные части и возвращает объект.
+
+```js
+path.parse(path);
+```
+
+Вывод примерно:
+
+```js
+{
+  root: '/',
+  dir: '/home/user/files',
+  base: 'test.txt',
+  ext: '.txt',
+  name: 'test'
+}
+```
+
+<hr />
+
+## `isAbsolute()` - Проверка на абсолютный путь
+
+<hr />
+
+## `sep` - Разделитель в ОС
+
+<hr />
+
+## `basename` - Название файла
+
+<hr />
+
+## `extname` - Расширение файла
+
+<hr />

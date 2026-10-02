@@ -2,6 +2,7 @@
   "pages": [
     "global-vars",
     "module-vars",
+    "built-in-modules",
     "events",
     "node-api",
     "---JavaScript---",

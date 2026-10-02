@@ -8,3 +8,100 @@ title: "Глобальные переменные"
 - `process` — информация и управление текущим процессом
 - `console` — вывод в консоль
 - `Buffer` — работа с бинарными данными
+
+<hr />
+
+## `process`
+
+### `pid`
+
+— это идентификатор (PID) текущего процесса, в котором запущено Node.js-приложение.
+
+```js
+process.pid; // pid
+```
+
+<hr />
+
+### `env`
+
+— это объект с переменными окружения (environment variables) текущего процесса.
+
+```js
+process.env;
+```
+
+<Callout>
+Значения из `process.env` обычно являются строками.
+
+```js
+console.log(typeof process.env.PORT);
+// "string"
+```
+
+</Callout>
+
+#### Задать переменные через `.env`
+
+```bash
+node --env-file=.env app.js
+```
+
+|                            | `--env-file`                  | `dotenv`                     |
+| -------------------------- | ----------------------------- | ---------------------------- |
+| Установка                  | ❌                            | `npm i dotenv`               |
+| Внешняя зависимость        | ❌                            | ✅                           |
+| Использование              | `node --env-file=.env app.js` | `require('dotenv').config()` |
+| Современный Node.js        | ✅                            | ✅                           |
+| Старые версии Node.js      | ❌                            | ✅                           |
+| Очень сложная конфигурация | Ограниченно                   | Более гибко                  |
+
+#### Задать переменные через параметры
+
+Установить `cross-env`
+
+- Для Linux/macOS `cross-env` не нужен.
+
+```bash
+npm install --save-dev cross-env
+```
+
+Для Linux/macOS
+
+```bash
+NAME=VALUE node app.js
+```
+
+Для `cross-env`
+
+```bash
+cross-env NAME=VALUE node server.js
+```
+
+<hr />
+
+### `argv`
+
+— это массив аргументов командной строки, с которыми был запущен JavaScript-файл.
+
+```bash
+node app.js var1 var2
+```
+
+```js
+process.argv;
+```
+
+- `process.argv[0]` — путь к исполняемому Node.js
+- `process.argv[1]` — путь к твоему файлу
+- `process.argv[2]` и далее — аргументы, которые передал пользователь
+
+<hr />
+
+### `exit()`
+
+— это метод, который немедленно завершает работу текущего Node.js-процесса.
+
+```js
+process.exit();
+```
