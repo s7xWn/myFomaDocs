@@ -37,3 +37,71 @@ nest new my-app
 <hr />
 
 ## Структура
+
+NestJS использует `reflect-metadata`, `rxjs`
+
+```
+my-nest-app/
+├── src/
+│   ├── app.controller.ts
+│   ├── app.controller.spec.ts
+│   ├── app.module.ts
+│   ├── app.service.ts
+│   └── main.ts
+│
+├── test/
+│   ├── app.e2e-spec.ts
+│   └── jest-e2e.json
+│
+├── .prettierrc
+├── eslint.config.mjs
+├── nest-cli.json
+├── package.json
+├── package-lock.json
+├── tsconfig.build.json
+├── tsconfig.json
+└── README.md
+```
+
+`src/`:
+
+- `main.ts` — точка входа приложения.
+- `app.module.ts` — корневой модуль.
+- `app.controller.ts` — контроллер для обработки HTTP-запросов.
+- `app.service.ts` — сервис с бизнес-логикой.
+- `app.controller.spec.ts` — unit-тест контроллера.
+
+`test/` — e2e-тесты.
+
+<hr />
+
+## Команды
+
+| Команда                     | Назначение                              | Пример                                   |
+| --------------------------- | --------------------------------------- | ---------------------------------------- |
+| `nest new`                  | Создать новый проект                    | `nest new my-app`                        |
+| `nest start`                | Запустить приложение                    | `nest start`                             |
+| `nest start --watch`        | Запустить в режиме наблюдения           | `nest start --watch`                     |
+| `nest build`                | Собрать проект                          | `nest build`                             |
+| `nest generate module`      | Создать модуль                          | `nest g module users`                    |
+| `nest generate controller`  | Создать контроллер                      | `nest g controller users`                |
+| `nest generate service`     | Создать сервис                          | `nest g service users`                   |
+| `nest generate resource`    | Создать полноценный resource            | `nest g resource users`                  |
+| `nest generate class`       | Создать класс                           | `nest g class users/dto/create-user.dto` |
+| `nest generate interface`   | Создать интерфейс                       | `nest g interface users/interfaces/user` |
+| `nest generate middleware`  | Создать middleware                      | `nest g middleware logger`               |
+| `nest generate guard`       | Создать guard                           | `nest g guard auth`                      |
+| `nest generate interceptor` | Создать interceptor                     | `nest g interceptor logging`             |
+| `nest generate pipe`        | Создать pipe                            | `nest g pipe validation`                 |
+| `nest generate filter`      | Создать exception filter                | `nest g filter http-exception`           |
+| `nest generate gateway`     | Создать WebSocket gateway               | `nest g gateway events`                  |
+| `nest generate decorator`   | Создать кастомный decorator             | `nest g decorator current-user`          |
+| `nest generate provider`    | Создать provider                        | `nest g provider database`               |
+| `nest info`                 | Показать информацию о проекте и версиях | `nest info`                              |
+| `nest --help`               | Показать справку CLI                    | `nest --help`                            |
+
+<hr />
+
+## Ссылки
+
+- [PurpleSchool | Anton Larichev | Nestjs - быстрый курс по лучшему Node js фреймворку](https://www.youtube.com/watch?v=j2-GqaeSueA)
