@@ -1,0 +1,22 @@
+{
+  "pages": [
+    "component",
+    "hooks",
+    "--- ---",
+    "patterns",
+    "auth",
+    "---[Blocks]Доп. библиотеки---",
+    "routers",
+    "state-managers",
+    "server-state-managers",
+    "form-management",
+    "i18n",
+    "--- ---",
+    "ui-ux",
+    "animations",
+    "---[PencilRuler]Доп. инструменты---",
+    "dev-tools",
+    "--- ---",
+    "..."
+  ]
+}
