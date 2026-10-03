@@ -1,0 +1,96 @@
+---
+title: Redis
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+| [Off. website](https://redis.io) |
+| -------------------------------- |
+
+Redis — это очень быстрое хранилище данных, которое в основном работает в **оперативной памяти (RAM)**. Его часто используют рядом с основной базой данных, чтобы ускорить приложение.
+
+> Название исторически расшифровывается как REmote DIctionary Server.
+
+По сути, Redis хранит данные в формате «ключ → значение»:
+
+```
+"user:123:name" → "Alex"
+"cart:123"      → ["apple", "milk"]
+"visits"        → 15240
+```
+
+<hr />
+
+## Используется
+
+Redis используется в качестве:
+
+- Базы данных
+- Кэша
+- Брокер сообщений
+
+и др.
+
+<hr />
+
+## Установка
+
+<Callout>Вместе с `redis-server` установится `redis-cli`</Callout>
+
+### Linux
+
+```bash
+sudo apt install redis-server
+```
+
+```bash
+sudo systemctl start redis-server
+```
+
+### Windows
+
+<Tabs groupId="windows" items={["WSL2", "Docker"]}>
+
+  <Tab value="WSL2">
+  
+  ```bash
+  sudo apt install redis-server 
+  ```
+  
+  </Tab>
+  
+  <Tab value="Docker">
+  
+  ```bash
+    docker run -d \
+    --name redis \
+    -p 6379:6379 \
+    redis
+  ```
+  
+  </Tab>
+</Tabs>
+
+### MacOS (brew)
+
+```bash
+brew install redis
+```
+
+Проверить Redis в списке сервисов:
+
+```bash
+brew services list
+```
+
+Запустить Redis:
+
+```bash
+brew services start redis
+```
+
+<hr />
+
+## Ссылки
+
+- [suchkov tech | Redis за 20 минут](https://www.youtube.com/watch?v=QpBaA6B1U90)

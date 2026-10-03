@@ -1,0 +1,45 @@
+---
+title: Hash
+---
+
+Hash в Redis — это структура данных, которая хранит набор пар ключ → значение внутри одного Redis-ключа.
+
+<hr />
+
+## Основные операции
+
+### HSET - записать поле
+
+```bash
+HSET key keyRow1 keyValue1 kR2 "kV2" keyRow3 3
+```
+
+### HGET - получить поле
+
+```bash
+HSET key keyRow
+```
+
+### HMGET - получить несколько полей
+
+```bash
+HMGET key keyRow1 keyRow2
+```
+
+### HGETALL
+
+```bash
+HGETALL key
+```
+
+<hr />
+
+## Основные числовые операции
+
+### HINCRBY - увеличить числовое поле на n
+
+```bash
+HINCRBY key keyRow1 n
+```
+
+- n -> число, на которое будет увеличенно
