@@ -1,0 +1,50 @@
+---
+title: Bun
+---
+
+Bun — это современный JavaScript/TypeScript runtime, который также включает package manager (менеджер пакетов), bundler и тест-раннер.
+
+<hr />
+
+## Установка
+
+### Linux / MacOS
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
+### Windows
+
+```bash
+powershell -c "irm bun.sh/install.ps1 | iex"
+```
+
+<hr />
+
+## Команды
+
+| Команда                 | Назначение                               | Пример                     |
+| ----------------------- | ---------------------------------------- | -------------------------- |
+| `bun --version`         | Показать версию Bun                      | `bun --version`            |
+| `bun init`              | Создать новый проект                     | `bun init`                 |
+| `bun install`           | Установить зависимости                   | `bun install`              |
+| `bun add <pkg>`         | Добавить зависимость                     | `bun add express`          |
+| `bun add -d <pkg>`      | Добавить dev-зависимость                 | `bun add -d typescript`    |
+| `bun remove <pkg>`      | Удалить зависимость                      | `bun remove express`       |
+| `bun update`            | Обновить зависимости                     | `bun update`               |
+| `bun outdated`          | Проверить устаревшие зависимости         | `bun outdated`             |
+| `bun pm`                | Команды для управления пакетами          | `bun pm ls`                |
+| `bun run <script>`      | Запустить npm-скрипт                     | `bun run dev`              |
+| `bun <file>`            | Запустить JS/TS-файл                     | `bun server.ts`            |
+| `bunx <pkg>`            | Запустить пакет/CLI                      | `bunx prisma`              |
+| `bun test`              | Запустить тесты                          | `bun test`                 |
+| `bun build`             | Собрать проект                           | `bun build ./src/index.ts` |
+| `bun create <template>` | Создать проект из шаблона                | `bun create vite`          |
+| `bun repl`              | Запустить интерактивную консоль          | `bun repl`                 |
+| `bun pm ls`             | Показать установленные пакеты            | `bun pm ls`                |
+| `bun pm cache`          | Работа с кешем пакетов                   | `bun pm cache`             |
+| `bun pm bin`            | Показать директорию с бинарниками        | `bun pm bin`               |
+| `bun pm trust`          | Управление доверием к lifecycle-скриптам | `bun pm trust`             |
+| `bun link`              | Связать локальный пакет с проектом       | `bun link my-package`      |
+| `bun unlink`            | Удалить локальную связь пакета           | `bun unlink my-package`    |
