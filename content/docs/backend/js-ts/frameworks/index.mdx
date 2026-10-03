@@ -1,0 +1,55 @@
+---
+title: Framework - это
+---
+
+Framework в Node.js — это готовый набор инструментов и правил, который помогает создавать приложения на Node.js.
+
+Сам Node.js даёт тебе довольно низкоуровневые возможности: HTTP, файлы, сеть, процессы и т. д. Framework добавляет поверх этого удобную структуру.
+
+<Callout title="Node.js ≠ framework">
+
+```
+JavaScript
+    ↓
+Node.js             ← среда выполнения
+    ↓
+[Express / Fastify]   ← framework
+    ↓
+[NestJS] ← framework
+    ↓
+Твоё приложение    ← API / backend
+```
+
+</Callout>
+
+<hr />
+
+## NestJS vs Express/Fastify
+
+```
+Node.js
+   │
+   ├── Express   ── простой, минималистичный
+   │
+   ├── Fastify   ── быстрый, минималистичный
+   │
+   └── NestJS    ── полноценная архитектура приложения
+                    │
+                    ├── Controllers
+                    ├── Services
+                    ├── Modules
+                    ├── Dependency Injection
+                    ├── Guards
+                    ├── Pipes
+                    └── Middleware
+```
+
+Главное отличие
+
+Express/Fastify дают тебе инструменты и говорят примерно:
+
+> Вот HTTP-сервер. Сам решай, как организовать проект».
+
+NestJS говорит:
+
+> Давай я предложу тебе архитектуру приложения и правила, как всё организовать».
