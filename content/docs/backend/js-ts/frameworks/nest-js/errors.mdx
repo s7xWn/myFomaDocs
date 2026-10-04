@@ -1,0 +1,41 @@
+---
+title: Ошибки
+---
+
+- `BadRequestException` → 400 — запрос некорректен
+- `UnauthorizedException` → 401 — нужна аутентификация
+- `ForbiddenException` → 403 — доступ запрещён
+- `NotFoundException` → 404 — ресурс не найден
+- `ConflictException` → 409 — конфликт, например дублика
+
+<hr />
+
+## BadRequestException
+
+`BadRequestException` в NestJS — это встроенное исключение для HTTP-ошибок 400 Bad Request. Его используют, когда сервер получил некорректные данные от клиента.
+
+```ts
+throw new BadRequestException("Text");
+```
+
+Клиент получит примерно:
+
+```json
+{
+  "error": "Bad Request",
+  "message": "Text",
+  "statusCode": 400
+}
+```
+
+### С объектом ошибки
+
+Можно передать более структурированное сообщение:
+
+```ts
+throw new BadRequestException({
+  message: "Некорректные данные",
+  field: "email",
+  reason: "Email уже используется",
+});
+```

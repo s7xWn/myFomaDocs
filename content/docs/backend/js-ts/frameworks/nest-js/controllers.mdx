@@ -1,0 +1,61 @@
+---
+title: Контроллеры
+---
+
+Контроллер — это входная точка твоего API. <br/>
+В NestJS контроллеры (Controllers) — это классы, обработчики входящих запросов/сообщений.
+
+Идея такая: контроллер говорит **«какой HTTP-запрос пришёл и что с ним делать»**, а сервис говорит **«как выполнить эту операцию»**. <br/>
+Controller = слой, который связывает внешний мир с приложением.
+
+NestJS поддерживает:
+
+- HTTP/REST — `@Get()`, `@Post()`, `@Put()` и т.д.
+- WebSockets — `@SubscribeMessage()`
+- Microservices — обработчики сообщений через `@MessagePattern()`, `@EventPattern()`
+
+<hr />
+
+## Создание и использование контроллера
+
+Контроллер создаётся:
+
+```bash
+nest g controller
+```
+
+Импортируется в модуле, в массиве контроллеров:
+
+```ts
+@Module({
+  controllers: [AppController],
+})
+```
+
+Описывается в своём файле:
+
+```ts
+import { Controller, Get } from "@nestjs/common";
+import { AppService } from "./app.service.js";
+
+@Controller()
+export class AppController {
+  constructor(private readonly appService: AppService) {}
+
+  @Get()
+  getHello(): string {
+    return this.appService.getHello();
+  }
+}
+```
+
+- `@Controller()` - декоратор контроллера, обозначает контроллер.
+  - в него можно передать путь, по которому контроллер будет реагировать: `@Controller('app')`
+- `constructor(private readonly appService: AppService) {}`
+- `@Get()` - декоратор метода для GET HTTP-запроса
+  - в него можно передать путь, по которому контроллер будет реагировать внутри данного контроллера: `@Get('get/:id')`<br/>
+    Пример: `@Controller('app')` + `@Get('get/:id')` = localhost:8080/app/get/123
+
+### `return` - то что вернётся на client
+
+<hr />

@@ -1,0 +1,116 @@
+---
+title: Декораторы
+---
+
+<hr />
+
+## Модули
+
+`@Module()` - описывает структуру NestJS-модуля.
+
+Внутри него:
+
+- `imports` -> то что модуль импортирует в себя.
+- `controllers` -> подключаются контроллеры, которые относятся к этому модулю
+- `providers` -> сервисы, репозетории ( то что обычно не является контроллером )
+- `exports` -> то что экспортирует.
+
+```ts
+@Module({
+  imports: [DatabaseModule],
+  controllers: [UsersController],
+  providers: [UsersService],
+  exports: [UsersService],
+})
+export class UsersModule {}
+```
+
+<hr />
+
+## Контроллеры и роуты
+
+| Декоратор       | Назначение         |
+| --------------- | ------------------ |
+| `@Controller()` | Создаёт контроллер |
+| `@Get()`        | GET                |
+| `@Post()`       | POST               |
+| `@Put()`        | PUT                |
+| `@Patch()`      | PATCH              |
+| `@Delete()`     | DELETE             |
+| `@Head()`       | HEAD               |
+| `@Options()`    | OPTIONS            |
+| `@All()`        | Любой HTTP-метод   |
+
+### Параметры
+
+Указываются через `:`
+
+```ts
+@Get(':id')
+```
+
+### Параметры HTTP-запроса
+
+| Декоратор      | Назначение             |
+| -------------- | ---------------------- |
+| `@Param()`     | параметры URL          |
+| `@Query()`     | query-параметры        |
+| `@Body()`      | body                   |
+| `@Headers()`   | HTTP-заголовки         |
+| `@Req()`       | @Request() — request   |
+| `@Res()`       | @Response() — response |
+| `@Ip()`        | IP клиента             |
+| `@HostParam()` | host-параметры         |
+
+```ts
+@Get(':id')
+getFunc(@Param('id', ParseIntPipe) id:number) {
+    return id;
+}
+```
+
+`ParseIntPipe` - парсит в number
+
+#### Валидация
+
+NestJS вернёт клиенту ошибку примерно такого вида:
+
+```json
+{
+  "statusCode": 400,
+  "message": "Validation failed (numeric string is expected)",
+  "error": "Bad Request"
+}
+```
+
+<hr />
+
+## Dependency Injection
+
+| Декоратор             | Назначение                          |
+| --------------------- | ----------------------------------- |
+| `@Injectable()`       | класс может участвовать в DI.       |
+| `@Inject()`           | явно указать dependency/token.      |
+| `@Optional()`         | dependency необязательная.          |
+| `@InjectRepository()` | используется с TypeORM.             |
+| `@InjectModel()`      | используется, например, с Mongoose. |
+
+<hr />
+
+## Guards
+
+## Interceptors
+
+## Pipes
+
+## Filters
+
+## Middleware
+
+## Swagger
+
+## WebSockets
+
+## Микросервисы
+
+## Собственные декораторы

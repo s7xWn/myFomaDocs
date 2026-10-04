@@ -1,0 +1,3 @@
+{
+  "pages": ["modules", "decorators", "controllers", "errors", "dto"]
+}

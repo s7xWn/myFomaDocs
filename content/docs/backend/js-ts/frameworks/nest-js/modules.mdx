@@ -1,0 +1,129 @@
+---
+title: Модули
+---
+
+В NestJS модуль — это способ организовать приложение по функциональным частям. Модуль объединяет связанные контроллеры, сервисы, провайдеры и другие модули.
+
+<hr />
+
+## Жизненный цикл модуля
+
+1. `OnModuleInit` -> моудль инициализирован.
+2. `OnApplicationBootstrap` -> модуль начал работу.
+3. `OnModuleDestroy` -> модуль уничтожается перед завершением приложения.
+4. `OnApplicationShutdown` -> при поступлении внешнего сигнала о завершении.
+
+<hr />
+
+## Создание модуля
+
+```bash
+nest g module <moduleName>
+```
+
+<hr />
+
+## Простой пример реализации интернет-магазина
+
+<details>
+  <summary>Пример</summary>
+
+Допустим, у нас интернет-магазин. Можно сделать:
+
+```
+src/
+├── users/
+│   ├── users.module.ts
+│   ├── users.controller.ts
+│   └── users.service.ts
+│
+├── products/
+│   ├── products.module.ts
+│   ├── products.controller.ts
+│   └── products.service.ts
+│
+└── app.module.ts
+```
+
+Модуль пользователей:
+
+```ts
+import { Module } from "@nestjs/common";
+import { UsersController } from "./users.controller";
+import { UsersService } from "./users.service";
+
+@Module({
+  controllers: [UsersController],
+  providers: [UsersService],
+  exports: [UsersService],
+})
+export class UsersModule {}
+```
+
+Здесь:
+
+- `controllers` — контроллеры, которые обрабатывают HTTP-запросы;
+- `providers` — сервисы и другие зависимости, которыми управляет NestJS;
+- `exports` — что этот модуль разрешает использовать другим модулям;
+- `imports` — какие другие модули нужны этому модулю.
+
+Как модули связываются
+
+Например, `ProductsModule` хочет использовать `UsersService`:
+
+```ts
+@Module({
+  imports: [UsersModule],
+  controllers: [ProductsController],
+  providers: [ProductsService],
+})
+export class ProductsModule {}
+```
+
+Почему это работает?
+
+Потому что `UsersModule` экспортирует `UsersService`: `exports: [UsersService]` <br/>
+А `ProductsModule` импортирует `UsersModule`: `imports: [UsersModule]`<br/>
+Получается цепочка:
+
+```
+UsersModule
+    │
+    ├── UsersController
+    └── UsersService
+           │
+           │ exports
+           ▼
+ProductsModule
+    │
+    └── ProductsService
+           │
+           └── может использовать UsersService
+```
+
+<hr />
+
+Обычно есть корневой модуль `AppModule`:
+
+```ts
+@Module({
+  imports: [UsersModule, ProductsModule],
+})
+export class AppModule {}
+```
+
+Именно от `AppModule` NestJS начинает строить граф зависимостей приложения.
+
+Можно представить всё приложение так:
+
+```
+                 AppModule
+                /         \
+               ▼           ▼
+        UsersModule    ProductsModule
+             │               │
+             ▼               ▼
+        UsersService   ProductsService
+```
+
+</details>
