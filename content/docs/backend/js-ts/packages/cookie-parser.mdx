@@ -1,0 +1,144 @@
+---
+title: cookie-parser
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+`cookie-parser` — это middleware для Express.js, который разбирает HTTP cookies из входящего запроса и делает их доступными через `req.cookies`.
+
+<hr />
+
+## Зачем нужен
+
+Чаще всего для работы с:
+
+- авторизацией через cookies;
+- session ID;
+- настройками пользователя;
+- JWT, хранящимися в cookie;
+- подписанными cookies.
+
+<hr />
+
+## Установка
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    
+    ```bash
+    npm install cookie-parser
+    ```
+
+  </Tab>
+  <Tab value="yarn">
+    
+    ```bash
+    yarn add cookie-parser
+    ```
+
+  </Tab>
+  <Tab value="pnpm">
+    
+    ```bash
+    pnpm add cookie-parser
+    ```
+
+  </Tab>
+  <Tab value="bun">
+
+    ```bash
+    bun add cookie-parser
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## Использование
+
+```ts
+import cookieParser from "cookie-parser";
+```
+
+```ts
+app.use(cookieParser()); // const app = express();
+```
+
+Доступ к cookies:
+
+```ts
+req.cookies;
+```
+
+<details>
+  <summary>Пример</summary>
+
+Если браузер отправил:
+
+```http
+Cookie: userId=123; theme=dark
+```
+
+то Express получит:
+
+```ts
+req.cookies;
+// {
+//   userId: '123',
+//   theme: 'dark'
+// }
+```
+
+</details>
+
+<hr />
+
+## Signed cookies (подписанные куки)
+
+Signed cookies — это cookies, у которых сервер добавляет криптографическую подпись, чтобы обнаружить изменение значения на стороне клиента.
+
+```ts
+app.use(cookieParser("my-secret"));
+```
+
+```ts
+req.signedCookies;
+```
+
+<Callout>Signed cookie не шифрует значение.</Callout>
+
+#### Как это работает
+
+Представь обычную cookie: `userId=123` <br/>
+Пользователь может открыть DevTools и изменить её: `userId=999` <br/>
+Сервер сам по себе не знает, было ли значение изменено.
+
+С `cookie-parser` ты задаёшь секрет:
+
+```ts
+app.use(cookieParser("my-secret"));
+```
+
+Когда сервер отправляет:
+
+```ts
+res.cookie("userId", "123", { signed: true });
+```
+
+cookie фактически содержит значение + подпись: `userId=123.<signature>` <br/>
+Подпись вычисляется на основе: `значение + секрет`<br/>
+
+Если пользователь поменяет: `userId=123` на `userId=999` -> подпись больше не совпадёт.<br/>
+При чтении:
+
+```ts
+req.signedCookies.userId;
+```
+
+`cookie-parser` проверяет подпись:
+
+- ✅ подпись правильная → возвращает "123"
+- ❌ подпись неправильная → значение считается подделанным
+
+<hr />
