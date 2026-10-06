@@ -89,6 +89,24 @@ brew services list
 brew services start redis
 ```
 
+### Docker compose
+
+```yml
+services:
+  redis:
+    container_name: redisLearn
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - 6779:6379
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:
+```
+
 <hr />
 
 ## Подключение
