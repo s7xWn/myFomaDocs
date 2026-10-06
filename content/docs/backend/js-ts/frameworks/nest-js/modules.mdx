@@ -6,20 +6,45 @@ title: Модули
 
 <hr />
 
+## Создание модуля
+
+```bash
+nest g module <moduleName>
+```
+
+<hr />
+
+## Структура модуля
+
+```ts
+@Module({
+  imports: [],
+  controllers: [],
+  providers: [],
+  exports: [],
+})
+export class Module {}
+```
+
+- `imports` → какие другие модули нужны UserModule
+- `controllers` → какие HTTP-контроллеры принадлежат модулю
+- `providers` → какие сервисы/зависимости нужно зарегистрировать
+- `exports` → что из этого модуля могут использовать другие модули
+
+<Callout>
+
+Обычно внутри `export class Module` ничего писать не нужно.
+
+</Callout>
+
+<hr />
+
 ## Жизненный цикл модуля
 
 1. `OnModuleInit` -> моудль инициализирован.
 2. `OnApplicationBootstrap` -> модуль начал работу.
 3. `OnModuleDestroy` -> модуль уничтожается перед завершением приложения.
 4. `OnApplicationShutdown` -> при поступлении внешнего сигнала о завершении.
-
-<hr />
-
-## Создание модуля
-
-```bash
-nest g module <moduleName>
-```
 
 <hr />
 
