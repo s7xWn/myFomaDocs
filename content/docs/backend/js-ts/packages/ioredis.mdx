@@ -1,0 +1,37 @@
+---
+title: IORedis
+---
+
+ioredis — это популярный Node.js-клиент для работы с Redis. Он позволяет приложению на Node.js подключаться к Redis-серверу, выполнять команды и использовать возможности Redis.
+
+<hr />
+
+## Установка
+
+<hr />
+
+## Использование
+
+```ts
+import Redis from "ioredis";
+```
+
+```ts
+const redis = new Redis("redis://localhost:6379");
+```
+
+<Callout type="warn">
+
+В новых версиях ioredis (v5.x и выше):
+
+```ts
+import { Redis } from "ioredis";
+```
+
+В старых версиях ioredis (v4.x и ниже):
+
+```ts
+import Redis from "ioredis";
+```
+
+</Callout>
