@@ -45,6 +45,47 @@ createUser(@Body(new ValidationPipe()) dto: CreateUserDto) {
 
 <hr />
 
+## Глобальный Pipe `app.useGlobalPipes(...)`
+
+— устанавливает Pipe глобально, то есть он будет применяться ко всем контроллерам и endpoint'ам приложения.
+
+```ts
+app.useGlobalPipes();
+```
+
+<details>
+  <summary>Пример</summary>
+
+```ts
+app.useGlobalPipes(
+  new ValidationPipe({
+    transform: true,
+  }),
+);
+```
+
+```ts
+export class CreateUserDto {
+  name: string;
+  age: number;
+}
+```
+
+```ts
+@Post()
+create(@Body() dto: CreateUserDto) {
+  // dto уже провалидирован
+}
+```
+
+`POST /users?age=25` HTTP-параметры изначально приходят как строки: `age === "25"`
+
+С `transform: true` NestJS может преобразовать значение в соответствии с типом DTO:
+
+</details>
+
+<hr />
+
 ## `@UsePipes()` vs Pipe на `@Body()`
 
 ### `@UsePipes()` на методе
