@@ -1,0 +1,279 @@
+---
+title: Prisma (v.7)
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+это ORM (Object-Relational Mapper) для Node.js и TypeScript, который позволяет удобно работать с базой данных из JavaScript/TypeScript-кода.
+
+<hr />
+
+## Основные части
+
+- Prisma Schema — описываешь модели базы данных в специальном файле.
+- Prisma Client — автоматически генерируемый TypeScript-клиент для запросов к БД.
+- Prisma Migrate — инструмент для создания и применения миграций.
+- Prisma Studio — веб-интерфейс для просмотра и редактирования данных.
+
+<hr />
+
+## Какие базы поддерживает
+
+- PostgreSQL
+- MySQL
+- SQLite
+- SQL Server
+- CockroachDB
+- MongoDB
+
+<hr />
+
+## Установка и инициализация
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    
+    ```bash
+    npm install prisma@7 --save-dev
+    npm install @prisma/client@7
+    ```
+
+    ```bash
+    npx prisma init
+    ```
+
+  </Tab>
+  <Tab value="yarn">
+    
+    ```bash
+    ```
+
+  </Tab>
+  <Tab value="pnpm">
+    
+    ```bash
+    ```
+
+  </Tab>
+  <Tab value="bun">
+
+    ```bash
+    bun add -d prisma@7
+    bun add @prisma/client@7
+    ```
+
+    ```bash
+    bunx prisma init
+    ```
+
+  </Tab>
+</Tabs>
+
+### Инициализация
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+
+    ```bash
+    npx prisma init
+    ```
+
+  </Tab>
+  <Tab value="yarn">
+
+  </Tab>
+  <Tab value="pnpm">
+
+  </Tab>
+  <Tab value="bun">
+
+    ```bash
+    bunx prisma init
+    ```
+
+  </Tab>
+</Tabs>
+
+Появится примерно такая структура:
+
+```
+prisma/
+└── schema.prisma
+.env
+```
+
+<hr />
+
+## Структура
+
+- `.env` - будет добавлен в конец файла: `DATABASE_URL` ([чтобы изменить](#prisma7configts))
+- `schema.prisma`
+- `prisma7.config.ts`
+
+  ```ts
+  import "dotenv/config";
+  import { defineConfig } from "prisma/config";
+
+  export default defineConfig({
+    schema: "prisma/schema.prisma",
+    migrations: {
+      path: "prisma/migrations",
+    },
+    datasource: {
+      url: process.env["POSTGRES_URI"],
+    },
+  });
+  ```
+
+<hr />
+
+## Настройка
+
+### `schema.prisma`
+
+- `generator client`
+  - `provider`
+  - `output`
+
+- `datasource db`
+  - `provider`
+    | `provider` | База данных | Типичные варианты |
+    | --------------- | -------------------- | -------------------------- |
+    | `"postgresql"` | PostgreSQL | PostgreSQL, Neon, Supabase |
+    | `"mysql"` | MySQL | MySQL, PlanetScale |
+    | `"sqlite"` | SQLite | локальный `.db`, Turso |
+    | `"sqlserver"` | Microsoft SQL Server | MSSQL, Azure SQL |
+    | `"mongodb"` | MongoDB | MongoDB Atlas, MongoDB |
+    | `"cockroachdb"` | CockroachDB | CockroachDB |
+
+### `prisma7.config.ts`
+
+Чтобы изменить переменную для `.env`:
+
+```ts
+datasource: {
+  url: process.env["POSTGRES_URI"],
+},
+```
+
+<hr />
+
+## Создание
+
+### `generate`
+
+### `db push`
+
+<hr />
+
+## Типы данных
+
+| Prisma     | Что хранит                | Пример                |
+| ---------- | ------------------------- | --------------------- |
+| `String`   | текст                     | `"Alex"`              |
+| `Int`      | целое число               | `25`                  |
+| `BigInt`   | очень большое целое число | `9007199254740992`    |
+| `Float`    | дробное число             | `4.5`                 |
+| `Decimal`  | точное дробное число      | `19.99`               |
+| `Boolean`  | да/нет                    | `true`                |
+| `DateTime` | дата и время              | `2026-10-06`          |
+| `Json`     | JSON                      | `{ "role": "admin" }` |
+| `Bytes`    | бинарные данные           | `...`                 |
+
+<hr />
+
+## Модель
+
+Создание модели:
+
+```prisma
+model Name{
+
+}
+```
+
+### Поле (столбец)
+
+```prisma
+rowName Type?
+```
+
+- `rowName` — поле (столбец) этой модели
+- [`Type`](#типы-данных) — тип поля (`Int`, `String`) — это типы данных Prisma, а не произвольные названия переменных БД.
+- `?` - делает поле опциональным
+
+#### `@id`
+
+Означает: это поле является уникальным идентификатором записи (primary key).
+
+#### `@default(...)`
+
+Означает: если значение не указали, база/Prisma подставит значение автоматически.
+
+#### `@map(...)`
+
+`@map` в Prisma используется, чтобы связать имя поля в Prisma с другим именем столбца в базе данных.
+
+```prisma
+model ModelName {
+  rowName String @map("row_name")
+}
+```
+
+```
+Prisma              База данных
+─────────────       ─────────────
+rowName    →        row_name
+```
+
+#### `@@map`
+
+`@@map` применяется к моделям
+
+```prisma
+model User {
+  id Int @id
+
+  @@map("users")
+}
+```
+
+### Свзяь между моделями
+
+```prisma
+model User {
+  posts Post[]
+}
+
+model Post {
+  authorId Int
+  author   User @relation(fields: [authorId], references: [id])
+}
+```
+
+- `User.posts` — список постов пользователя.
+- `Post.author` — пользователь, которому принадлежит пост.
+- `Post.authorId` — внешний ключ.
+- `fields: [authorId]` говорит Prisma, какое поле является FK.
+- `references: [id]` говорит, на какое поле `User` он ссылается.
+
+<hr />
+
+## ENUM
+
+<Callout type="warn">`ENUM` для **SQLite** не поддерживаются нативно</Callout>
+
+```prisma
+enum NameEnum{
+  first
+  second
+}
+```
+
+Использование:
+
+```prisma
+model Name{
+  rowName NameEnum;
+}
+```
