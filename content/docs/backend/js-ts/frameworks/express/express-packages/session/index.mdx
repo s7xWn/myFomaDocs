@@ -1,0 +1,59 @@
+---
+title: "express-session"
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+`express-session` — это middleware для Express.js, которое позволяет хранить состояние пользователя между HTTP-запросами.
+
+<hr />
+
+## Установка
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    
+    ```bash
+    npm install express-session
+    ```
+
+  </Tab>
+  <Tab value="yarn">
+    
+    ```bash
+    ```
+
+  </Tab>
+  <Tab value="pnpm">
+    
+    ```bash
+    ```
+
+  </Tab>
+  <Tab value="bun">
+
+    ```bash
+    bun add express-session
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## Использование
+
+```ts
+import session from "express-session";
+```
+
+```ts
+app.use(
+  session({
+    secret: "my-secret",
+    name: "my-name",
+    resave: false,
+    saveUninitialized: false,
+  }),
+);
+```

@@ -1,0 +1,37 @@
+---
+title: connect-redis
+---
+
+`connect-redis` — это middleware/адаптер для Node.js, который позволяет хранить сессии Express-приложения в Redis вместо памяти самого Node.js процесса.
+
+Обычно он используется вместе с `express-session`.
+
+<hr />
+
+## Установка
+
+<hr />
+
+## Использование
+
+```ts
+import { RedisStore } from "connect-redis";
+```
+
+```ts
+const redisStore = new RedisStore({
+  client: redisClient,
+  prefix: "prefix:",
+});
+```
+
+В `app.use` `session`, в параметр `store`:
+
+```ts
+app.use(
+  session({
+    ...
+    store: redisStore,
+  }),
+);
+```
