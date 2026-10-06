@@ -66,3 +66,83 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 | `@IsDate()`         | Date                      |
 | `@IsArray()`        | массив                    |
 | `@ValidateNested()` | вложенный объект          |
+
+<hr />
+
+## `ValidationOptions`
+
+— это общие настройки поведения конкретного валидатора. Они не определяют что проверять, а определяют, как вести себя, если проверка не прошла и в каких случаях её применять.
+
+У большинства декораторов есть возможность передать:
+
+```ts
+{
+  message?: string;
+  groups?: string[];
+  always?: boolean;
+  each?: boolean;
+  context?: any;
+}
+```
+
+<hr />
+
+### `message`
+
+Сообщение об ошибке.
+
+```ts
+@IsString({
+  message: 'Имя должно быть строкой',
+})
+name: string;
+```
+
+Если передать функцию:
+
+```ts
+@MinLength(8, {
+  message: (args) => {
+    return `${args.property} должен содержать минимум ${args.constraints[0]} символов`;
+  },
+})
+password: string;
+```
+
+`args` — это `ValidationArguments`
+
+В нём можно получить:
+
+```ts
+args.value; // значение свойства
+args.property; // имя свойства
+args.target; // класс
+args.object; // объект
+args.constraints; // параметры валидатора
+```
+
+<hr />
+
+### `groups`
+
+Позволяет объединять валидаторы в группы.
+
+<hr />
+
+### `always`
+
+Обычно валидатор с `groups` выполняется только тогда, когда совпадает группа.
+
+`always: true` говорит:
+
+> выполнять этот валидатор независимо от выбранной группы.
+
+<hr />
+
+### `each`
+
+<hr />
+
+### `context`
+
+Позволяет прикрепить произвольные дополнительные данные к метаданным ошибки.
