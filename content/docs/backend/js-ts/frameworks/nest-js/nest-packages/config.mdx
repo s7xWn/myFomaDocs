@@ -1,0 +1,56 @@
+---
+title: "@nestjs/config"
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+`@nestjs/config`
+
+<hr />
+
+## Установка
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    
+    ```bash
+    npm install @nestjs/config
+    ```
+
+  </Tab>
+  <Tab value="yarn">
+    
+    ```bash
+    yarn add @nestjs/config
+    ```
+
+  </Tab>
+  <Tab value="pnpm">
+    
+    ```bash
+    pnpm add @nestjs/config
+    ```
+
+  </Tab>
+  <Tab value="bun">
+
+    ```bash
+    bun add @nestjs/config
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## `ConfigService`
+
+`ConfigService` — это специальный сервис NestJS, который помогает получать настройки приложения: переменные окружения, значения из .env, конфигурацию базы данных, JWT и т. д.
+
+```ts
+import { ConfigService } from "@nestjs/config";
+```
+
+```ts
+const config = app.get(ConfigService);
+```

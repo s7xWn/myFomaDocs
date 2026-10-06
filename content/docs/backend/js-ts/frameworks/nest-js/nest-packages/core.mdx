@@ -1,0 +1,52 @@
+---
+title: "@nestjs/core"
+---
+
+`@nestjs/core` — это один из основных пакетов NestJS, который отвечает за запуск и работу самого приложения.
+
+```
+@nestjs/core
+│
+├── NestFactory
+├── NestApplication
+├── NestApplicationContext
+├── NestContainer
+├── ModulesContainer
+├── Router
+├── GuardsContextCreator
+├── PipesContextCreator
+├── InterceptorsContextCreator
+├── ...
+```
+
+<hr />
+
+## `NestFactory`
+
+`NestFactory` — это фабрика для создания NestJS-приложения.
+
+<Callout>По умолчанию NestJS использует Express.</Callout>
+
+```
+NestFactory
+     ↓
+создаёт приложение
+     ↓
+загружает AppModule
+     ↓
+создаёт модули / controllers / providers
+     ↓
+настраивает DI
+     ↓
+запускает HTTP-сервер
+```
+
+```ts
+const app = await NestFactory.create(AppModule);
+```
+
+### Fastify
+
+```ts
+const app = await NestFactory.create(AppModule, new FastifyAdapter());
+```
