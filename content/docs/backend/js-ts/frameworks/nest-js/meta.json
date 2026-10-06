@@ -1,10 +1,11 @@
 {
   "pages": [
     "modules",
-    "decorators",
     "controllers",
+    "decorators",
     "errors",
     "dto",
+    "pipes",
     "---NestJS пакеты---",
     "...nest-packages"
   ]

@@ -1,0 +1,100 @@
+---
+title: Pipes
+---
+
+Если ты имеешь в виду Pipes (Pipe) в NestJS, то это механизм для преобразования и валидации входящих данных перед тем, как они попадут в обработчик контроллера.
+
+<hr />
+
+## Зачем нужны Pipes
+
+1. Transformation — преобразование данных
+
+```ts
+@Param('id', ParseIntPipe) id: number
+```
+
+`"123"` → `123`
+
+2. Validation — проверка данных
+
+Например, можно проверить DTO:
+
+```ts
+@Post()
+createUser(@Body(new ValidationPipe()) dto: CreateUserDto) {
+  // сюда попадут только валидные данные
+}
+```
+
+<hr />
+
+## Встроенные Pipes
+
+- `ValidationPipe` — валидация DTO
+- `ParseIntPipe` — преобразование в number
+- `ParseBoolPipe` — преобразование в boolean
+- `ParseUUIDPipe` — проверка UUID
+- `DefaultValuePipe` — значение по умолчанию
+
+<hr />
+
+## Декоратор `@UsePipes()`
+
+`@UsePipes()` — это декоратор NestJS для подключения Pipes.
+
+<hr />
+
+## `@UsePipes()` vs Pipe на `@Body()`
+
+### `@UsePipes()` на методе
+
+```ts
+@UsePipes(new ValidationPipe())
+@Post()
+create(@Body() dto: CreateUserDto) {
+  return this.usersService.create(dto);
+}
+```
+
+`ValidationPipe` применяется ко всем параметрам этого метода, для которых NestJS выполняет pipe processing.
+
+То есть условно:
+
+```ts
+create(
+  @Body() dto: CreateUserDto,
+  @Param() params: any,
+  @Query() query: any,
+) {}
+```
+
+Pipe будет применяться ко всему этому методу.
+
+### Pipe непосредственно на `@Body()`
+
+Здесь ValidationPipe применяется только к `@Body()`.
+
+```ts
+@Post()
+createUser(
+  @Body(new ValidationPipe()) dto: CreateUserDto
+) {
+  // ...
+}
+```
+
+```ts
+@Post(':id')
+createUser(
+  @Param('id') id: string,
+  @Body(new ValidationPipe()) dto: CreateUserDto,
+) {}
+```
+
+В этом случае:
+
+```
+@Param() → ValidationPipe НЕ применяется
+@Body()  → ValidationPipe применяется
+```
