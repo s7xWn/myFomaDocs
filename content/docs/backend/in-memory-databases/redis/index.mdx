@@ -91,6 +91,34 @@ brew services start redis
 
 <hr />
 
+## Подключение
+
+### Docker
+
+```bash
+docker exec -it redis redis-cli
+```
+
+```bash
+docker exec -it redis redis-cli -a mypassword
+```
+
+```
+docker exec     → выполнить команду внутри запущенного контейнера
+-it             → подключить интерактивный терминал
+redis            → имя контейнера
+redis-cli        → программа-клиент Redis
+-a mypassword   → передать пароль для авторизации
+```
+
+### Авторизация
+
+Если Redis быд запущен с паролем `command: redis-server --requirepass ${REDIS_PASSWORD}`
+
+```bash
+AUTH mypassword
+```
+
 ## Ссылки
 
 - [suchkov tech | Redis за 20 минут](https://www.youtube.com/watch?v=QpBaA6B1U90)
