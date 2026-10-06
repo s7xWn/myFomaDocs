@@ -13,25 +13,40 @@ ioredis — это популярный Node.js-клиент для работы
 ## Использование
 
 ```ts
-import Redis from "ioredis";
-```
-
-```ts
-const redis = new Redis("redis://localhost:6379");
+import { Redis } from "ioredis";
 ```
 
 <Callout type="warn">
 
-В новых версиях ioredis (v5.x и выше):
+В новых версиях `ioredis` (v5.x и выше):
 
 ```ts
 import { Redis } from "ioredis";
 ```
 
-В старых версиях ioredis (v4.x и ниже):
+В старых версиях `ioredis` (v4.x и ниже):
 
 ```ts
 import Redis from "ioredis";
 ```
+
+</Callout>
+
+```ts
+const redis = new Redis("redis://localhost:6379");
+```
+
+или
+
+```ts
+const redisUri = `redis://${config.getOrThrow("REDIS_USER")}:${config.getOrThrow("REDIS_PASSWORD")}@${config.getOrThrow("REDIS_HOST")}:${config.getOrThrow("REDIS_PORT")}`;
+const redis = new Redis(redisUri);
+```
+
+<Callout type="warn">
+Удалите имя пользователя (если Redis < = 5)
+`"redis://:yourpassword@localhost:6379"`
+
+Обратите внимание на двойной двоеточие `:` перед паролем — это стандартный способ указать только пароль в Redis 5 и ниже.
 
 </Callout>

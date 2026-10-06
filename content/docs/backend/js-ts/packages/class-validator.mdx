@@ -1,0 +1,68 @@
+---
+title: class-validator
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+`class-validator` — это библиотека для валидации объектов в Node.js/TypeScript с помощью декораторов.
+
+Особенно часто её используют вместе с NestJS.
+
+<Callout>
+  Важно: `class-validator` занимается именно валидацией, а не типизацией
+  TypeScript. TypeScript проверяет типы во время разработки/компиляции, а
+  `class-validator` позволяет проверять данные, пришедшие во время выполнения —
+  например, из HTTP-запроса.
+</Callout>
+
+## Установка
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    
+    ```bash
+    npm install class-validator
+    ```
+
+  </Tab>
+  <Tab value="yarn">
+    
+    ```bash
+    ```
+
+  </Tab>
+  <Tab value="pnpm">
+    
+    ```bash
+    ```
+
+  </Tab>
+  <Tab value="bun">
+
+    ```bash
+    bun add class-validator
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## Декораторы
+
+| Декоратор           | Проверяет                 |
+| ------------------- | ------------------------- |
+| `@IsString()`       | строка                    |
+| `@IsInt()`          | целое число               |
+| `@IsNumber()`       | число                     |
+| `@IsBoolean()`      | boolean                   |
+| `@IsEmail()`        | email                     |
+| `@IsNotEmpty()`     | не пустое                 |
+| `@IsOptional()`     | поле необязательное       |
+| `@Min(18)`          | число ≥ 18                |
+| `@Max(100)`         | число ≤ 100               |
+| `@MinLength(8)`     | строка минимум 8 символов |
+| `@IsUUID()`         | UUID                      |
+| `@IsDate()`         | Date                      |
+| `@IsArray()`        | массив                    |
+| `@ValidateNested()` | вложенный объект          |
