@@ -57,3 +57,47 @@ app.use(
   }),
 );
 ```
+
+<hr />
+
+## `express-session.d.ts`
+
+`express-session.d.ts` обычно нужен для TypeScript, чтобы описать или расширить типы, связанные с `express-session`.
+
+<Callout>
+  `.d.ts` — это файл деклараций типов. Он не содержит выполняемого
+  JavaScript-кода. Он нужен компилятору TypeScript, чтобы знать, какие типы
+  существуют.
+</Callout>
+
+<details>
+  <summary>Пример</summary>
+
+Например, если ты хочешь добавить свои поля в `req.session`:
+
+```ts
+req.session.userId = 123;
+req.session.isAdmin = true;
+```
+
+TypeScript по умолчанию не знает о `userId` и `isAdmin`. В `express-session.d.ts` можно сделать module augmentation:
+
+```ts
+import "express-session";
+
+declare module "express-session" {
+  interface SessionData {
+    userId: number;
+    isAdmin: boolean;
+  }
+}
+```
+
+После этого TypeScript понимает:
+
+```ts
+req.session.userId; // number
+req.session.isAdmin; // boolean
+```
+
+</details>
