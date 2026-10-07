@@ -1,0 +1,52 @@
+---
+title: "dotenv vs @nestjs/config"
+icon: Book
+---
+
+Для NestJS-проекта я бы рекомендовал `@nestjs/config`
+
+Не потому что `dotenv` плохой — наоборот, `@nestjs/config` внутри как раз использует механизм загрузки переменных окружения, но даёт поверх него нормальную интеграцию с NestJS.
+
+|                              | `dotenv`            | `@nestjs/config` |
+| ---------------------------- | ------------------- | ---------------- |
+| Простота                     | ⭐⭐⭐⭐⭐          | ⭐⭐⭐⭐         |
+| NestJS-интеграция            | ⭐⭐                | ⭐⭐⭐⭐⭐       |
+| `process.env`                | ✅                  | ✅               |
+| Типизация/валидация          | Нужно делать самому | Удобнее          |
+| Конфигурация по модулям      | ❌                  | ✅               |
+| `ConfigService`              | ❌                  | ✅               |
+| Для маленького проекта       | Отлично             | Отлично          |
+| Для реального NestJS проекта | Можно               | **Лучше**        |
+
+## `@nestjs/config`
+
+```bash
+npm install @nestjs/config
+```
+
+`app.module.ts:`
+
+```ts
+import { Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+И затем вместо: `process.env.DATABASE_URL` <br/>
+можно использовать:
+
+```ts
+import { ConfigService } from '@nestjs/config';
+
+constructor(private configService: ConfigService) {}
+
+const databaseUrl = this.configService.get<string>('DATABASE_URL');
+```
