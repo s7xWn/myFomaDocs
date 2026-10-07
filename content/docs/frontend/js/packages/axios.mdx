@@ -1,0 +1,84 @@
+---
+title: Axios
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+Axios — это популярная JavaScript-библиотека для выполнения HTTP-запросов.
+
+Axios делает похожую задачу на `fetch`, но часто предоставляет более удобный API и дополнительные возможности.
+
+<hr />
+
+## Установка
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    
+    ```bash
+    npm install axios
+    ```
+
+  </Tab>
+  <Tab value="yarn">
+    
+    ```bash
+    yarn add axios
+    ```
+
+  </Tab>
+  <Tab value="pnpm">
+    
+    ```bash
+    pnpm add axios
+    ```
+
+  </Tab>
+  <Tab value="bun">
+
+    ```bash
+    bun add axios
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## Instance
+
+— это отдельно настроенный экземпляр Axios, созданный через `axios.create()`.
+
+<details>
+  <summary>Зачем нужен instance?</summary>
+
+Вместо того чтобы каждый раз писать:
+
+```ts
+axios.get("https://api.example.com/users", {
+  headers: {
+    Authorization: "Bearer token",
+  },
+});
+```
+
+ты один раз задаёшь общие настройки:
+
+```ts
+const api = axios.create({
+  baseURL: "https://api.example.com",
+  headers: {
+    Authorization: "Bearer token",
+  },
+});
+```
+
+И дальше:
+
+```ts
+api.get("/users");
+api.get("/posts");
+api.post("/users", data);
+```
+
+</details>
