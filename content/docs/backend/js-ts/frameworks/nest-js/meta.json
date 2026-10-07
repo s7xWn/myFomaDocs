@@ -2,6 +2,7 @@
   "pages": [
     "modules",
     "controllers",
+    "providers",
     "decorators",
     "errors",
     "dto",
