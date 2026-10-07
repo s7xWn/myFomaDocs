@@ -55,22 +55,22 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 - загрузку данных приходится организовывать самостоятельно;
 - нет встроенных `loader`, `action`, обработки форм и т.д.
 
-1. Обернуть приложение в [`<BrowserRouter>`](./declarative-mode/browser-router)
-2. Создать [`Routes`](./declarative-mode/routes) и использовать [`Route`](./declarative-mode/route) по необходимости с [`layout`](./declarative-mode/route#вложенные-маршруты--layout)
-3. Для навигации использовать [`useNavigate`](./hooks/usenavigate) или [`<Link>`](./components/link)
+1. Обернуть приложение в [`<BrowserRouter>`](./declarative-mode/browser-router.mdx)
+2. Создать [`Routes`](./declarative-mode/routes.mdx) и использовать [`Route`](./declarative-mode/route.mdx) по необходимости с [`layout`](./declarative-mode/route.mdx#вложенные-маршруты--layout)
+3. Для навигации использовать [`useNavigate`](./hooks/usenavigate.mdx) или [`<Link>`](./components/link.mdx)
 
 <hr />
 
 ### Использование Data Mode
 
-1. Создаём файл(`./routes/router.ts`) с [`createBrowserRouter`](./data-mode/create-browser-router) и настриваем в нём роуты с помощью [`RouteObject`](./data-mode/route-object)
-   - настриаваем [`loader`](./data-mode/route-object#loader), [`action`](./data-mode/route-object#action)
-2. Подключаем [`RouterProvider`](./data-mode/router-provider) в главном файле приложения.
-3. Для навигации использовать [`useNavigate`](./hooks/usenavigate) или [`<Link>`](./components/link)
+1. Создаём файл(`./routes/router.ts`) с [`createBrowserRouter`](./data-mode/create-browser-router.mdx) и настриваем в нём роуты с помощью [`RouteObject`](./data-mode/route-object.mdx)
+   - настриаваем [`loader`](./data-mode/route-object.mdx#loader), [`action`](./data-mode/route-object.mdx#action)
+2. Подключаем [`RouterProvider`](./data-mode/router-provider.mdx) в главном файле приложения.
+3. Для навигации использовать [`useNavigate`](./hooks/usenavigate.mdx) или [`<Link>`](./components/link.mdx)
 
 #### Pending UI (loader)
 
-В Data Mode **pending UI** обычно реализуется через состояние навигации из [`useNavigation()`](./hooks/usenavigation). В отличие от Framework Mode, где есть `HydrateFallback` и `pending UI` на уровне маршрутов, в Data Mode вы сами контролируете отображение загрузки через `navigation.state`.
+В Data Mode **pending UI** обычно реализуется через состояние навигации из [`useNavigation()`](./hooks/usenavigation.mdx). В отличие от Framework Mode, где есть `HydrateFallback` и `pending UI` на уровне маршрутов, в Data Mode вы сами контролируете отображение загрузки через `navigation.state`.
 
 1. Глобальный Pending UI через Layout
 
