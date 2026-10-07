@@ -65,7 +65,9 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
   <Tab value="npm">
-
+    ```bash
+    npm install @prisma/adapter-pg pg
+    ```
   </Tab>
   <Tab value="yarn">
     
@@ -87,6 +89,22 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
   </Tab>
 </Tabs>
+
+```ts
+import { PrismaPg } from "@prisma/adapter-pg";
+```
+
+```ts
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!,
+});
+```
+
+```ts
+const prismaClient = new PrismaClient({
+  adapter,
+});
+```
 
 ### Инициализация
 
@@ -296,3 +314,55 @@ model Name{
   rowName NameEnum;
 }
 ```
+
+<hr />
+
+## Команды
+
+| Задача                                | Команда                                  |
+| ------------------------------------- | ---------------------------------------- |
+| 🚀 Новый проект                       | `npx prisma init`                        |
+| 🔄 Обновить Client                    | `npx prisma generate`                    |
+| 📝 Изменил `schema.prisma`            | `npx prisma migrate dev --name название` |
+| 🧪 Быстро синхронизировать БД         | `npx prisma db push`                     |
+| 🗄️ Получить schema из существующей БД | `npx prisma db pull`                     |
+| 🌱 Запустить seed                     | `npx prisma db seed`                     |
+| 👀 Посмотреть данные                  | `npx prisma studio`                      |
+| 🚢 Production                         | `npx prisma migrate deploy`              |
+| 🔥 Полностью пересоздать БД           | `npx prisma migrate reset`               |
+| ✅ Проверить schema                   | `npx prisma validate`                    |
+| ✨ Форматировать schema               | `npx prisma format`                      |
+
+### Основные
+
+| Команда               | Назначение                              |
+| --------------------- | --------------------------------------- |
+| `npx prisma init`     | Создать Prisma-проект и `schema.prisma` |
+| `npx prisma generate` | Сгенерировать Prisma Client             |
+| `npx prisma validate` | Проверить корректность `schema.prisma`  |
+| `npx prisma format`   | Отформатировать `schema.prisma`         |
+| `npx prisma studio`   | Открыть Prisma Studio                   |
+| `npx prisma version`  | Показать версии Prisma и Prisma Client  |
+| `npx prisma debug`    | Вывести диагностическую информацию      |
+
+### Работа с базой
+
+| Команда                 | Назначение                                         |
+| ----------------------- | -------------------------------------------------- |
+| `npx prisma db pull`    | Получить структуру БД → `schema.prisma`            |
+| `npx prisma db push`    | Синхронизировать `schema.prisma` с БД без миграции |
+| `npx prisma db seed`    | Запустить seed                                     |
+| `npx prisma db execute` | Выполнить SQL/команды непосредственно в БД         |
+
+### Миграции
+
+| Команда                                  | Назначение                                 |
+| ---------------------------------------- | ------------------------------------------ |
+| `npx prisma migrate dev`                 | Создать и применить миграцию в development |
+| `npx prisma migrate dev --name add_user` | Создать миграцию с именем                  |
+| `npx prisma migrate dev --create-only`   | Создать миграцию, но не применять её       |
+| `npx prisma migrate reset`               | Сбросить БД и применить миграции заново    |
+| `npx prisma migrate deploy`              | Применить миграции в production/staging    |
+| `npx prisma migrate status`              | Проверить состояние миграций               |
+| `npx prisma migrate resolve`             | Исправить состояние migration history      |
+| `npx prisma migrate diff`                | Сравнить две схемы                         |
