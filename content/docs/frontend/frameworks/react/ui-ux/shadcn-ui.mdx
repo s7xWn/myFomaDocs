@@ -1,0 +1,46 @@
+---
+title: shadcn/ui
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+## Установка
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    
+    ```bash
+    npx shadcn@latest init
+    ```
+
+  </Tab>
+  <Tab value="yarn">
+    
+    ```bash
+    yarn dlx shadcn@latest init
+    ```
+
+  </Tab>
+  <Tab value="pnpm">
+    
+    ```bash
+    pnpm dlx shadcn@latest init
+    ```
+
+  </Tab>
+  <Tab value="bun">
+
+    ```bash
+    bunx --bun shadcn@latest init
+    ```
+
+  </Tab>
+</Tabs>
+
+### Templates `-t [framework]`
+
+В конце добавить один из шаблонов: "Supported templates: `next`, `vite`, `start`, `react-router`, and `astro`."
+
+```bash
+npx shadcn@latest init -t [framework]
+```
