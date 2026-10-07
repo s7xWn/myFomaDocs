@@ -32,30 +32,38 @@ nest g controller
 })
 ```
 
-Описывается в своём файле:
+Описывается в файле (пример с `Post`):
 
 ```ts
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Post } from "@nestjs/common";
 import { AppService } from "./app.service.js";
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Post()
+  getHello(@Req() req: Request, @Body() dto: LoginDto): string {
+    return this.appService.getHello(req, dto);
   }
 }
 ```
 
 - `@Controller()` - декоратор контроллера, обозначает контроллер.
   - в него можно передать путь, по которому контроллер будет реагировать: `@Controller('app')`
-- `constructor(private readonly appService: AppService) {}`
-- `@Get()` - декоратор метода для GET HTTP-запроса
-  - в него можно передать путь, по которому контроллер будет реагировать внутри данного контроллера: `@Get('get/:id')`<br/>
-    Пример: `@Controller('app')` + `@Get('get/:id')` = localhost:8080/app/get/123
+- `constructor(private readonly appService: AppService) {}` - Это конструктор с dependency injection (DI)<br/>
+  Передай в этот контроллер `AppService` и сохрани его здесь как `appService`, доступный только внутри контроллера (`private`) и без возможности заменить саму ссылку (`readonly`).
+- `@Post()` - декоратор метода для POST HTTP-запроса
+  - в него можно передать путь, по которому контроллер будет реагировать внутри данного контроллера: `@Post('get/:id')`<br/>
+    Пример: `@Controller('app')` + `@Post('get/:id')` = localhost:8080/app/get/123
+- `@Req() req: Request` - декоратор параметра метода, который передаёт в параметр `req` объект HTTP-запроса
+  - Через `req` можно получить информацию о запросе: заголовки, URL, метод, параметры и т. д.
+- `@Body() dto: LoginDto` - декоратор параметра метода, который передаёт в параметр `dto` тело HTTP-запроса (`request body`).
+  - `dto: LoginDto` — тип объекта dto, который описывает ожидаемые данные из тела запроса.
+- `return this.appService.getHello(req, dto);` - вызывает метод `getHello()` у объекта `appService`, , передавая ему параметры `req` и `dto`, и возвращает результат этого метода.
 
 ### `return` - то что вернётся на client
+
+NestJS автоматически превращает объекты и массивы в JSON.
 
 <hr />
