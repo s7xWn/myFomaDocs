@@ -1,0 +1,44 @@
+---
+title: useSuspenseQuery
+---
+
+`useSuspenseQuery` — это вариант `useQuery` в TanStack Query, предназначенный для работы с React Suspense.
+
+|                                       | `useQuery` | `useSuspenseQuery` | `useSuspenseQueries` |
+| ------------------------------------- | ---------- | ------------------ | -------------------- |
+| Один query                            | ✅         | ✅                 | —                    |
+| Несколько queries                     | —          | —                  | ✅                   |
+| Loading через `Suspense`              | ❌         | ✅                 | ✅                   |
+| `data` гарантированно есть при render | ❌         | ✅                 | ✅                   |
+| Динамический список queries           | ❌         | ❌                 | ✅                   |
+
+```ts
+import { useSuspenseQuery } from "@tanstack/react-query";
+```
+
+```ts
+const { data } = useSuspenseQuery({
+  queryKey: ['users'],
+  queryFn: fetchUsers,
+})
+
+return <UserList users={data} />
+```
+
+- Загрузка обрабатывается через `<Suspense>`:
+
+  ```ts
+  <Suspense fallback={<Spinner />}>
+  <UserList />
+  </Suspense>
+  ```
+
+- Ошибки обычно обрабатываются через Error Boundary:
+
+  ```ts
+  <ErrorBoundary fallback={<Error />}>
+  <Suspense fallback={<Spinner />}>
+      <UserList />
+  </Suspense>
+  </ErrorBoundary>
+  ```

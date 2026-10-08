@@ -1,0 +1,60 @@
+---
+title: useQueryClient
+---
+
+`useQueryClient()` — это хук TanStack Query, который возвращает текущий экземпляр QueryClient.
+
+```ts
+import { useQueryClient } from "@tanstack/react-query";
+```
+
+```ts
+const queryClient = useQueryClient();
+```
+
+<hr />
+
+## Инвалидировать queries `invalidateQueries()`
+
+<Callout>
+  `invalidateQueries` именно помечает query как `stale`, но есть важный нюанс:
+  для активных queries TanStack Query по умолчанию ещё и запускает refetch.
+</Callout>
+
+Инвалидирует все queries в `QueryClient`. `{}` не задаёт фильтров, поэтому TanStack Query рассматривает все queries.
+
+```ts
+queryClient.invalidateQueries({});
+```
+
+Инвалидирует `queryName` query в `QueryClient`.
+
+```ts
+queryClient.invalidateQueries({
+  queryKey: ["queryName"],
+});
+```
+
+<hr />
+
+## Запускает запрос немедленно `refetchQueries()`
+
+refetchQueries() в TanStack Query — это команда прямо сейчас перезапросить подходящие queries.
+
+<hr />
+
+## Удаляет данные из кеша `resetQueries()`
+
+<hr />
+
+## Останавливает запрос `cancelQueries()`
+
+[`AbortController` для `queryFn`](./use-query.mdx#abortcontroller-%D0%B4%D0%BB%D1%8F-queryfn)
+
+<Callout>
+
+Если вызвать метод без сигнала, то данные не отобразятся, но в console/network они придут.
+
+`cancelQueries()` отменяет query на уровне TanStack Query, но фактическая отмена HTTP-запроса зависит от того, использует ли твой `queryFn` переданный ему `signal`.
+
+</Callout>

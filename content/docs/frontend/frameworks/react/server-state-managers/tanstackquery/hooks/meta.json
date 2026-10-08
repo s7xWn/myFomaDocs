@@ -1,0 +1,11 @@
+{
+  "title": "Hooks",
+  "pages": [
+    "use-queryclient",
+    "use-query",
+    "use-queries",
+    "use-suspensequery",
+    "use-suspensequeries",
+    "use-isfetching"
+  ]
+}

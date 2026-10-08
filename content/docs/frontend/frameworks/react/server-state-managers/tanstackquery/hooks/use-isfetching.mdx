@@ -1,0 +1,19 @@
+---
+title: useIsFetching
+---
+
+`useIsFetching()` в TanStack Query показывает, есть ли сейчас выполняющиеся запросы, которые управляются Query Client.
+
+```ts
+import { useIsFetching } from "@tanstack/react-query";
+```
+
+Возвращает кол-во запросов, которые подгружаются:
+
+```ts
+const isFetching = useIsFetching();
+```
+
+```ts
+{isFetching > 0 && <div>Fetching...</div>}
+```

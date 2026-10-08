@@ -1,0 +1,32 @@
+---
+title: useSuspenseQueries
+---
+
+`useSuspenseQueries` — это множественный вариант `useSuspenseQuery` в TanStack Query. Он позволяет запустить несколько queries и получить их данные, при этом loading-состояние обрабатывается через React `Suspense`.
+
+|                                       | `useQuery` | `useSuspenseQuery` | `useSuspenseQueries` |
+| ------------------------------------- | ---------- | ------------------ | -------------------- |
+| Один query                            | ✅         | ✅                 | —                    |
+| Несколько queries                     | —          | —                  | ✅                   |
+| Loading через `Suspense`              | ❌         | ✅                 | ✅                   |
+| `data` гарантированно есть при render | ❌         | ✅                 | ✅                   |
+| Динамический список queries           | ❌         | ❌                 | ✅                   |
+
+```ts
+import { useSuspenseQueries } from "@tanstack/react-query";
+```
+
+```ts
+const [{ data: user }, { data: posts }] = useSuspenseQueries({
+  queries: [
+    {
+      queryKey: ["user", userId],
+      queryFn: () => fetchUser(userId),
+    },
+    {
+      queryKey: ["posts", userId],
+      queryFn: () => fetchPosts(userId),
+    },
+  ],
+});
+```

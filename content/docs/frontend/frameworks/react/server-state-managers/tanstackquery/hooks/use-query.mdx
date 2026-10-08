@@ -1,0 +1,285 @@
+---
+title: useQuery
+---
+
+— это React-хук для получения и управления серверными данными: загрузкой, кешированием, обновлением, ошибками и состоянием запроса.
+
+|                                       | `useQuery` | `useSuspenseQuery` | `useSuspenseQueries` |
+| ------------------------------------- | ---------- | ------------------ | -------------------- |
+| Один query                            | ✅         | ✅                 | —                    |
+| Несколько queries                     | —          | —                  | ✅                   |
+| Loading через `Suspense`              | ❌         | ✅                 | ✅                   |
+| `data` гарантированно есть при render | ❌         | ✅                 | ✅                   |
+| Динамический список queries           | ❌         | ❌                 | ✅                   |
+
+<details>
+  <summary>Пример взаимозаменяемости</summary>
+
+Вместо того чтобы вручную писать:
+
+```ts
+const [data, setData] = useState(null);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState(null);
+
+useEffect(() => {
+  fetch("/api/users")
+    .then((res) => res.json())
+    .then(setData)
+    .catch(setError)
+    .finally(() => setLoading(false));
+}, []);
+```
+
+можно использовать:
+
+```ts
+const { data, isPending, error } = useQuery({
+  queryKey: ["users"],
+  queryFn: () => fetch("/api/users").then((res) => res.json()),
+});
+```
+
+</details>
+
+```ts
+import { useQuery } from "@tanstack/react-query";
+```
+
+У `useQuery` есть два главных параметра:
+
+- `queryKey` — уникальный ключ данных.
+- `queryFn` — функция, которая получает данные.
+
+<details>
+  <summary>Обычный `useQuery`</summary>
+
+```ts
+const { data, isLoading, error } = useQuery({
+  queryKey: ['users'],
+  queryFn: fetchUsers,
+})
+
+if (isLoading) {
+  return <Spinner />
+}
+
+if (error) {
+  return <Error />
+}
+
+return <UserList users={data} />
+```
+
+</details>
+
+<hr />
+
+## Параметры
+
+### `enabled` - автоматически выполнять запрос
+
+`enabled` управляет тем, может ли `useQuery` автоматически выполнять запрос.
+
+- `false` -> `queryFn` не вызывается при монтировании компонента. Но сам `useQuery` всё равно существует и возвращает своё состояние.
+- `varName` -> значение переменной `varName` используется как условие, разрешающее выполнение запроса.
+
+#### Зависимость от других запросов
+
+`posts` зависит от `userData`
+
+```ts
+const { data: userData } = useQuery({
+  queryKey: ["userData"],
+  queryFn: getAuthData,
+});
+
+const { data: posts } = useQuery({
+  queryKey: ["posts"],
+  queryFn: getPosts,
+  enabled: !!userData,
+});
+```
+
+<hr />
+
+## Что возвращает `useQuery`
+
+```ts
+const {
+  data,
+  error,
+  isLoading,
+  isPending,
+  isFetching,
+  isError,
+  refetch,
+} = useQuery(...)
+```
+
+| Свойство      | Значение                                                  |
+| ------------- | --------------------------------------------------------- |
+| `data`        | полученные данные                                         |
+| `error`       | объект ошибки                                             |
+| `isError`     | произошла ошибка                                          |
+| `isLoading`   | `isPending && isFetching` — первичная загрузка без данных |
+| `isPending`   | данных пока нет и запрос выполняется                      |
+| `isFetching`  | запрос сейчас выполняется, в том числе фоновый            |
+| `refetch()`   | вручную запустить запрос                                  |
+| `status`      | «Есть ли у нас результат запроса?»                        |
+| `fetchStatus` | «Прямо сейчас выполняется запрос?»                        |
+
+<hr />
+
+### Состояния
+
+| Состояние                     | `status`  | `fetchStatus` | `isPending` | `isFetching` | `isLoading` |
+| ----------------------------- | --------- | ------------- | ----------- | ------------ | ----------- |
+| Первый запрос                 | `pending` | `fetching`    | ✅          | ✅           | ✅          |
+| Ожидание, но запрос не идёт   | `pending` | `idle/paused` | ✅          | ❌           | ❌          |
+| Данные получены               | `success` | `idle`        | ❌          | ❌           | ❌          |
+| Фоновое обновление            | `success` | `fetching`    | ❌          | ✅           | ❌          |
+| Ошибка после получения данных | `error`   | `idle`        | ❌          | ❌           | ❌          |
+
+<hr />
+
+### `status`
+
+| `status`  | Что означает              |
+| --------- | ------------------------- |
+| `pending` | данных ещё нет            |
+| `success` | данные успешно получены   |
+| `error`   | запрос завершился ошибкой |
+
+<hr />
+
+### `fetchStatus`
+
+| `fetchStatus` | Что означает                                         |
+| ------------- | ---------------------------------------------------- |
+| `fetching`    | запрос выполняется прямо сейчас                      |
+| `paused`      | запрос должен выполняться, но временно приостановлен |
+| `idle`        | запрос сейчас не выполняется                         |
+
+<hr />
+
+### `refetch()`
+
+`refetch()` из `useQuery` — это функция, которая вручную запускает повторное выполнение `queryFn` для конкретного query.
+
+```ts
+const { data, refetch } = useQuery({
+  queryKey: ["posts"],
+  queryFn: fetchPosts,
+});
+```
+
+```ts
+<button onClick={() => refetch()}>
+  Обновить
+</button>
+```
+
+<hr />
+
+## Работа с кешом `staleTime`
+
+По умолчанию `staleTime = 0`.
+
+### Если данные уже есть в кеше и они свежие
+
+```ts
+useQuery({
+  queryKey: ["users"],
+  queryFn: getUsers,
+  staleTime: 60000, // 1 минута
+});
+```
+
+или на уровне клиента:
+
+```ts
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minute
+    },
+  },
+});
+```
+
+<details>
+  <summary>Пример</summary>
+
+Если `['users']` уже был загружен 30 секунд назад и другой компонент делает:
+
+```ts
+useQuery({
+  queryKey: ["users"],
+  queryFn: getUsers,
+});
+```
+
+Он получает данные из кеша.
+
+</details>
+
+### Если данные есть, но они устарели
+
+То есть сразу после получения данных TanStack Query считает их stale (устаревшими).
+
+Это не значит, что данные удаляются из кеша.
+
+```
+Cache:
+['users'] → данные
+             ↓
+          stale ⚠️
+```
+
+TanStack Query может:
+
+1. сразу показать данные из кеша;
+2. одновременно выполнить новый HTTP-запрос в фоне;
+3. заменить кеш свежими данными.
+
+То есть пользователь может увидеть:
+
+```
+старые данные из cache
+        ↓
+   HTTP-запрос
+        ↓
+новые данные
+```
+
+Это одна из ключевых особенностей TanStack Query.
+
+### Автоудаление кеша `gcTime`
+
+```ts
+const { data } = useQuery({
+  queryKey: ["users"],
+  queryFn: fetchUsers,
+  gcTime: 1000 * 60 * 5, // 5 минут
+});
+```
+
+<hr />
+
+## `AbortController` для `queryFn`
+
+```ts
+const { data } = useQuery({
+  queryKey: ["posts"],
+  queryFn: ({ signal }) => getPosts(signal),
+});
+```
+
+в Axios:
+
+```ts
+function getPosts(signal: AbortSignal): Promise<Post[]> {
+  return api.get<Post[]>("/posts", { signal }).then((res) => res.data);
+}
+```
