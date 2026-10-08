@@ -187,9 +187,17 @@ createRoot(document.getElementById('root')!).render(
 
 Используем [`AbortController`](./hooks/use-query.mdx#abortcontroller-%D0%B4%D0%BB%D1%8F-queryfn) и [остановку запросов `cancelQueries()`](./hooks/use-queryclient.mdx#останавливает-запрос-cancelqueries)
 
-### Работа с кешом на уровне `QueryClient`
+## `defaultOptions` - дефолтные значения для всех queries
 
-Это значение будет дефолтным для всех queries.
+Эти значения будет дефолтным для всех queries.
+
+```ts
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {},
+  },
+});
+```
 
 ### Актуальность кеша в мс `staleTime`
 
@@ -210,6 +218,20 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       gcTime: 1000 * 60 * 60, // 1 час
+    },
+  },
+});
+```
+
+### `refetchOnWindowFocus`
+
+Перезапрашивать данные с сервера, когда пользователь возвращается на вкладку/окно браузера.
+
+```ts
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
     },
   },
 });
