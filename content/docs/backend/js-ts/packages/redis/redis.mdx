@@ -47,8 +47,41 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 import { createClient } from "redis";
 ```
 
+<Tabs items={["Hardcoding", ".env"]}>
+  <Tab value="Hardcoding">
+    
+    ```ts
+    const redis = createClient({
+      socket: {
+        host: "localhost",
+        port: 6779,
+      },
+      password: "root",
+    });
+    ```
+
+  </Tab>
+  <Tab value=".env">
+    
+    Через [`ConfigService`](../../frameworks/nest-js/nest-packages/config.mdx)
+
+    ```ts
+    const redis = createClient({
+      socket: {
+        host: config.getOrThrow<string>('REDIS_HOST'),
+        port: config.getOrThrow<number>('REDIS_PORT'),
+      },
+      password: config.get<string>('REDIS_PASSWORD'),
+    });
+    ```
+
+  </Tab>
+</Tabs>
+
 ```ts
-const client = createClient({
-  url: "redis://localhost:6379",
+redis.on("error", (error) => {
+  console.error("Redis error:", error);
 });
+
+await redis.connect();
 ```
