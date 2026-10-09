@@ -1,0 +1,54 @@
+---
+title: redis
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+`redis` — это библиотека, которая позволяет JavaScript-приложению подключаться к серверу Redis и работать с данными в нём.
+
+<hr />
+
+## Установка
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    
+    ```bash
+    npm install redis
+    ```
+
+  </Tab>
+  <Tab value="yarn">
+    
+    ```bash
+    ```
+
+  </Tab>
+  <Tab value="pnpm">
+    
+    ```bash
+    ```
+
+  </Tab>
+  <Tab value="bun">
+
+    ```bash
+    bun add redis
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## Использование
+
+```ts
+import { createClient } from "redis";
+```
+
+```ts
+const client = createClient({
+  url: "redis://localhost:6379",
+});
+```
