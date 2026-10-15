@@ -1,0 +1,109 @@
+---
+title: yt-dlp
+---
+
+| [GitHub](https://github.com/yt-dlp/) |
+| ------------------------------------ |
+
+<Callout type="warn">
+
+Для объединения отдельных видео/аудиопотоков обычно нужен **ffmpeg**.
+
+```bash
+brew install ffmpeg
+```
+
+</Callout>
+
+## Установка
+
+### Windows
+
+### Linux
+
+### MacOS (Homebrew)
+
+```bash
+brew install yt-dlp
+```
+
+<hr />
+
+## Команды `yt-dlp`
+
+Файл сохранится в текущую папку Terminal.
+
+```bash
+yt-dlp "https://www.youtube.com/watch?v=XXXXXXXXXXX"
+```
+
+```bash
+yt-dlp \
+-f "bv*[vcodec^=avc1][ext=mp4]+ba[acodec^=mp4a][ext=m4a]" \
+--merge-output-format mp4 \
+-o "%(title)s.%(ext)s" \
+"LINK_video"
+```
+
+### Доступное качество `-F`
+
+```bash
+yt-dlp -F "ССЫЛКА_НА_ВИДЕО"
+```
+
+Покажет доступные форматы, разрешения, кодеки и т. д.
+
+### Название файла `-o`
+
+```bash
+yt-dlp -o "~/Downloads/YouTube/%(title)s.%(ext)s" "ССЫЛКА_НА_ВИДЕО"
+```
+
+### Параметры `-f`
+
+|      |                                                    |
+| ---- | -------------------------------------------------- |
+| `bv` | best video                                         |
+| `ba` | best audio                                         |
+| `+`  | объединить видео и аудио                           |
+| `/b` | запасной вариант, если отдельные потоки недоступны |
+
+#### Формат файла <br/> `--merge-output-format`
+
+```bash
+yt-dlp -f "bv*+ba/b" --merge-output-format mp4 "ССЫЛКА_НА_ВИДЕО"
+```
+
+<hr />
+
+### Субтитры <br/> `--write[-auto]-subs`
+
+- `--write-subs` -> субтитры
+- `--write-auto-subs`-> автоматически сгенерированные субтитры
+- `--sub-langs` -> язык
+
+```bash
+yt-dlp --write-subs --sub-langs ru "ССЫЛКА_НА_ВИДЕО"
+```
+
+#### Посмотреть доступные <br/> `--list-subs`
+
+```bash
+yt-dlp --list-subs "ССЫЛКА_НА_ВИДЕО"
+```
+
+<hr />
+
+### Плейлист
+
+```bash
+yt-dlp "ССЫЛКА_НА_ПЛЕЙЛИСТ"
+```
+
+Сохранить каждый ролик в отдельную папку:
+
+```bash
+yt-dlp -o "~/Downloads/YouTube/%(playlist_title)s/%(playlist_index)s - %(title)s.%(ext)s" "ССЫЛКА_НА_ПЛЕЙЛИСТ"
+```
+
+<hr />
