@@ -4,6 +4,7 @@
     "osi-model",
     "ip-address",
     "port",
+    "subnet",
     "subnet-mask",
     "mac-address",
     "gateway",
