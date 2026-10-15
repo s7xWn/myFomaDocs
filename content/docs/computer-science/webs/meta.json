@@ -1,0 +1,13 @@
+{
+  "title": "Сети",
+  "pages": [
+    "osi-model",
+    "ip-address",
+    "port",
+    "mac-address",
+    "subnet-mask",
+    "gateway",
+    "dns",
+    "dhcp"
+  ]
+}
