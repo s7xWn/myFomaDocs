@@ -1,6 +1,7 @@
 {
   "title": "Сети",
   "pages": [
+    "connections",
     "osi-model",
     "ip-address",
     "port",
@@ -9,6 +10,7 @@
     "mac-address",
     "gateway",
     "dns",
-    "dhcp"
+    "dhcp",
+    "cloud"
   ]
 }
