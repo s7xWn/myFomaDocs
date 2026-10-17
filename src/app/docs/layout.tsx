@@ -8,19 +8,26 @@ export default function Layout({ children }: LayoutProps<"/docs">) {
     <DocsLayout
       tabs={[
         {
-          title: "Computer Science",
-          description: "База всего",
-          url: "/docs/computer-science",
-        },
-        {
           title: "Программы / утилиты",
           icon: null,
           description: "Для Windows, Linux, Mac",
           url: "/docs/programs",
         },
         {
+          title: "Computer Science",
+          description: "База всего",
+          url: "/docs/computer-science",
+        },
+        {
           title: "DevOps",
           url: "/docs/devops",
+        },
+        {
+          title: "Cybersecurity",
+          icon: null,
+          description:
+            "AppSec, Pentester, DevSecOps, SOC Analyst / Security Analyst",
+          url: "/docs/cybersecurity",
         },
         {
           title: "Backend",
