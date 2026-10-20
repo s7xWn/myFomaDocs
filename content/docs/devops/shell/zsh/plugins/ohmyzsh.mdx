@@ -1,3 +1,44 @@
 ---
 title: Oh My Zsh
 ---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+| [Off. website](https://ohmyz.sh) |
+| -------------------------------- |
+
+<hr />
+
+## Установка
+
+<Tabs items={["curl", "wget"]}>
+
+  <Tab value="curl">
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+  </Tab>
+  
+  <Tab value="wget">
+
+```bash
+sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## Настройка
+
+### VS Code
+
+Открой через `Ctrl` + `Shift` + `P` → `Preferences: Open User Settings (JSON)` и добавь:
+
+```json
+  "terminal.integrated.fontFamily": "MesloLGS NF",
+  "terminal.integrated.fontSize": 14,
+```
