@@ -2,8 +2,10 @@
   "root": true,
   "pages": [
     "index",
+    "---Разработка---",
+    "...develop",
+    "--- ---",
     "ai",
-    "ide",
     "text-editors",
     "file-managers",
     "browsers",
