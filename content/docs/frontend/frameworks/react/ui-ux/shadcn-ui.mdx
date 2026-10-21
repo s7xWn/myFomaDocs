@@ -47,3 +47,141 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 ```bash
 npx shadcn@latest init -t [framework]
 ```
+
+<hr />
+
+## Theming - Переключение тем
+
+### Dark Mode
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    
+    ```bash
+    npm install next-themes
+    ```
+
+  </Tab>
+  <Tab value="yarn">
+    
+    ```bash
+    yarn add next-themes
+    ```
+
+  </Tab>
+  <Tab value="pnpm">
+    
+    ```bash
+    pnpm add next-themes
+    ```
+
+  </Tab>
+  <Tab value="bun">
+
+    ```bash
+    bun add next-themes
+    ```
+
+  </Tab>
+</Tabs>
+
+Создать провайдер темы (пример `components/theme-provider.tsx`):
+
+<Tabs items={["NextJS"]}>
+
+  <Tab value="NextJS">
+
+    ```ts
+    "use client"
+
+    import * as React from "react";
+    import { ThemeProvider as NextThemesProvider } from "next-themes";
+
+    export function ThemeProvider({
+      children,
+      ...props
+    }: React.ComponentProps<typeof NextThemesProvider>) {
+      return <NextThemesProvider {...props}>{children}</NextThemesProvider>
+    }
+    ```
+
+    Обернуть провайдером приложение:
+
+      <Callout>
+      Применить `suppressHydrationWarning` для тега `<html>`
+      </Callout>
+
+    ```ts
+    import { ThemeProvider } from "@/components/theme-provider"
+
+    export default function RootLayout({ children }: RootLayoutProps) {
+      return (
+        <>
+          <html lang="en" suppressHydrationWarning>
+            <head />
+            <body>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                {children}
+              </ThemeProvider>
+            </body>
+          </html>
+        </>
+      )
+    }
+    ```
+
+    Создать компонент:
+
+    <Tabs items={["Base UI"]}>
+    <Tab value="Base UI">
+      ```ts
+      "use client";
+
+      import * as React from "react";
+      import { Moon, Sun } from "lucide-react";
+      import { useTheme } from "next-themes";
+
+      import { Button } from "@/shared/components/ui/Button";
+      import {
+        DropdownMenu,
+        DropdownMenuContent,
+        DropdownMenuItem,
+        DropdownMenuTrigger,
+      } from "@/shared/components/ui/dropdown-menu";
+
+      export function ToggleTheme() {
+        const { setTheme } = useTheme();
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger render={<Button variant="outline" size="icon" />}>
+              <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+              <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+              <span className="sr-only">Toggle theme</span>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setTheme("light")}>
+                Light
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("dark")}>
+                Dark
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("system")}>
+                System
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      }
+      ```
+      </Tab>
+    </Tabs>
+
+  </Tab>
+
+</Tabs>
