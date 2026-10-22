@@ -1,8 +1,12 @@
 ---
-title: "Zod"
+title: "Zod (v. 4)"
 ---
 
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+```ts
+import { z } from "zod";
+```
 
 Zod — это библиотека для JavaScript и TypeScript, которая проверяет, соответствуют ли данные заданной структуре (схеме).<br/>
 Zod помогает убедиться, что данные имеют правильный тип и формат, прежде чем использовать их в программе.
@@ -49,6 +53,418 @@ Zod помогает убедиться, что данные имеют прав
 
 <hr />
 
+## Использование
+
+```ts
+import { z } from "zod";
+```
+
+Создаём схему валидации данных.
+
+<Callout>Схема — это описание того, каким данным можно доверять.</Callout>
+
+```ts
+const UserSchema = z.object({
+  name: z.string(),
+  age: z.number(),
+  email: z.email(),
+});
+```
+
+Проверяем данные:
+
+```ts
+const user = UserSchema.parse({
+  name: "Alex",
+  age: 25,
+  email: "alex@example.com",
+});
+
+console.log(user.name); // "Alex"
+```
+
+<details>
+  <summary>Пример когда объект не пройдет валидацию</summary>
+
+Здесь сразу две проблемы: `age` — строка вместо числа, а `email` имеет неправильный формат. `parse()` выбросит исключение `ZodError`, содержащее информацию об ошибках.
+
+```ts
+UserSchema.parse({
+  name: "Alex",
+  age: "25",
+  email: "not-an-email",
+});
+```
+
+</details>
+
+<hr />
+
+## Основные типы схем и их ограничения
+
+### Object (`z.object()`)
+
+Проверяет объект с заданными полями
+
+| Метод               | Описание                            | Пример                             |
+| ------------------- | ----------------------------------- | ---------------------------------- |
+| `.extend(shape)`    | Добавляет или переопределяет поля   | `User.extend({ age: z.number() })` |
+| `.pick(shape)`      | Выбирает поля                       | `User.pick({ name: true })`        |
+| `.omit(shape)`      | Исключает поля                      | `User.omit({ password: true })`    |
+| `.partial()`        | Делает все поля необязательными     | `User.partial()`                   |
+| `.required()`       | Делает поля обязательными           | `User.required()`                  |
+| `.strict()`         | Отклоняет неизвестные ключи         | `User.strict()`                    |
+| `.catchall(schema)` | Проверяет дополнительные ключи      | `User.catchall(z.string())`        |
+| `.refine(fn)`       | Добавляет пользовательскую проверку | `User.refine((u) => u.age >= 18)`  |
+
+<hr />
+
+### String (`z.string()`)
+
+Проверяет строку
+
+| Метод            | Описание                           | Пример                           |
+| ---------------- | ---------------------------------- | -------------------------------- |
+| `.min(n)`        | Минимальная длина                  | `z.string().min(3)`              |
+| `.max(n)`        | Максимальная длина                 | `z.string().max(100)`            |
+| `.length(n)`     | Точная длина                       | `z.string().length(6)`           |
+| `.nonempty()`    | Не пустая строка                   | `z.string().nonempty()`          |
+| `.regex(regex)`  | Соответствие регулярному выражению | `z.string().regex(/^[a-z]+$/)`   |
+| `.startsWith(s)` | Начинается с подстроки             | `z.string().startsWith("user_")` |
+| `.endsWith(s)`   | Заканчивается подстрокой           | `z.string().endsWith(".com")`    |
+| `.includes(s)`   | Содержит подстроку                 | `z.string().includes("@")`       |
+| `.uppercase()`   | Только верхний регистр             | `z.string().uppercase()`         |
+| `.lowercase()`   | Только нижний регистр              | `z.string().lowercase()`         |
+
+Дополнительные преобразования строк:
+
+| Метод            | Описание                      | Пример                     |
+| ---------------- | ----------------------------- | -------------------------- |
+| `.trim()`        | Удаляет пробелы по краям      | `z.string().trim()`        |
+| `.toLowerCase()` | Преобразует в нижний регистр  | `z.string().toLowerCase()` |
+| `.toUpperCase()` | Преобразует в верхний регистр | `z.string().toUpperCase()` |
+| `.normalize()`   | Нормализует Unicode           | `z.string().normalize()`   |
+
+<hr />
+
+### Number (`z.number()`)
+
+Проверяет число
+
+| Метод            | Описание                  | Пример                     |
+| ---------------- | ------------------------- | -------------------------- |
+| `.min(n)`        | Минимум, включая границу  | `z.number().min(0)`        |
+| `.max(n)`        | Максимум, включая границу | `z.number().max(100)`      |
+| `.gt(n)`         | Строго больше             | `z.number().gt(0)`         |
+| `.gte(n)`        | Больше или равно          | `z.number().gte(18)`       |
+| `.lt(n)`         | Строго меньше             | `z.number().lt(100)`       |
+| `.lte(n)`        | Меньше или равно          | `z.number().lte(100)`      |
+| `.positive()`    | Больше нуля               | `z.number().positive()`    |
+| `.nonnegative()` | Не меньше нуля            | `z.number().nonnegative()` |
+| `.negative()`    | Меньше нуля               | `z.number().negative()`    |
+| `.nonpositive()` | Не больше нуля            | `z.number().nonpositive()` |
+| `.int()`         | Безопасное целое число    | `z.int()`                  |
+| `.multipleOf(n)` | Кратно заданному числу    | `z.number().multipleOf(5)` |
+| `.step(n)`       | Шаг / кратность           | `z.number().step(0.5)`     |
+
+<hr />
+
+### BigInt (`z.bigint()`)
+
+| Метод            | Описание                  | Пример                      |
+| ---------------- | ------------------------- | --------------------------- |
+| `.min(n)`        | Минимум, включая границу  | `z.bigint().min(0n)`        |
+| `.max(n)`        | Максимум, включая границу | `z.bigint().max(100n)`      |
+| `.gt(n)`         | Строго больше             | `z.bigint().gt(0n)`         |
+| `.lt(n)`         | Строго меньше             | `z.bigint().lt(100n)`       |
+| `.positive()`    | Больше нуля               | `z.bigint().positive()`     |
+| `.nonnegative()` | Не меньше нуля            | `z.bigint().nonnegative()`  |
+| `.multipleOf(n)` | Кратно числу              | `z.bigint().multipleOf(5n)` |
+
+<hr />
+
+### Boolean (`z.boolean()`)
+
+Проверяет `true` или `false`
+
+<hr />
+
+### Array (`z.array()`)
+
+Проверяет массив
+
+| Метод         | Описание                          | Пример                           |
+| ------------- | --------------------------------- | -------------------------------- |
+| `.min(n)`     | Минимальное количество элементов  | `z.array(z.string()).min(1)`     |
+| `.max(n)`     | Максимальное количество элементов | `z.array(z.string()).max(10)`    |
+| `.length(n)`  | Точное количество элементов       | `z.array(z.string()).length(3)`  |
+| `.nonempty()` | Хотя бы один элемент              | `z.array(z.string()).nonempty()` |
+
+<hr />
+
+### Date (`z.date()`)
+
+| Метод        | Описание          | Пример                                 |
+| ------------ | ----------------- | -------------------------------------- |
+| `.min(date)` | Минимальная дата  | `z.date().min(new Date("2000-01-01"))` |
+| `.max(date)` | Максимальная дата | `z.date().max(new Date())`             |
+
+`z.date()` проверяет экземпляры `Date`, а не строки с датой.
+
+<hr />
+
+### Set (`z.set()`)
+
+| Метод         | Описание                          | Пример                         |
+| ------------- | --------------------------------- | ------------------------------ |
+| `.min(n)`     | Минимальное количество элементов  | `z.set(z.string()).min(1)`     |
+| `.max(n)`     | Максимальное количество элементов | `z.set(z.string()).max(10)`    |
+| `.size(n)`    | Точное количество элементов       | `z.set(z.string()).size(3)`    |
+| `.nonempty()` | Хотя бы один элемент              | `z.set(z.string()).nonempty()` |
+
+<hr />
+
+### Map (`z.map()`)
+
+| Метод         | Описание                        | Пример                                     |
+| ------------- | ------------------------------- | ------------------------------------------ |
+| `.min(n)`     | Минимальное количество записей  | `z.map(z.string(), z.number()).min(1)`     |
+| `.max(n)`     | Максимальное количество записей | `z.map(z.string(), z.number()).max(10)`    |
+| `.size(n)`    | Точное количество записей       | `z.map(z.string(), z.number()).size(3)`    |
+| `.nonempty()` | Хотя бы одна запись             | `z.map(z.string(), z.number()).nonempty()` |
+
+<hr />
+
+### File (`z.file()`)
+
+| Метод         | Описание                     | Пример                       |
+| ------------- | ---------------------------- | ---------------------------- |
+| `.min(n)`     | Минимальный размер в байтах  | `z.file().min(1024)`         |
+| `.max(n)`     | Максимальный размер в байтах | `z.file().max(1_000_000)`    |
+| `.mime(type)` | Допустимый MIME-тип          | `z.file().mime("image/png")` |
+
+<hr />
+
+### Enum (`z.enum()`)
+
+| Метод              | Описание                     | Пример                                        |
+| ------------------ | ---------------------------- | --------------------------------------------- |
+| `.exclude(values)` | Исключает значения из набора | `z.enum(["a", "b", "c"]).exclude(["c"])`      |
+| `.extract(values)` | Оставляет выбранные значения | `z.enum(["a", "b", "c"]).extract(["a", "b"])` |
+
+Enum изначально ограничивает значения перечисленным набором, поэтому отдельный `.min()` или `.max()` ему не нужен.
+
+<hr />
+
+### `z.email()`
+
+Проверяет формат email
+
+### `z.uuid()`
+
+Проверяет UUID
+
+### `z.url()`
+
+Проверяет URL
+
+<hr />
+
+## Необязательные поля, `null` и значения по умолчанию
+
+### `optional()`
+
+Тип или `undefined`; поле можно не передавать
+
+### `nullable()`
+
+Тип или `null`; поле должно присутствовать
+
+### `nullish()`
+
+Тип, `null` или `undefined`
+
+### `default(value)`
+
+Если значение `undefined`, подставляется `value`
+
+<hr />
+
+## Массив, элементы которого соответствует схеме <br/> `mySchema.array()` / `z.array(mySchema)`
+
+```ts
+const users = mySchema.array().parse(result);
+```
+
+Это эквивалентно:
+
+```ts
+const users = z.array(mySchema).nonempty();
+```
+
+<hr />
+
+## Парсинг
+
+### `parse()`
+
+Использовать, когда при неправильных данных нужно выбросить ошибку и передать её обработчику исключений.
+
+```ts
+const data = MySchema.parse(input);
+```
+
+Если данные невалидны, выполнение перейдёт в catch, если исключение не перехвачено раньше.
+
+#### `parseAsync(data)`
+
+```ts
+schema.parseAsync(data);
+```
+
+<hr />
+
+### `safeParse()`
+
+Возвращает результат с признаком успеха.
+
+```ts
+const result = MySchema.safeParse(input);
+
+if (result.success) {
+  console.log(result.data);
+} else {
+  console.log(result.error.issues);
+}
+```
+
+Результат имеет два варианта:
+
+- `success: true` — данные находятся в `result.data`.
+- `success: false` — ошибки находятся в `result.error.issues`.
+
+#### `safeParseAsync(data)`
+
+```ts
+schema.safeParseAsync(data);
+```
+
+<hr />
+
+## `z.infer<typeof NameSchema>` Автоматическое получение типов
+
+```ts
+const UserSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  email: z.email(),
+});
+
+type User = z.infer<typeof UserSchema>;
+```
+
+TypeScript автоматически получает такой тип:
+
+```ts
+type User = {
+  id: number;
+  name: string;
+  email: string;
+};
+```
+
+<hr />
+
+## Ошибка
+
+### `parse()`
+
+В Zod ошибка при `.parse()` ловится через `try...catch`, потому что `.parse()` выбрасывает исключение `ZodError`, если данные не прошли проверку.
+
+```ts
+try {
+  const user = UserSchema.parse({
+    name: "Alex",
+    age: "25",
+  });
+} catch (error) {
+  if (error instanceof z.ZodError) {
+    console.log(error.issues);
+  }
+}
+```
+
+Получить сообщения об ошибках:
+
+```ts
+  if (error instanceof z.ZodError) {
+    for (const issue of error.issues) {
+      console.log(issue.path);    // Путь к полю
+      console.log(issue.message); // Сообщение об ошибке
+      console.log(issue.code);    // Код ошибки
+    }
+```
+
+<hr />
+
+### `safeParse()`
+
+```ts
+if (!result.success) {
+  console.log(result.error); // Ошибка Zod
+  console.log(result.error.issues); // Массив ошибок
+} else {
+  console.log(result.data); // Проверенные данные
+}
+```
+
+<hr />
+
+### Кастомное сообщение об ошибке
+
+В Zod 4 кастомное сообщение об ошибке можно передать через параметр `error`. <br/>
+В Zod 4 вместо `message` рекомендуется использовать `error`, но `message` всё ещё поддерживается в большинстве валидаторов для обратной совместимости.
+
+1. Для типов
+
+   ```ts
+   const nameSchema = z.string({
+     error: "Имя должно быть строкой",
+   });
+
+   const ageSchema = z.number({
+     error: "Возраст должен быть числом",
+   });
+   ```
+
+2. Для ограничений
+
+   ```ts
+   const passwordSchema = z
+     .string()
+     .min(8, {
+       error: "Пароль должен содержать минимум 8 символов",
+     })
+     .max(32, {
+       error: "Пароль не должен превышать 32 символа",
+     });
+   ```
+
+#### Динамическое сообщение
+
+Можно передать функцию, которая получает информацию об ошибке:
+
+```ts
+const ageSchema = z.number({
+  error: (issue) =>
+    issue.input === undefined
+      ? "Возраст обязателен"
+      : "Возраст должен быть числом",
+});
+```
+
+<hr />
+
 ## Связь с менеджерами форм
 
 ### React Hook Form
@@ -85,3 +501,7 @@ Zod помогает убедиться, что данные имеют прав
 </Tabs>
 
 <hr />
+
+## Ссылки
+
+-[Михаил Непомнящий | Zod для валидации API и форм](https://www.youtube.com/watch?v=Nicadhseqos)

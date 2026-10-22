@@ -10,7 +10,9 @@
     "state-managers",
     "server-state-managers",
     "form-management",
+    "schema-validation",
     "i18n",
+
     "--- ---",
     "ui-ux",
     "animations",
