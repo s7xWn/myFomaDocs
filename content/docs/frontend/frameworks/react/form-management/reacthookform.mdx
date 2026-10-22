@@ -138,6 +138,18 @@ useForm({
 
 Интеграция с внешними схемами валидации (Zod, Yup и т.д.)
 
+Пример с `@hookform/resolvers` + [Zod](../schema-validation/zod.mdx):
+
+```ts
+import { zodResolver } from "@hookform/resolvers/zod";
+```
+
+```ts
+useForm({
+  resolver: zodResolver(MySchema),
+});
+```
+
 #### `context`
 
 Любые дополнительные данные для resolver'а.
