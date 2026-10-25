@@ -11,6 +11,7 @@
     "server-state-managers",
     "form-management",
     "schema-validation",
+    "virtualizations",
     "i18n",
 
     "--- ---",
