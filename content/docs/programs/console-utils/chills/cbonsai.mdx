@@ -1,0 +1,62 @@
+---
+title: "cbon"
+---
+
+| [GitLab](https://gitlab.com/jallbrit/cbonsai) |
+| --------------------------------------------- |
+
+cbonsai — это небольшая бесплатная программа, которая выращивает виртуальное дерево бонсай прямо в терминале компьютера с помощью ASCII-символов.
+
+<hr />
+
+## Установка
+
+### Linux
+
+#### APT
+
+```bash
+sudo apt install cbonsai
+```
+
+#### Установка из исходников
+
+```bash
+sudo apt install git build-essential
+sudo apt install libncursesw5-dev
+```
+
+```bash
+git clone https://gitlab.com/jallbrit/cbonsai.git
+cd cbonsai
+```
+
+```bash
+make install PREFIX="$HOME/.local"
+```
+
+### MacOS (Homebrew)
+
+```bash
+brew install cbonsai
+```
+
+<hr />
+
+## Использование
+
+```bash
+cbonsai
+```
+
+Чтобы увидеть, как дерево растёт:
+
+```bash
+cbonsai -l
+```
+
+Чтобы запускать бесконечную анимацию:
+
+```bash
+cbonsai -li
+```

@@ -1,0 +1,70 @@
+---
+title: "brrtfetch"
+---
+
+| [GitHub](https://github.com/ferrebarrat/brrtfetch) |
+| -------------------------------------------------- |
+
+Brrtfetch — это небольшая бесплатная программа с открытым исходным кодом для терминала Linux, которая показывает системную информацию рядом с анимированным ASCII-артом.
+
+- Показывает информацию о системе: операционную систему, процессор, память и другие характеристики.
+- Превращает GIF-анимацию в цветной ASCII-арт прямо в терминале.
+- Позволяет настраивать размер анимации, скорость FPS, яркость и цвета.
+- Работает вместе с такими утилитами, как Fastfetch и Neofetch.
+
+<hr />
+
+## Установка
+
+### Linux
+
+Устанавливаем пакеты:
+
+```bash
+sudo apt install fastfetch
+```
+
+```bash
+sudo apt install bsdutils expect
+```
+
+Устанавливаем golang:
+
+```bash
+sudo apt install golang
+```
+
+Клонируем репозиторий:
+
+```bash
+git clone https://github.com/ferrebarrat/brrtfetch
+cd brrtfetch
+go build -o ./bin/brrtfetch ./go/main.go && chmod +x ./bin/brrtfetch
+```
+
+Копируем:
+
+```bash
+sudo cp ./bin/brrtfetch /usr/local/bin/brrtfetch
+```
+
+Если нужны дефолтные гифки с репо:
+
+```bash
+mkdir -p /home/$USER/Pictures/brrtfetch/gifs
+cp -r ./gifs/* /home/$USER/Pictures/brrtfetch/gifs
+```
+
+Удаляем лишнее:
+
+```bash
+cd .. && rm -rf brrtfetch
+```
+
+<hr />
+
+## Использование
+
+```bash
+brrtfetch ./Pictures/brrtfetch/gifs/defaults/brrt.gif
+```
