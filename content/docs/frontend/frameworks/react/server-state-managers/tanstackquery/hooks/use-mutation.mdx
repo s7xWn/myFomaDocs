@@ -47,6 +47,8 @@ mutation.mutate({ name: "Alex" });
 
 </details>
 
+<hr />
+
 ### `mutationKey` — как идентифицировать мутацию
 
 Это массив, который задаёт ключ мутации. Он помогает идентифицировать и группировать мутации, например для поиска через `useMutationState` или настройки общих параметров через `MutationCache`.
@@ -69,3 +71,37 @@ const mutation = useMutation({
 Здесь `['users', 'create']` — это метка, по которой можно определить, что мутация связана с созданием пользователя.
 
 </details>
+
+<hr />
+
+### `onSuccess()` — запрос выполнен успешно
+
+```ts
+const mutation = useMutation({
+  mutationFn: createUser,
+
+  onSuccess: (data) => {
+    console.log("Пользователь создан!", data);
+  },
+});
+```
+
+<hr />
+
+### `onError()` — запрос завершился ошибкой
+
+<Callout title='Важно' type='warn'>
+
+Если используешь `fetch`, HTTP-ответ со статусом `400` или `500` сам по себе не вызывает `onError`. Нужно самостоятельно проверить `response.ok` и выбросить ошибку.
+
+</Callout>
+
+```ts
+const mutation = useMutation({
+  mutationFn: createUser,
+
+  onError: (error) => {
+    console.error("Ошибка!", error.message);
+  },
+});
+```
