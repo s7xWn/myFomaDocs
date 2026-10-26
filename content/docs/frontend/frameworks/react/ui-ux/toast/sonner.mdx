@@ -103,3 +103,266 @@ export default SaveButton;
 | `toast.dismiss()`    | Закрывает уведомление по его ID или все уведомления                      | `toast.dismiss(id)`                                                                            |
 | `toast.message()`    | Показывает уведомление с заголовком или сообщением                       | `toast.message('Новое сообщение')`                                                             |
 | `toast.getHistory()` | Возвращает историю уведомлений, если поддерживается используемой версией | `toast.getHistory()`                                                                           |
+
+<hr />
+
+## Параметры методов `toast.()`
+
+### `description` — дополнительный текст
+
+```ts
+toast.success("Профиль обновлён", {
+  description: "Изменения успешно сохранены.",
+});
+```
+
+### `action` — кнопка
+
+```ts
+toast("Файл удалён", {
+  description: "Файл перемещён в корзину.",
+  action: {
+    label: "Восстановить",
+    onClick: () => restoreFile(),
+  },
+});
+```
+
+### `cancel` — кнопка
+
+```ts
+toast("Файл удалён", {
+  description: "Файл перемещён в корзину.",
+  cancel: {
+    label: "Закрыть",
+    onClick: () => {},
+  },
+});
+```
+
+### `duration` — время показа в миллисекундах
+
+Если `duration` не указан, используется значение из `<Toaster duration={4000} />`
+
+`duration: Infinity` -> бесконечное
+
+```ts
+toast.success("Скопировано!", {
+  duration: 2000,
+});
+```
+
+### `id` — обновление существующего уведомления
+
+Полезно для загрузки, когда нужно изменить уведомление, а не создавать новое.
+
+```ts
+const id = toast.loading("Сохраняем...");
+
+// После завершения операции:
+toast.success("Сохранено!", {
+  id,
+  description: "Данные успешно обновлены.",
+});
+```
+
+Можно также закрыть уведомление вручную:
+
+```ts
+const id = toast("Уведомление");
+
+// Закрыть конкретное
+toast.dismiss(id);
+
+// Закрыть все уведомления
+toast.dismiss();
+```
+
+### `position` — позиция
+
+```ts
+toast("Файл скопирован", {
+  position: "top-center",
+});
+```
+
+Доступные позиции:
+
+- `top-left`
+- `top-center`
+- `top-right`
+- `bottom-left`
+- `bottom-center`
+- `bottom-right`
+
+### `icon` — иконка
+
+```ts
+toast("Файл скопирован", {
+  icon: <Check className="size-4" />,
+});
+```
+
+### `dismissible` — может ли пользователь самостоятельно закрыть уведомление
+
+- `dismissible: true` — уведомление можно закрыть вручную, например кликом или свайпом (в зависимости от платформы и реализации).
+- `dismissible: false` — пользователь не может закрыть уведомление обычным способом.
+- Если не указывать параметр, по умолчанию уведомление закрываемое.
+
+```ts
+toast("Файл сохранён", {
+  dismissible: true,
+});
+```
+
+<hr />
+
+## Параметры `<Toaster />` <br/> Настройки внешнего вид
+
+### `toastOptions` — общие настройки каждого уведомления
+
+Этот параметр позволяет настроить уведомления централизованно, вместо того чтобы повторять параметры в каждом вызове `toast()`.
+
+```tsx
+    <Toaster
+      toastOptions={{
+        closeButton: true,
+        duration: 4000,
+        className: "rounded-xl",
+        classNames: {
+          toast: "border shadow-lg",
+          title: "font-semibold",
+          description: "text-sm text-muted-foreground",
+          actionButton: "bg-primary text-primary-foreground",
+          cancelButton: "bg-muted text-muted-foreground",
+        },
+      }}
+```
+
+| Параметр                  | Назначение                   |
+| ------------------------- | ---------------------------- |
+| `closeButton`             | Показывать кнопку закрытия   |
+| `duration`                | Время отображения            |
+| `className`               | CSS-класс всего уведомления  |
+| `classNames.toast`        | Класс контейнера уведомления |
+| `classNames.title`        | Стиль заголовка              |
+| `classNames.description`  | Стиль описания               |
+| `classNames.actionButton` | Стиль основной кнопки        |
+| `classNames.cancelButton` | Стиль кнопки отмены          |
+
+### `theme` — тема
+
+<Callout title='' type='tip'>
+
+Если в проекте есть `next-themes`, используй `resolvedTheme`, чтобы Sonner соответствовал активной теме сайта.
+
+</Callout>
+
+Тип: `"light" | "dark" | "system"`
+
+```tsx
+    <Toaster
+      theme={resolvedTheme === "dark" ? "dark" : "light"}
+```
+
+### `position` — расположение уведомлений.
+
+Тип: `string`, по умолчанию `"bottom-right"`
+
+Определяет, в какой части экрана появятся уведомления.
+
+Возможные значения: `top-left`, `top-center`, `top-right`, `bottom-left`, `bottom-center`, `bottom-right`.
+
+```tsx
+    <Toaster
+      position="top-right"
+```
+
+### `richColors` — цветовое оформление типов уведомлений.
+
+Тип: `boolean`, по умолчанию `false`
+
+Включает более выразительные цвета для типов уведомлений: успеха, ошибки, предупреждения и информации.
+
+### `closeButton` — кнопка закрытия.
+
+Тип: `boolean`, по умолчанию `false`
+
+Показывает кнопку закрытия `×` у уведомлений.
+
+### `duration` — время отображения в миллисекундах.
+
+Тип: `number`
+
+Время показа уведомления по умолчанию.
+
+```tsx
+    <Toaster
+      duration={4000}
+```
+
+### `visibleToasts`
+
+Тип: `number`, по умолчанию `3`
+
+Определяет, сколько уведомлений показывать одновременно в стопке.
+
+```tsx
+    <Toaster
+      duration={4000}
+```
+
+### `expand`
+
+Тип: `boolean`, по умолчанию `false`
+
+Определяет, раскрыта ли стопка уведомлений по умолчанию.
+
+```tsx
+    <Toaster
+      expand={false}
+```
+
+### `invert`
+
+Тип: `boolean`, по умолчанию `false`
+
+Инвертирует оформление уведомлений относительно выбранной темы: например, тёмные уведомления на светлой теме.
+
+### `offset`
+
+Тип: `number`, `string` или `object`
+
+Расстояние от краёв экрана на обычных устройствах. В `px`.
+
+```tsx
+    <Toaster
+      offset={24}
+```
+
+```tsx
+    <Toaster
+      offset={{ top: 20, right: 24, bottom: 24, left: 24 }}
+```
+
+### `mobileOffset`
+
+Тип: `number`, `string` или `object`
+
+Отступы для мобильных экранов.
+
+```tsx
+    <Toaster
+      mobileOffset={16}
+```
+
+### `gap`
+
+Тип: `number`, по умолчанию `14`
+
+Расстояние в пикселях между уведомлениями, когда список раскрыт.
+
+```tsx
+    <Toaster
+      gap={12}
+```
