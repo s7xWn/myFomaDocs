@@ -1,0 +1,118 @@
+---
+title: "react-google-recaptcha"
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+| [NPM](https://www.npmjs.com/package/react-google-recaptcha?utm_source=chatgpt.com) |
+| ---------------------------------------------------------------------------------- |
+
+`react-google-recaptcha` — это библиотека для интеграции Google reCAPTCHA в React-приложение, чтобы защищать формы от ботов, спама и автоматических запросов.
+
+- `react-google-recaptcha` — это именно React-обёртка, а не сама система CAPTCHA.
+- Библиотека `react-google-recaptcha` предназначена для reCAPTCHA v2.
+- Если нужна невидимая проверка или reCAPTCHA v3 с оценкой вероятности того, что запрос отправляет бот, стоит рассмотреть другие библиотеки, например `react-google-recaptcha-v3`.
+- Нельзя полагаться только на проверку на frontend: токен обязательно должен проверяться на backend.
+
+<hr />
+
+## Установка
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    
+    ```bash
+    npm install react-google-recaptcha
+    ```
+
+  </Tab>
+  <Tab value="yarn">
+    
+    ```bash
+    yarn add react-google-recaptcha
+    ```
+
+  </Tab>
+  <Tab value="pnpm">
+    
+    ```bash
+    pnpm add react-google-recaptcha
+    ```
+
+  </Tab>
+  <Tab value="bun">
+
+    ```bash
+    bun add react-google-recaptcha
+    ```
+
+  </Tab>
+</Tabs>
+
+### TypeScript
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    
+    ```bash
+    npm install --save-dev @types/react-google-recaptcha
+    ```
+
+  </Tab>
+  <Tab value="yarn">
+    
+    ```bash
+    ```
+
+  </Tab>
+  <Tab value="pnpm">
+    
+    ```bash
+    ```
+
+  </Tab>
+  <Tab value="bun">
+
+    ```bash
+    bun add -d @types/react-google-recaptcha
+    ```
+
+  </Tab>
+</Tabs>
+
+<hr />
+
+## Использование
+
+```ts
+import ReCAPTCHA from "react-google-recaptcha";
+```
+
+```tsx
+<ReCAPTCHA
+  sitekey={process.env.GOOGLE_RECAPTCH_SITE_KEY as string}
+  onChange={setRecaptchaValue}
+  theme={theme === "light" ? "light" : "dark"}
+/>
+```
+
+В `onChange` можно задать состояние (`setRecaptchaValue`) и проверять его перед отправкой.
+
+<details>
+  <summary>Пример</summary>
+
+```tsx
+const [recaptchaValue, setRecaptchaValue] = useState<string | null>();
+
+function onSubmit(data: TypeRegisterSchema) {
+  if(recaptchaValue){
+    ...
+  }
+}
+```
+
+</details>
+
+### Получить ключи Google
+
+Нужно зарегистрировать сайт в [Google reCAPTCHA Admin Console](https://www.google.com/recaptcha/admin/) и получить ключ сайта (`site key`). Секретный ключ (`secret key`) должен храниться только на сервере.
