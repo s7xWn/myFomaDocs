@@ -105,3 +105,26 @@ const mutation = useMutation({
   },
 });
 ```
+
+<hr />
+
+## Что возвращает `useMutation`
+
+```tsx
+const { mutate, data, error, isPending, isSuccess, isError, isIdle, status, reset() } = useMutation({
+  mutationFn: createUser,
+});
+```
+
+| Свойство / метод    | Что возвращает или делает                                          |
+| ------------------- | ------------------------------------------------------------------ |
+| `mutate(data)`      | Запускает мутацию, передавая данные                                |
+| `mutateAsync(data)` | Запускает мутацию и возвращает Promise                             |
+| `data`              | Результат успешного выполнения mutationFn                          |
+| `error`             | Ошибку, если запрос завершился неудачно                            |
+| `isPending`         | `true`, если запрос выполняется                                    |
+| `isSuccess`         | `true`, если мутация завершилась успешно                           |
+| `isError`           | `true`, если произошла ошибка                                      |
+| `isIdle`            | `true`, если мутация ещё не запускалась или её состояние сброшено  |
+| `status`            | Строка состояния: `'idle'`, `'pending'`, `'success'` или `'error'` |
+| `reset()`           | Сбрасывает состояние мутации                                       |
