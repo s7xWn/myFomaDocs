@@ -1,0 +1,71 @@
+---
+title: "useMutation"
+---
+
+В TanStack Query `useMutation` используется для выполнения запросов, которые изменяют данные на сервере: создать, обновить или удалить запись.
+
+Если `useQuery` обычно получает данные (`GET`), то `useMutation` обычно отправляет изменения (`POST`, `PUT`, `PATCH`, `DELETE`).
+
+```ts
+import { useMutation } from "@tanstack/react-query";
+```
+
+```ts
+const mutation = useMutation({
+  mutationKey: ['users', 'create'],
+
+  mutationFn: (userData) => {
+    return axios.post('/api/users', userData);
+  },
+```
+
+<hr />
+
+## Параметры
+
+### `mutationFn` — что выполнить
+
+Это функция, которая непосредственно выполняет операцию, например отправляет запрос на сервер.
+
+<details>
+  <summary>Пример</summary>
+
+```tsx
+const mutation = useMutation({
+  mutationFn: (userData) => {
+    return axios.post("/api/users", userData);
+  },
+});
+
+// Запускаем запрос:
+mutation.mutate({ name: "Alex" });
+```
+
+- `mutationFn` определяет, как выполнить запрос.
+- Аргумент `userData` получает данные, переданные в `mutate()`.
+- Возвращаемое значение функции становится результатом мутации (`mutation.data`).
+
+</details>
+
+### `mutationKey` — как идентифицировать мутацию
+
+Это массив, который задаёт ключ мутации. Он помогает идентифицировать и группировать мутации, например для поиска через `useMutationState` или настройки общих параметров через `MutationCache`.
+
+Сам по себе `mutationKey` не отправляет запрос, не запускает мутацию и не обновляет кэш автоматически.
+
+<details>
+  <summary>Пример</summary>
+
+```tsx
+const mutation = useMutation({
+  mutationKey: ["users", "create"],
+
+  mutationFn: (userData) => {
+    return axios.post("/api/users", userData);
+  },
+});
+```
+
+Здесь `['users', 'create']` — это метка, по которой можно определить, что мутация связана с созданием пользователя.
+
+</details>

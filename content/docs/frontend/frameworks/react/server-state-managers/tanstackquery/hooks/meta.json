@@ -6,6 +6,7 @@
     "use-queries",
     "use-suspensequery",
     "use-suspensequeries",
-    "use-isfetching"
+    "use-isfetching",
+    "use-mutation"
   ]
 }
