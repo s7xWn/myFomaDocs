@@ -2,6 +2,60 @@
 title: Сервисы (провайдеры)
 ---
 
+В NestJS Service — это класс, в котором обычно хранится основная бизнес-логика приложения:
+работа с данными, вычисления, взаимодействие с базой данных и другие операции.
+
+<Callout title='Для понимания' type='tip'>
+
+- **Controller** — принимает запросы от клиента.
+- **Service** — выполняет нужную работу.
+- **Module** — объединяет связанные компоненты и настраивает их взаимодействие.
+
+</Callout>
+
+<hr />
+
+## `@Injectable()`
+
+— сообщает NestJS, что класс можно использовать через систему Dependency Injection (внедрения зависимостей).
+
+<hr />
+
+## `constructor`
+
+В NestJS обычно пишут просто `constructor()` <br/>
+`constructor` в TypeScript и так публичный по умолчанию. Поэтому `public constructor()` — избыточная запись.
+
+```ts
+constructor(private readonly usersRepository: UsersRepository) {}
+```
+
+```ts
+constructor() {}        // ✅ Рекомендуется
+public constructor() {} // ✅ Допустимо, но избыточно
+private constructor() {} // ⚠️ Обычно не подходит для NestJS DI
+```
+
+### Параметры
+
+В NestJS в `service` обычно лучше объявлять `constructor` с **Dependency Injection** через `private readonly`. Это стандартный и наиболее удобный подход для сервисов.
+
+```ts
+export class UsersService {
+  constructor(
+    private readonly usersRepository: UsersRepository,
+    private readonly logger: LoggerService,
+  ) {}
+}
+```
+
+- `private` — зависимости доступны только внутри класса.
+- `readonly` — нельзя переназначить ссылку на зависимость после инициализации.
+- NestJS автоматически внедряет зависимости через DI-контейнер.
+- Не нужно вручную создавать поля и присваивать им значения.
+
+<hr />
+
 ### `return` - то что вернётся на client
 
 NestJS автоматически превращает объекты и массивы в JSON.
