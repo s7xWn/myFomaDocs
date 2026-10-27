@@ -83,7 +83,7 @@ app.use(
   session({
     secret: "my-secret",
     name: "my-name",
-    resave: false,
+    resave: true,
     saveUninitialized: false,
   }),
 );
