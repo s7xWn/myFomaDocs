@@ -75,12 +75,24 @@ export class AppModule {}
 import { ConfigService } from "@nestjs/config";
 ```
 
+### В `main.ts`
+
+```ts
+const config = app.get(ConfigService);
+```
+
+```ts
+const port = config.getOrThrow<Type>("KEY", defValue);
+```
+
+### В классах
+
 ```ts
 constructor(private configService: ConfigService) {}
 ```
 
 ```ts
-this.configService.getOrThrow<Type>(KEY, defValue);
+this.configService.getOrThrow<Type>("KEY", defValue);
 ```
 
 <Callout type='warn'>
