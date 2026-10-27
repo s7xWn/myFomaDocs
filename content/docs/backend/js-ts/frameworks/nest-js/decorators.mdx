@@ -96,6 +96,16 @@ getFunc(@Param('id', ParseIntPipe) id:number) {
 
 `ParseIntPipe` - парсит в number
 
+#### `@Res`
+
+`@Res()` без `passthrough: true`, обязательно отправлять ответ внутри сервиса, например `res.status(200).json({ message: 'Вы вышли из системы' })`. Иначе запрос может зависнуть.
+
+или
+
+```ts
+@Res({ passthrough: true }) res: Response,
+```
+
 #### Валидация
 
 NestJS вернёт клиенту ошибку примерно такого вида:
@@ -139,3 +149,52 @@ NestJS вернёт клиенту ошибку примерно такого в
 ## Микросервисы
 
 ## Собственные декораторы
+
+### Создание
+
+В NestJS свой декоратор можно создать с помощью TypeScript-декораторов. Способ зависит от того, что именно ты хочешь сделать: получить данные из запроса, добавить метаданные к методу или классу, изменить поведение метода и т. д.
+
+<hr />
+
+### Roles
+
+**Декоратор сохраняет метаданные, но сам по себе не запрещает доступ. Чтобы проверять роли, понадобится [Guard](./guard.mdx).**
+
+```ts
+import { SetMetadata } from "@nestjs/common";
+import { UserRole } from "@prisma/__generated__/enums.js";
+
+export const ROLES_KEY = "roles";
+export const Roles = (...roles: UserRole[]) => SetMetadata(ROLES_KEY, roles);
+```
+
+<details>
+  <summary>Пример декоратора для ресурса</summary>
+
+Создадим в ресурсе `auth/` папку `decorators/`.<br/>
+Создадим файл `roles.decorator.ts`:
+
+```ts
+import { SetMetadata } from "@nestjs/common";
+import { UserRole } from "@prisma/__generated__/enums.js";
+
+export const ROLES_KEY = "roles";
+export const Roles = (...roles: UserRole[]) => SetMetadata(ROLES_KEY, roles);
+```
+
+Этот файл `roles.decorator.ts` предназначен для создания декоратора `@Roles()` в NestJS, который задаёт,
+какие роли пользователей разрешены для определённого контроллера или метода.
+
+- `SetMetadata` — функция NestJS, которая позволяет записывать метаданные для классов и методов.
+- `UserRole` — enum ролей пользователей, сгенерированный Prisma. Например, он может содержать `ADMIN`, `USER`, `MODERATOR` — в зависимости от твоей схемы.
+
+`export const ROLES_KEY = 'roles';` Это ключ, под которым будут храниться метаданные с ролями.
+
+Здесь `...roles` — это rest-параметр. Он позволяет передать любое количество ролей:
+
+```ts
+@Roles(UserRole.ADMIN)
+@Roles(UserRole.ADMIN, UserRole.MODERATOR)
+```
+
+</details>
