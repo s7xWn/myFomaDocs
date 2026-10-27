@@ -50,3 +50,42 @@ const app = await NestFactory.create(AppModule);
 ```ts
 const app = await NestFactory.create(AppModule, new FastifyAdapter());
 ```
+
+<hr />
+
+## `Reflector`
+
+В NestJS `Reflector` — это специальный класс, который позволяет получать метаданные, установленные через декораторы (`@SetMetadata`, `@Roles` и другие).
+
+Чаще всего он используется в Guards, чтобы проверять права доступа пользователя, роли или специальные настройки обработчика.
+
+```ts
+import { Reflector } from "@nestjs/core";
+```
+
+```ts
+  constructor(private reflector: Reflector) {}
+```
+
+```ts
+const roles = this.reflector.get<string[]>("roles", context.getHandler());
+
+if (!roles) {
+  return true;
+}
+```
+
+<hr />
+
+### Методы
+
+| Метод                             | Назначение                                                  |
+| --------------------------------- | ----------------------------------------------------------- |
+| `get(key, target)`                | Получает метаданные по ключу у конкретного класса или метод |
+| `getAll(key, targets)`            | Получает метаданные из нескольких источников                |
+| `getAllAndOverride(key, targets)` | Возвращает первое найденное значение, не объединяя значения |
+| `getAllAndMerge(key, targets)`    | Объединяет найденные значения                               |
+
+Особенно полезен `getAllAndOverride`, когда метаданные могут задаваться и на уровне контроллера, и на уровне метода.
+
+<hr />
