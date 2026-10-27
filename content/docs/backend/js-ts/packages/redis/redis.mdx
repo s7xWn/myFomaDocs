@@ -71,7 +71,7 @@ import { createClient } from "redis";
         host: config.getOrThrow<string>('REDIS_HOST'),
         port: config.getOrThrow<number>('REDIS_PORT'),
       },
-      password: config.get<string>('REDIS_PASSWORD'),
+      password: config.getOrThrow<string>('REDIS_PASSWORD'),
     });
     ```
 
