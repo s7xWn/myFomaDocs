@@ -65,6 +65,22 @@ export class AppModule {}
 - `ConfigModule.forRoot()` загружает конфигурацию, в том числе переменные из `.env`.
 - `isGlobal: true` позволяет использовать `ConfigService` в других модулях без повторного импорта `ConfigModule`.
 
+### `ignoreEnvFile`
+
+В NestJS `ignoreEnvFile` в `ConfigModule.forRoot()` определяет, нужно ли игнорировать `.env`-файл при загрузке переменных окружения.
+
+```ts
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      ignoreEnvFile: !IS_DEV_ENV,
+    }),
+  ],
+})
+export class AppModule {}
+```
+
 <hr />
 
 ## Использование - `ConfigService`
