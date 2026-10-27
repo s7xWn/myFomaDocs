@@ -30,7 +30,17 @@ export class PrismaService
 {
   constructor(config: ConfigService) {
     const adapter = new PrismaPg({
-      connectionString: config.getOrThrow<string>("DATABASE_URL"),
+      connectionString:
+        "postgresql://" +
+        config.getOrThrow<string>("POSTGRES_USER") +
+        ":" +
+        config.getOrThrow<string>("POSTGRES_PASSWORD") +
+        "@" +
+        config.getOrThrow<string>("POSTGRES_HOST") +
+        ":" +
+        config.getOrThrow<string>("POSTGRES_PORT") +
+        "/" +
+        config.getOrThrow<string>("POSTGRES_DB"),
     });
 
     super({ adapter });
