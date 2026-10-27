@@ -4,7 +4,8 @@ title: "@nestjs/config"
 
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
-`@nestjs/config`
+`@nestjs/config` — это официальный пакет для NestJS, который помогает управлять конфигурацией приложения:
+читать переменные окружения, хранить настройки в `.env` и получать их в разных частях приложения.
 
 <hr />
 
@@ -43,14 +44,63 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
 <hr />
 
-## `ConfigService`
+## Подключение - `ConfigModule`
 
-`ConfigService` — это специальный сервис NestJS, который помогает получать настройки приложения: переменные окружения, значения из .env, конфигурацию базы данных, JWT и т. д.
+В `app.module.ts` подключить `ConfigModule`:
+
+```ts
+import { Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+- `ConfigModule.forRoot()` загружает конфигурацию, в том числе переменные из `.env`.
+- `isGlobal: true` позволяет использовать `ConfigService` в других модулях без повторного импорта `ConfigModule`.
+
+<hr />
+
+## Использование - `ConfigService`
+
+`ConfigService` — это специальный сервис NestJS, который помогает получать настройки приложения: переменные окружения, значения из `.env`, конфигурацию базы данных, JWT и т. д.
 
 ```ts
 import { ConfigService } from "@nestjs/config";
 ```
 
 ```ts
-const config = app.get(ConfigService);
+constructor(private configService: ConfigService) {}
 ```
+
+```ts
+this.configService.getOrThrow<Type>(KEY, defValue);
+```
+
+<Callout type='warn'>
+
+Важный момент: `.getOrThrow<Type>()` не преобразует тип автоматически.
+
+</Callout>
+
+<details>
+  <summary>Пример</summary>
+
+```ts
+@Injectable()
+export class AppService {
+  constructor(private configService: ConfigService) {}
+
+  getPort(): number {
+    return this.configService.get<number>("PORT", 3000);
+  }
+}
+```
+
+</details>
