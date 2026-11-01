@@ -2,6 +2,9 @@
 title: Go
 ---
 
+| [Off. website](https://go.dev/) |
+| ------------------------------- |
+
 go...
 
 Является компилируемым. Строгая статическая типизация. Ошибка пременная, вместо try/catch.
@@ -12,6 +15,23 @@ go...
 
 ### Windows
 
+[Off. website/dl](https://go.dev/dl), раздел Featured downloads:
+
+```
+Microsoft Windows
+Windows 10 or later, Intel 64-bit processor
+```
+
+`goX.Y.Z.windows-amd64.msi`
+
+Обычно Go устанавливается в: `C:\Program Files\Go`
+
+Проверить установку:
+
+```bash
+go version
+```
+
 ### Linux
 
 ### MacOS (Homebrew)
@@ -21,6 +41,23 @@ brew install go
 ```
 
 <hr />
+
+## Первая минимальная программа
+
+Минимальная исполняемая программа на Go состоит из двух обязательных элементов:
+
+1. [`package main`](./packages.mdx) — объявляет пакет main, который является точкой входа для исполняемой программы.
+2. [`func main()`]() — главная функция, с которой начинается выполнение программы.
+
+```go
+package main
+
+func main() {
+}
+```
+
+<hr />
+
 ## Ссылки
 
 ### Интересное
