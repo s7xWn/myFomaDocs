@@ -1,0 +1,58 @@
+---
+title: "const"
+---
+
+`const` — ключевое слово языка для объявления констант. Константа — переменная, значение которой нельзя переназначить.
+
+```go
+const age int = 25
+const age = 25
+```
+
+Можно объявлять несколько констант одновременно:
+
+```go
+const (
+    name = "Alex"
+    age = 25
+    city = "Riga"
+)
+
+const (
+    minAge int = 18
+    maxAge int = 100
+)
+```
+
+<hr />
+
+## `iota`
+
+`iota` — специальный идентификатор, который автоматически увеличивает значение константы внутри блока `const`.
+
+<details>
+  <summary>Пример</summary>
+
+Monday = 0, Tuesday = 1, ... Friday = 4
+
+```go
+const (
+    Monday = iota
+    Tuesday
+    Wednesday
+    Thursday
+    Friday
+)
+```
+
+Можно начать с единицы:
+
+```go
+const (
+    Monday = iota + 1
+    Tuesday
+    Wednesday
+)
+```
+
+</details>
