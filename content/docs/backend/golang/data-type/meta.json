@@ -1,4 +1,4 @@
 {
   "title": "Типы данных",
-  "pages": ["boolean", "numbers", "string", "..."]
+  "pages": ["type-conversion", "boolean", "numbers", "string", "..."]
 }
