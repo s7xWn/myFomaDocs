@@ -1,0 +1,61 @@
+---
+title: "Логический"
+---
+
+В Go логический тип данных всего один — `bool`.
+
+Он может принимать только два значения:
+
+- `true` — истина.
+- `false` — ложь.
+
+```go
+var isActive bool = true
+var isDeleted bool = false
+
+// Краткая запись
+isAdmin := true
+```
+
+<Callout title='' type='success'>
+
+По дефолту Go присваивает переменной значение `false` (zero value).
+
+```go
+var isActive bool // false
+```
+
+</Callout>
+
+<hr />
+
+## Важные особенности Go
+
+1. Нельзя использовать числа вместо `bool`.
+
+   ```go
+   if 1 { // Ошибка компиляции
+       fmt.Println("Hello")
+   }
+   ```
+
+   Нужно: `if 1 > 0 {`
+
+2. Нет неявного преобразования типов.
+
+   ```go
+   var x int = 1
+   var y bool = true
+
+   // if x && y { } // Ошибка
+   ```
+
+3. Операторы `&&` и `||` используют короткое замыкание (short-circuit evaluation).
+
+   ```go
+   if age >= 18 && hasAccess {
+       fmt.Println("Access granted")
+   }
+   ```
+
+   Если первое условие `false`, второе уже не проверяется.

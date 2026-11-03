@@ -1,0 +1,162 @@
+---
+title: "Строковый"
+---
+
+В Go строковый тип данных всего один — `string`.
+
+Он используется для хранения последовательностей байтов, которые обычно представляют текст в кодировке UTF-8.
+
+```go
+var name string = "Alex"
+
+// Краткая запись
+city := "Riga"
+
+// Пустая строка
+var empty string
+
+fmt.Println(name)  // Alex
+fmt.Println(city)  // Riga
+fmt.Println(empty) // ""
+```
+
+<Callout title='' type='success'>
+
+По дефолту Go присваивает переменной значение пустой строки `""`.
+
+```go
+var isActive bool // false
+```
+
+</Callout>
+
+<Callout title='Важно' type='warn'>
+
+**Строки** в Go неизменяемые (**immutable**). Нельзя изменить отдельный символ строки напрямую.
+
+```go
+name := "Alex"
+
+// name[0] = 'B' // Ошибка компиляции
+```
+
+</Callout>
+
+<hr />
+
+## Способы записи строк
+
+В Go есть два основных способа.
+
+### Двойные кавычки `" "`
+
+```go
+text := "Hello\nWorld"
+
+fmt.Println(text)
+```
+
+Поддерживают escape-последовательности.
+
+### Обратные кавычки (Raw String)
+
+```go
+text := `Hello
+World`
+
+fmt.Println(text)
+```
+
+Особенности:
+
+- Сохраняют переносы строк.
+- Не обрабатывают escape-последовательности.
+- Удобны для HTML, SQL, JSON и многострочного текста.
+
+<hr />
+
+## Escape-последовательности
+
+| Символ | Значение        |
+| ------ | --------------- |
+| `\n`   | Новая строка    |
+| `\t`   | Табуляция       |
+| `\\`   | Обратный слеш   |
+| `\"`   | Двойная кавычка |
+| `\r`   | Возврат каретки |
+
+<hr />
+
+## Работа с символами строки
+
+В Go есть два важных типа:
+
+- `byte` — алиас для `uint8`, представляет один байт.
+- `rune` — алиас для `int32`, представляет Unicode-кодовую точку.
+
+<details>
+  <summary>Пример</summary>
+
+```go
+text := "Hello"
+
+fmt.Println(text[0])   // 72 (код байта)
+fmt.Printf("%c\n", text[0]) // H
+```
+
+Для Unicode лучше использовать `rune`:
+
+```go
+text := "Привет"
+
+runes := []rune(text)
+
+fmt.Println(runes[0]) // 1055
+fmt.Printf("%c\n", runes[0]) // П
+```
+
+</details>
+
+<hr />
+
+## Сравнение строк
+
+Строки можно сравнивать операторами:
+
+- `==` — равенство.
+- `!=` — неравенство.
+- `<` — меньше.
+- `>` — больше.
+- `<=` — меньше или равно.
+- `>=` — больше или равно.
+
+Сравнение выполняется лексикографически по байтам.
+
+```go
+a := "apple"
+b := "banana"
+
+fmt.Println(a == b) // false
+fmt.Println(a < b)  // true
+```
+
+<hr />
+
+## Полезные функции для работы со строками (`strings`)
+
+Пакет `strings` содержит множество готовых функций.
+
+```go
+import "strings"
+
+text := "Hello World"
+
+strings.Contains(text, "World") // true
+strings.ToUpper(text)           // HELLO WORLD
+strings.ToLower(text)           // hello world
+strings.ReplaceAll(text, "World", "Go")
+strings.Split(text, " ")        // ["Hello", "World"]
+strings.TrimSpace("  Hello  ")  // "Hello"
+strings.HasPrefix(text, "Hello") // true
+strings.HasSuffix(text, "World") // true
+```
