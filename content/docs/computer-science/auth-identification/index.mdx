@@ -73,14 +73,14 @@ title: Authentication, authorization, identification
 
 ### Если token в localStorage
 
-:::important
+<Callout title='' type='tip'>
 
 - `credentials: "include"` не нужен
 - браузер не отправляет cookies
 - серверу не нужен `Access-Control-Allow-Credentials: true`
 - можно использовать:` Access-Control-Allow-Origin: *`
 
-:::
+</Callout>
 
 При каждом запросе фронтенд сам добавляет заголовок (`Authorization: Bearer <token>`):
 
@@ -110,10 +110,10 @@ Access-Control-Allow-Methods: GET
 
 ### Если token в cookie
 
-:::important
+<Callout title='' type='tip'>
 
 - `credentials: "include"` нужен;
 - серверу нужен `Access-Control-Allow-Credentials: true`
 - нельзя использовать `*` в:` Access-Control-Allow-Origin: *`
 
-:::
+</Callout>

@@ -131,14 +131,14 @@ sequenceDiagram
     B->>S: POST /user/login
     Note right of B: body: { username, password }
 
-    Note right of S: Session stored\nin server memory
+    Note right of S: Session stored<br/>in server memory
 
     S-->>B: Set-Cookie: sessionId
 
     B->>S: Authenticated request
     Note over B,S: Cookie: sessionId
 
-    Note right of S: Lookup session\nby sessionId
+    Note right of S: Lookup session<br/>by sessionId
 
     S-->>B: Response
 ```
@@ -164,7 +164,7 @@ ip: 192.168.1.10
 
 И сравнивает при каждом запросе.
 
-:::warning[Минусы (очень важные)]
+<Callout title='Минусы (очень важные)' type='warn'>
 
 IP часто меняется:
 
@@ -180,7 +180,7 @@ NAT (много пользователей = один IP):
 1. в офисах или у провайдера
 2. сотни людей могут иметь один IP
 
-:::
+</Callout>
 
 #### Привязка к User-Agent
 
@@ -192,13 +192,13 @@ User-Agent: Chrome / Windows / 120.0
 
 И сравнивает при каждом запросе.
 
-:::warning[Минусы (очень важные)]
+<Callout title='Минусы (очень важные)' type='warn'>
 
 1. User-Agent легко подделать
 2. User-Agent не уникален
 3. Браузеры могут обновляться
 
-:::
+</Callout>
 
 ### Преимущества и недостатки
 
@@ -219,9 +219,11 @@ User-Agent: Chrome / Windows / 120.0
 
 — это компактный стандарт токена, который используется в веб-приложениях для передачи информации о пользователе между клиентом и сервером в безопасном виде.
 
-:::danger
+<Callout title='' type='error'>
+
 JWT по умолчанию не шифрует данные.
-:::
+
+</Callout>
 
 Он применяется в связке с тремя понятиями: идентификация, аутентификация и авторизация:
 
@@ -294,14 +296,16 @@ sequenceDiagram
 
     U->>C: 5. Request protected resource
     C->>S: 6. Request with JWT in Authorization header
-    S->>S: 7. Verify JWT signature\nExtract user info
+    S->>S: 7. Verify JWT signature<br/>Extract user info
 
     S-->>C: 8. Send response
 ```
 
-:::important
+<Callout title='' type='tip'>
+
 В шаге №7 мы не делаем лишнего запроса к БД и можем делать его на любом сервисе.
-:::
+
+</Callout>
 
 ### Преимущества и недостатки
 
