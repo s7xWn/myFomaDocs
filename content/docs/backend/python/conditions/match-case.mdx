@@ -1,0 +1,88 @@
+# match-case
+
+:::warning
+Появился в Python 3.10
+:::
+
+— это оператор выбора, который позволяет выполнять разный код в зависимости от значения переменной или выражения.
+Он часто используется вместо длинной цепочки `if...else if...else`.
+
+```Python
+match value:
+  case <pattern_1>:
+    <action_1>
+  case <pattern_2>:
+    <action_2>
+  case <pattern_3>:
+    <action_3>
+  case _:
+    <action_wildcard>
+```
+
+## `case _`
+
+Блок `case _` используется для обработки ситуаций, когда не найдено ни одного совпадения (аналог `default`).
+
+<hr />
+
+## Сравнение на несколько значений в операторе `match-case`
+
+В одном блоке `case` можно сравнивать значение с несколькими вариантами одновременно, используя оператор `|` (логическое «или»).
+
+```Python
+match value:
+  case <pattern_1> | <pattern_2> | <pattern_3>:
+    <action_1>
+  case <pattern_4> | <pattern_5>:
+    <action_2>
+  case _:
+    <action_wildcard>
+```
+
+<hr />
+
+## Проверка типов при помощи оператора `match-case`
+
+В `match-case` Python можно выполнять проверку типов с помощью шаблонов классов (class patterns). Это один из сильных вариантов pattern matching.
+
+Проверка типа через `case Тип()`
+
+```Python
+value = 42
+
+match value:
+    case int():
+        print("Это целое число")
+    case str():
+        print("Это строка")
+    case float():
+        print("Это число с плавающей точкой")
+    case _:
+        print("Другой тип")
+```
+
+### Проверка типа и значения
+
+```Python
+value = 0
+
+match value:
+    case int(0):
+        print("Ноль")
+    case int(x):
+        print(f"Целое число {x}")
+
+# Ноль
+```
+
+### Проверка типа с сохранением значения
+
+```Python
+data = "Python"
+
+match data:
+    case str(text):
+        print(f"Строка: {text}")
+    case int(number):
+        print(f"Число: {number}")
+```

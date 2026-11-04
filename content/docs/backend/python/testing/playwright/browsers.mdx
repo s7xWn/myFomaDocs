@@ -1,0 +1,52 @@
+# Экземпляр браузера
+
+## Браузер
+
+### Chromium
+
+```Python
+browser = p.chromium.launch()
+```
+
+<hr />
+
+### Firefox
+
+```Python
+browser = p.firefox.launch()
+```
+
+<hr />
+
+### WebKit
+
+```Python
+browser = p.webkit.launch()
+```
+
+<hr />
+
+## `headless` (Запуск с видимым окном)
+
+По умолчанию Playwright работает в headless-режиме. Чтобы увидеть браузер:
+
+```Python
+browser = p.chromium.launch(headless=False)
+```
+
+<hr />
+
+## `args`
+
+<hr />
+
+## `slow_mo` (Задержку между действиями)
+
+Добавляет задержку между действиями в мс.
+
+```Python
+browser = p.chromium.launch(
+    headless=False,
+    slow_mo=500
+)
+```

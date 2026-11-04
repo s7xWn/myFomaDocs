@@ -1,0 +1,28 @@
+# Фикстуры (fixtures)
+
+— это функции, которые подготавливают данные или окружение для тестов и при необходимости выполняют очистку после них.
+
+> Фикстура — это способ дать тесту всё необходимое перед запуском.
+
+```Python
+import pytest
+
+@pytest.fixture
+def funcName():
+    return {
+        "param1": "Alex",
+        "param2": 25
+    }
+```
+
+```Python
+def test_user_age(funcName, funcName2):
+    assert funcName["param2"] == 25
+```
+
+Здесь:
+
+1. `@pytest.fixture` говорит `pytest`, что `user` — фикстура.
+2. `pytest` автоматически вызывает `user()`.
+3. Результат передаётся в `test_user_age(user)`.
+4. Тест использует готовый объект.

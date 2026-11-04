@@ -1,0 +1,87 @@
+# Обработка исключений (ошибок)
+
+## **Проверка, что исключение возникает**
+
+Тест пройдёт, если наша функция выбросит нужный там [ErrorType](../../exceptions). Если исключения не будет или тип будет другим — тест упадёт.
+
+```Python
+import pytest
+
+
+def test_funcName():
+    with pytest.raises(ErrorType):
+        funcNameToTest(10, 0)
+```
+
+- [ErrorType](../../exceptions) - специальные исключения Python.
+
+<details>
+  <summary>Примеры</summary>
+
+```Python
+import pytest
+
+def divide(a, b):
+    if b == 0:
+        raise ValueError("Деление на ноль")
+    return a / b
+
+
+def test_divide_by_zero():
+    with pytest.raises(ValueError):
+        divide(10, 0)
+```
+
+```Python
+import pytest
+
+def divide(a, b):
+    if not isinstance(x, (float,int)) or not isinstance(y, (float,int))
+        raise TypeError("Both arg should be numeric")
+    if b == 0:
+        raise ValueError("Деление на ноль")
+    return a / b
+
+@pytest.mark.parametrize("x,y,res", [
+    (5, "-1", -5),
+])
+def test_divide():
+    with pytest.raises(TypeError):
+        assert divide(x,y) == res
+```
+
+</details>
+
+<hr />
+
+## **Если исключение может быть одним из нескольких типов**
+
+```Python
+import pytest
+
+
+def test_funcName():
+    with pytest.raises((ErrorType1, ErrorType2)):
+        funcNameToTest(10, 0)
+```
+
+<hr />
+
+## **Если исключение ожидается и не ожидается**
+
+Это особенно удобно, когда тестов много и среди них есть как валидные, так и невалидные входные данные.
+
+```Python
+import pytest
+from contextlib import nullcontext as does_not_raise
+
+@pytest.mark.parametrize("param1,param2,res,expectation", [
+    (5,-1,-5,does_not_raise()),
+    (5, "-1", -5, pytest.raises(TypeError)),
+])
+def test_divide():
+    with expectation:
+        assert funcNameToTest(param1,param2) == res
+```
+
+Причём здесь есть важный нюанс: значение `res = -5` во втором случае фактически не проверяется. Если `funcNameToTest(5, "-1")` выбросит `TypeError`, выполнение до `assert` вообще не дойдёт.

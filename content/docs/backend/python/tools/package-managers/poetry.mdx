@@ -1,0 +1,138 @@
+# Poetry
+
+— это инструмент для управления зависимостями и упаковки Python-проектов. Он объединяет возможности pip, venv и частично setuptools в одном удобном интерфейсе.
+
+Основные возможности Poetry:
+
+- Управление зависимостями — установка, обновление и удаление библиотек.
+- Автоматическое создание виртуальных окружений для каждого проекта.
+- Фиксация версий зависимостей в файле `poetry.lock`, чтобы проект одинаково работал у всех разработчиков.
+- Сборка и публикация пакетов в PyPI.
+- Хранение конфигурации проекта в одном файле `pyproject.toml`.
+
+| `pip` + `venv`                          | `Poetry`                  |
+| --------------------------------------- | ------------------------- |
+| Нужно вручную создавать окружение       | Создает автоматически     |
+| Зависимости обычно в `requirements.txt` | В `pyproject.toml`        |
+| Нет встроенного lock-файла              | Есть `poetry.lock`        |
+| Несколько инструментов                  | Один инструмент для всего |
+
+## Установка (Официальный установщик)
+
+### Linux / macOS
+
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+### Windows (PowerShell)
+
+```bash
+(Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | py -
+```
+
+<hr />
+
+## Установка (Через `pipx`)
+
+```bash
+pipx install poetry
+```
+
+<hr />
+
+## Commands
+
+### Создание нового проекта (`new`)
+
+```bash
+poetry new project_name
+```
+
+<hr />
+
+### Добавить Poetry в проект (`init`)
+
+```bash
+poetry init
+```
+
+<hr />
+
+### Установка зависимостей (`install`)
+
+```bash
+poetry install
+```
+
+<hr />
+
+### Добавить библиотеку (`add`)
+
+```bash
+poetry add requests
+```
+
+#### Только для разработки (`dev`)
+
+```bash
+poetry add --group dev pytest
+```
+
+<hr />
+
+### Удалить библиотеку (`remove`)
+
+```bash
+poetry remove requests
+```
+
+<hr />
+
+## Структура проекта
+
+```
+my_project/
+├── pyproject.toml
+├── poetry.lock
+├── my_project/
+│   └── __init__.py
+└── tests/
+```
+
+<hr />
+
+## `pyproject.toml`
+
+— это главный конфигурационный файл современного Python-проекта. <br/>
+Poetry тоже использует `pyproject.toml` для своей конфигурации.
+
+Файл, где описывается:
+
+- как называется проект;
+- какая версия Python нужна;
+- какие библиотеки нужны проекту;
+- какие инструменты используются для разработки;
+- как проект собирается и устанавливается.
+
+Прмер:
+
+```TOML
+[project]
+name = "my-project"
+version = "0.1.0"
+description = ""
+requires-python = ">=3.11"
+
+[tool.poetry]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.32.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+black = "^24.0.0"
+```
+
+<hr />
