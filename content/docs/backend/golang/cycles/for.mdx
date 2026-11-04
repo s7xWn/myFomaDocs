@@ -2,6 +2,8 @@
 title: "for"
 ---
 
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
 В Go (Golang) циклы используются для многократного выполнения блока кода.
 В отличие от многих языков программирования, в Go существует только одна конструкция цикла — `for`.
 Но у неё есть несколько вариантов использования.
@@ -61,16 +63,44 @@ for {
 
 `for range` — это конструкция цикла, которая позволяет перебирать элементы коллекции: массивов, слайсов, строк, map и каналов (channels).
 
-```go
-numbers := []int{10, 20, 30, 40}
+<Tabs items={['Классический', 'только value', 'только index']}>
+  <Tab value='Классический'>
 
-for index, value := range numbers {
-    fmt.Println(index, value)
-}
-```
+    ```go
+    for index, value := range numbers {
+        fmt.Println(index, value)
+    }
+    ```
+
+  </Tab>
+  <Tab value='только value'>
+
+    ```go
+    for _, value := range numbers {
+        fmt.Println(value)
+    }
+    ```
+
+  </Tab>
+  <Tab value='только index'>
+
+    ```go
+    for index := range numbers {
+        fmt.Println(index)
+    }
+    ```
+
+  </Tab>
+</Tabs>
 
 Здесь:
 
 - `index` — индекс элемента.
 - `value` — значение элемента.
-- `range numbers` — перебирает все элементы слайса.
+- `range numbers` — перебирает все элементы.
+
+<Callout title='Важно' type='warn'>
+
+Порядок перебора элементов `map` в Go не гарантирован.
+
+</Callout>
