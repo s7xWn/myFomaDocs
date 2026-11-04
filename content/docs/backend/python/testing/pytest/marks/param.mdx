@@ -6,7 +6,7 @@ title: "parametrize"
 
 > «Возьми этот тест и запусти его несколько раз, подставляя разные значения».
 
-```Python
+```python
 import pytest
 @pytest.mark.parametrize("param1, param2", [
     (1, 2),
@@ -16,7 +16,7 @@ def test_add(param1,param2):
     assert param1 + 1 == param2
 ```
 
-```Python
+```python
 import pytest
 @pytest.mark.parametrize(["param1","param2"], [
     (1, 2),

@@ -10,7 +10,7 @@ title: "Интернирование строк"
 
 `sys.intern()`
 
-```Python
+```python
 import sys
 
 a = sys.intern("hello world")
@@ -27,7 +27,7 @@ print(a is b) # True
 
 1. Короткие строки без пробелов и спецсимволов
 
-   ```Python
+   ```python
    a = "hello"
    b = "hello"
 
@@ -42,7 +42,7 @@ print(a is b) # True
 
    и не начинаются с цифры.
 
-   ```Python
+   ```python
    a = "user_id"
    b = "user_id"
 
@@ -51,7 +51,7 @@ print(a is b) # True
 
 3. Строковые литералы в одном выражении
 
-   ```Python
+   ```python
     a = "hello" "world"
     b = "helloworld"
 
@@ -60,7 +60,7 @@ print(a is b) # True
 
 4. Ключи словарей (часто выгодно интернировать)
 
-   ```Python
+   ```python
     {
         "name": "Alex",
         "age": 25,
@@ -77,7 +77,7 @@ print(a is b) # True
 3. Длинные строки
 4. Строки, созданные во время выполнения
 
-   ```Python
+   ```python
    a = "hello"
 
    b = "".join(["he", "llo"])
@@ -88,7 +88,7 @@ print(a is b) # True
 
 5. Строки через форматирование
 
-   ```Python
+   ```python
     a = "hello"
 
     b = f"{'he'}{'llo'}"

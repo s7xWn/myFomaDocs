@@ -6,7 +6,7 @@ title: "Фикстуры (fixtures)"
 
 > Фикстура — это способ дать тесту всё необходимое перед запуском.
 
-```Python
+```python
 import pytest
 
 @pytest.fixture
@@ -17,7 +17,7 @@ def funcName():
     }
 ```
 
-```Python
+```python
 def test_user_age(funcName, funcName2):
     assert funcName["param2"] == 25
 ```

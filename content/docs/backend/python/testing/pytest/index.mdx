@@ -152,7 +152,7 @@ addopts = -v
 
 Без параметризации пришлось бы писать несколько тестов:
 
-```Python
+```python
 def test_add():
     assert add(2, 3) == 5
 
@@ -165,7 +165,7 @@ def test_add_zero():
 
 С параметризацией это можно записать компактнее:
 
-```Python
+```python
 import pytest
 
 @pytest.mark.parametrize(
@@ -199,7 +199,7 @@ test_add[0-5-5]       PASSED
 <details>
   <summary>Пример</summary>
 
-```Python
+```python
 class TestLogin:
     def test_valid_credentials(self):
         ...

@@ -6,7 +6,7 @@ title: "Обработка исключений (ошибок)"
 
 Тест пройдёт, если наша функция выбросит нужный там [ErrorType](../../exceptions). Если исключения не будет или тип будет другим — тест упадёт.
 
-```Python
+```python
 import pytest
 
 
@@ -20,7 +20,7 @@ def test_funcName():
 <details>
   <summary>Примеры</summary>
 
-```Python
+```python
 import pytest
 
 def divide(a, b):
@@ -34,7 +34,7 @@ def test_divide_by_zero():
         divide(10, 0)
 ```
 
-```Python
+```python
 import pytest
 
 def divide(a, b):
@@ -58,7 +58,7 @@ def test_divide():
 
 ## **Если исключение может быть одним из нескольких типов**
 
-```Python
+```python
 import pytest
 
 
@@ -73,7 +73,7 @@ def test_funcName():
 
 Это особенно удобно, когда тестов много и среди них есть как валидные, так и невалидные входные данные.
 
-```Python
+```python
 import pytest
 from contextlib import nullcontext as does_not_raise
 
