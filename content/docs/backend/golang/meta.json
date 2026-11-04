@@ -5,10 +5,13 @@
     "operators",
     "conditions",
     "cycles",
-    "modules",
-    "eventloop",
+    "func",
+    "packages",
+    "std-libs",
     "garbage-collector",
+    "--- ---",
     "literature",
+    "roadmap",
     "..."
   ]
 }
