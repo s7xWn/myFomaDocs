@@ -1,4 +1,12 @@
 {
   "title": "Типы данных",
-  "pages": ["type-conversion", "boolean", "numbers", "string", "..."]
+  "pages": [
+    "type-conversion",
+    "boolean",
+    "numbers",
+    "string",
+    "array",
+    "slice",
+    "..."
+  ]
 }
