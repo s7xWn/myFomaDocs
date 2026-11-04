@@ -1,0 +1,53 @@
+---
+title: "PyTelegramBotAPI"
+---
+
+```python
+pip install pyTelegramBotAPI
+```
+
+<hr />
+
+## Использование
+
+```python
+
+import telebot
+
+TOKEN = "ТВОЙ_ТОКЕН_ОТ_BOTFATHER"
+
+bot = telebot.TeleBot(TOKEN)
+
+
+# Команда /start
+@bot.message_handler(commands=['start'])
+def start(message):
+    bot.send_message(
+        message.chat.id,
+        "Привет! 👋\nЯ твой первый Telegram-бот!"
+    )
+
+
+# Команда /help
+@bot.message_handler(commands=['help'])
+def help(message):
+    bot.send_message(
+        message.chat.id,
+        "Я пока умею только отвечать на команды /start и /help."
+    )
+
+
+# Ответ на обычные сообщения
+@bot.message_handler(func=lambda message: True)
+def echo(message):
+    bot.send_message(
+        message.chat.id,
+        f"Ты написал: {message.text}"
+    )
+
+
+# Запуск бота
+print("Бот запущен!")
+
+bot.infinity_polling()
+```

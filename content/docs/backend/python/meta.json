@@ -11,6 +11,8 @@
     "testing",
     "tools",
     "venv",
-    "indexing-slicing"
+    "indexing-slicing",
+    "---Библиотеки---",
+    "...libs"
   ]
 }
