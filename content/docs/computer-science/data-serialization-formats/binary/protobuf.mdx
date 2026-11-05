@@ -9,7 +9,7 @@ Protobuf — это способ упаковать данные так, что�
 
 Основные сценарии использования:
 
-1. **gRPC** — Protobuf часто используется как формат обмена данными между микросервисами.
+1. [**gRPC**](../../architectural-style-web-api/grpc.mdx) — Protobuf часто используется как формат обмена данными между микросервисами.
 2. **Микросервисная архитектура** — эффективная передача сообщений между сервисами.
 3. **Backend-разработка** — сериализация объектов для сетевого взаимодействия.
 4. **Хранение данных** — сохранение структурированных данных в бинарном виде.
@@ -93,6 +93,391 @@ Protobuf позволяет развивать API, не ломая старых
 
 <hr />
 
+## Инструменты (установка и использование)
+
+### Компилятор `protoc`
+
+```powershell
+winget install protobuf
+```
+
+```bash
+brew install protobuf
+```
+
+```bash
+sudo apt install protobuf-compiler
+```
+
+Проверить утановку:
+
+```bash
+protoc --version
+```
+
+<hr />
+
+### Плагин для Go
+
+```bash
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+```
+
+Проверить утановку:
+
+```bash
+protoc-gen-go --version
+```
+
+<hr />
+
+## Структура `.proto`
+
+Типичный `.proto` файл выглядит так:
+
+```protobuf
+syntax = "proto3";
+
+package users;
+
+option go_package = "myapp/gen/users";
+
+import "google/protobuf/timestamp.proto";
+
+// Описание структур
+message User {
+    // ...
+}
+
+// Описание сервиса
+service UserService {
+    // ...
+}
+```
+
+<hr />
+
+### `syntax` — версия синтаксиса
+
+<hr />
+
+### `package` — пространство имён Protobuf
+
+<hr />
+
+### `option` — настройки генерации
+
+<hr />
+
+### `import` — импорт других `.proto`
+
+<hr />
+
+### `message` — описывает структуру данных
+
+`message` — основная конструкция Protobuf.
+
+```protobuf
+message Name {
+    dataType varName = 1;
+}
+```
+
+- `Name` — название структуры
+- [`dataType`](#data-types) — тип данных
+- `varName` — название переменной
+- `1` — field numbers.
+
+#### field number
+
+- Номера должны быть уникальными внутри одного `message`.
+- Нельзя менять номер поля, если оно уже используется.
+- Нельзя повторно использовать номер удалённого поля.
+- Номера от 1 до 15 занимают меньше места при кодировании, поэтому их выгодно отдавать часто используемым полям.
+- Диапазон 19000–19999 зарезервирован самим Protobuf.
+
+#### Вложенные `message`
+
+Один `message` может содержать другой `message`.
+
+<details>
+  <summary>Пример</summary>
+  
+Пользователь имеет адрес:
+
+```protobuf
+message Address {
+    string country = 1;
+    string city = 2;
+    string street = 3;
+}
+
+message User {
+    int64 id = 1;
+    string name = 2;
+    Address address = 3;
+}
+```
+
+<details>
+  <summary>Go:</summary>
+
+```go
+user := &pb.User{
+    Id:   1,
+    Name: "Alex",
+    Address: &pb.Address{
+        Country: "Latvia",
+        City:    "Riga",
+        Street:  "Brivibas",
+    },
+}
+```
+
+</details>
+
+</details>
+
+<hr />
+
+### `service` — описывает сервис, предоставляющий методы
+
+<Callout>
+  Используются преимущественно с
+  [gRPC](../../architectural-style-web-api/grpc.mdx).
+</Callout>
+
+<hr />
+
+### `rpc` — описывает удалённый метод сервиса
+
+<Callout>
+  Используются преимущественно с
+  [gRPC](../../architectural-style-web-api/grpc.mdx).
+</Callout>
+
+<hr />
+
+### `enum` — перечисления
+
+```protobuf
+enum NameEnum {
+    VALUE_UNSPECIFIED = 0;
+    ...
+}
+```
+
+```protobuf
+message NameMessage {
+    NameEnum field_name = field_number;
+}
+```
+
+В `proto3` значение `enum` по умолчанию — **нулевое**. Поэтому лучше явно предусмотреть состояние `UNSPECIFIED`, чтобы не путать отсутствие явно заданного статуса с активным пользователем.
+
+| Go                           |
+| ---------------------------- |
+| `field_name: pb.VALUE_ENUM,` |
+
+<hr />
+
+### Типы данных [#data-types]
+
+Разница между `int32`, `sint32` и `fixed32`.
+
+- `int32` использует Varint-кодирование.
+- `sint32` использует ZigZag-кодирование, которое эффективнее для небольших отрицательных чисел.
+- `fixed32` всегда занимает 4 байта для значения.
+
+#### `bool`
+
+| Go     |
+| ------ |
+| `bool` |
+
+<hr />
+
+#### `int32`
+
+| Go      |
+| ------- |
+| `int32` |
+
+#### `int64`
+
+| Go      |
+| ------- |
+| `int64` |
+
+<hr />
+
+#### `uint32`
+
+| Go       |
+| -------- |
+| `uint32` |
+
+#### `uint64`
+
+| Go       |
+| -------- |
+| `uint64` |
+
+<hr />
+
+#### `sint32`
+
+| Go      |
+| ------- |
+| `int32` |
+
+#### `sint64`
+
+| Go      |
+| ------- |
+| `int64` |
+
+<hr />
+
+#### `fixed32`
+
+| Go       |
+| -------- |
+| `uint32` |
+
+#### `fixed64`
+
+| Go       |
+| -------- |
+| `uint64` |
+
+<hr />
+
+#### `sfixed32`
+
+| Go      |
+| ------- |
+| `int32` |
+
+#### `sfixed64`
+
+| Go      |
+| ------- |
+| `int64` |
+
+<hr />
+
+#### `float`
+
+| Go        |
+| --------- |
+| `float32` |
+
+#### `double`
+
+| Go        |
+| --------- |
+| `float64` |
+
+<hr />
+
+#### `string`
+
+| Go       |
+| -------- |
+| `string` |
+
+<hr />
+
+#### `repeated`
+
+```protobuf
+repeated value_type field_name = field_number;
+```
+
+| Go            |
+| ------------- |
+| Slice `[]T{}` |
+
+#### `map`
+
+```protobuf
+map<key_type, value_type> field_name = field_number;
+```
+
+| Go                      |
+| ----------------------- |
+| Map `map[keyT]valueT{}` |
+
+<hr />
+
+#### `oneof` — только одно значение из нескольких
+
+```protobuf
+message NameMessage {
+    oneof NameVar {
+        value_type field_name = field_number;
+        ...
+    }
+}
+```
+
+<details>
+  <summary>Пример</summary>
+
+Представим, что пользователь может авторизоваться через:
+
+- Email;
+- Телефон;
+- Google ID.
+
+При этом одновременно должен использоваться только один способ.
+
+```protobuf
+message AuthMethod {
+    oneof method {
+        string email = 1;
+        string phone = 2;
+        string google_id = 3;
+    }
+}
+```
+
+<details>
+  <summary>Go:</summary>
+
+```go
+auth := &pb.AuthMethod{
+    Method: &pb.AuthMethod_Email{
+        Email: "alex@example.com",
+    },
+}
+```
+
+</details>
+
+</details>
+
+<hr />
+
+#### `optional` — необязательные поля
+
+```protobuf
+optional value_type field_name = field_number;
+```
+
+В `proto3` обычные скалярные поля имеют значения по умолчанию. <br/>
+Например: Если значение для поля не задано, при чтении ты получишь `0`.
+
+Но иногда важно различать:
+
+- Пользователь не указал значение.
+- Пользователь указал `0`.
+
+Для этого используется `optional`.
+
+<hr />
+
 ## Сравнение с другими форматами сериализации данных
 
 ### JSON
@@ -115,3 +500,7 @@ JSON хранит названия полей непосредственно в 
 Protobuf вместо названий полей использует их числовые идентификаторы, что позволяет экономить место.
 
 <hr />
+
+## Ссылки
+
+- [Merion Academy | Что такое gRPC и Protobuf?](https://www.youtube.com/watch?v=_EqVG-El5z0)
