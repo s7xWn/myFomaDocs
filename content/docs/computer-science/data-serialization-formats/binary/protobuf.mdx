@@ -190,6 +190,8 @@ message Name {
 
 #### field number
 
+Идентификация полей в бинарном формате
+
 - Номера должны быть уникальными внутри одного `message`.
 - Нельзя менять номер поля, если оно уже используется.
 - Нельзя повторно использовать номер удалённого поля.
@@ -247,6 +249,17 @@ user := &pb.User{
   [gRPC](../../architectural-style-web-api/grpc.mdx).
 </Callout>
 
+```protobuf
+service NameService {
+    rpc GetUser(GetUserRequest) returns (GetUserResponse);
+    ...
+}
+```
+
+- `service NameService` — объявляет сервис.
+- `rpc GetUser(...)` — объявляет удалённый метод.
+- `returns (...)` — указывает тип ответа.
+
 <hr />
 
 ### `rpc` — описывает удалённый метод сервиса
@@ -255,6 +268,59 @@ user := &pb.User{
   Используются преимущественно с
   [gRPC](../../architectural-style-web-api/grpc.mdx).
 </Callout>
+
+<Callout title="Важный момент" type="warn">
+  `rpc` сам по себе не реализует метод. Он только описывает контракт. Реализация
+  пишется в Go.
+</Callout>
+
+Описываются запросы и ответы:
+
+```protobuf
+message GetUserRequest {
+    int64 id = 1;
+}
+
+message GetUserResponse {
+    User user = 1;
+}
+```
+
+```protobuf
+rpc GetUser(GetUserRequest) returns (GetUserResponse);
+```
+
+#### Unary RPC
+
+Обычный запрос и один ответ. Аналог обычного HTTP request/response.
+
+```protobuf
+rpc GetUser(GetUserRequest) returns (GetUserResponse);
+```
+
+#### Server streaming
+
+Клиент отправляет один запрос, сервер возвращает поток сообщений
+
+```protobuf
+rpc GetUsers(GetUsersRequest) returns (stream User);
+```
+
+#### Client streaming
+
+Клиент отправляет поток сообщений, сервер возвращает один ответ.
+
+```protobuf
+rpc UploadUsers(stream User) returns (UploadUsersResponse);
+```
+
+#### Bidirectional streaming
+
+Обе стороны могут независимо отправлять потоки сообщений.
+
+```protobuf
+rpc Chat(stream ChatMessage) returns (stream ChatMessage);
+```
 
 <hr />
 
@@ -475,6 +541,24 @@ optional value_type field_name = field_number;
 - Пользователь указал `0`.
 
 Для этого используется `optional`.
+
+<hr />
+
+## Генерация
+
+```bash
+protoc \
+  --go_out=. \
+  --go_opt=paths=source_relative \
+  --go-grpc_out=. \
+  --go-grpc_opt=paths=source_relative \
+  proto/user.proto
+```
+
+На выходе получишь:
+
+- `name.pb.go` — структуры, enum и код сериализации.
+- `name_grpc.pb.go` — интерфейсы клиента и сервера gRPC.
 
 <hr />
 
