@@ -58,3 +58,23 @@ details {
   padding-inline: 16px;
   padding-block: 12px;
 }
+
+.hr-decor {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 35px 0;
+  color: var(--color-fd-primary);
+}
+
+.hr-decor::before,
+.hr-decor::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-fd-primary));
+}
+
+.hr-decor::after {
+  transform: rotate(180deg);
+}
