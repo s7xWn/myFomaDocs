@@ -2,11 +2,11 @@
 title: "VS Code"
 ---
 
-<hr />
+<div className="hr-decor">✦</div>
 
 ## Установка
 
-<hr />
+<div className="hr-decor">✦</div>
 
 ## Themes / Темы
 
@@ -20,7 +20,7 @@ title: "VS Code"
 - GitHub Dark Colorblind
 - GitHub Dark Dimmed
 
-<hr />
+<div className="hr-decor">✦</div>
 
 ## Icon themes / Темы иконок
 
@@ -31,3 +31,120 @@ title: "VS Code"
   width={400}
   height={400}
 />
+
+<div className="hr-decor">✦</div>
+
+## Snippets (сниппеты)
+
+Открыть через `Ctrl + Shift + P` и введи:
+
+`Snippets: Configure Snippets` -> открыть файл с пресетами для конкретного языка.
+
+<details>
+  <summary>Пример для mdx</summary>
+
+````bash
+{
+
+	"Создать <details>": {
+		"prefix": "dexmpl",
+		"body": [
+			"<details>",
+			"  <summary>${1:Пример}</summary>",
+			"",
+			"${2:Text}",
+			"",
+			"```${3:bash}",
+			"${4:code}",
+			"```",
+			"",
+			"</details>"
+		],
+		"description": "Создаёт <details>"
+	},
+
+	"Создать <Callout>": {
+		"prefix": "coexmpl",
+		"body": [
+			"<Callout title='${1}' type='${2:tip}'>",
+			"",
+			"${3:Text}",
+			"",
+			"</Callout>"
+		],
+		"description": "Создаёт <Callout>"
+	},
+
+	"Создать <hr>": {
+		"prefix": "hr",
+		"body": [
+			"<hr />",
+		],
+		"description": "Создаёт <hr/>"
+	},
+		"Создать декоративный hr в <div>": {
+		"prefix": "hrd",
+		"body": [
+			"<div className='hr-decor'>✦</div>",
+		],
+		"description": "Создаёт <hr/>"
+	},
+
+	"Импортирует Tabs, Tab": {
+		"prefix": "tabsimport",
+		"body": [
+			"import { Tab, Tabs } from 'fumadocs-ui/components/tabs';",
+		],
+		"description": "Создаёт Tabs для pckg-mngrs"
+	},
+
+	"Создать tabs с packet managers": {
+		"prefix": "tabspckg",
+		"body": [
+			"<Tabs items={['npm', 'yarn', 'pnpm', 'bun']}>",
+			"  <Tab value='npm'>",
+			"",
+			"    ```bash",
+			"    npm install",
+			"    ```",
+			"",
+			"  </Tab>",
+			"  <Tab value='yarn'>",
+			"",
+			"    ```bash",
+			"    yarn add",
+			"    ```",
+			"",
+			"  </Tab>",
+			"  <Tab value='pnpm'>",
+			"",
+			"    ```bash",
+			"    pnpm add",
+			"    ```",
+			"",
+			"  </Tab>",
+			"  <Tab value='bun'>",
+			"",
+			"    ```bash",
+			"    bun add",
+			"    ```",
+			"",
+			"  </Tab>",
+			"</Tabs>",
+		],
+		"description": "Создаёт Tabs для pckg-mngrs"
+	},
+
+	"Создает таблицу с ссылками": {
+		"prefix": "linksexmp",
+		"body": [
+			"| [Off. website]() | [GitHub]() | [NPM]() |",
+			"| ---------------- | ---------- | ------- |",
+		],
+		"description": "Создаёт таблицу для ссылок на off webiste, github, npm"
+	},
+
+}
+````
+
+</details>
