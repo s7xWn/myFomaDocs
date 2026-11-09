@@ -24,7 +24,7 @@ const (
 )
 ```
 
-<hr />
+<div className="hr-decor">✦</div>
 
 ## `iota`
 
@@ -56,3 +56,86 @@ const (
 ```
 
 </details>
+
+<div className="hr-decor">✦</div>
+
+## Примеры (файл)
+
+```go
+package main
+
+import "math"
+
+// Константы
+const (
+	stringConst = "hello"
+	intConst    = 42
+	boolConst   = true
+	floatConst  = 3.14
+)
+
+// Типизированные и нетипизированные константы
+const (
+	typedIntConst      int     = 42
+	untypedIntConst            = 42
+	typedFloatConst    float64 = 3.14
+	untypedFloatConst          = 3.14
+	typedStringConst   string  = "hello"
+	untypedStringConst         = "hello"
+)
+
+// А ля e-num
+const (
+	_ = iota
+	Monday
+	Tuesday
+	Wednesday
+	Thursday
+	Friday
+	Saturday
+	Sunday
+)
+
+// Смешанные типы данных
+const (
+	A = iota     // 0
+	B = 3.14     // 3.14
+	C = iota * 2 // 2 * 2 = 4
+	D = "string" // "string"
+	E = iota     // 4
+)
+
+// Смещение значений
+const (
+	_  = iota // 0
+	KB = 1 << (10 * iota) // 1024
+	MB // 1048576
+	GB // 1073741824
+)
+
+// Использование в битовых масках
+const (
+	FlagNone = 1 << iota    // 1
+	FlagRead                // 2
+	FlagWrite               // 4
+	FlagExecute             // 6
+)
+
+func main() {
+	// Локальные константы
+	const (
+		StringConst = "hello"
+		IntConst    = 42
+		BoolConst   = true
+	)
+
+	_ = math.Pi
+	_ = math.MaxInt
+
+	_, _, _, _, _, _, _, _, _, _ = stringConst, intConst, boolConst, floatConst, typedIntConst, untypedIntConst, typedFloatConst, untypedFloatConst, typedStringConst, untypedStringConst
+	_, _, _, _, _, _, _, _, _, _ = Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday, KB, MB, GB
+	_, _, _, _ = FlagNone, FlagRead, FlagWrite, FlagExecute
+	_, _, _, _, _ = A, B, C, D, E
+	_, _, _ = StringConst, IntConst, BoolConst
+}
+```
