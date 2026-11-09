@@ -1,4 +1,4 @@
 {
   "title": "Операторы",
-  "pages": ["assignment", "arithmetic", "compare", "logical", "..."]
+  "pages": ["assignment", "arithmetic", "compare", "logical", "bitwise", "..."]
 }
