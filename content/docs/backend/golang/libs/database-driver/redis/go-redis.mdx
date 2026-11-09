@@ -1,0 +1,79 @@
+---
+title: "go-redis"
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+`go-redis` — это популярная Go-библиотека (клиент) для работы с Redis из приложений на языке Go.
+
+Она позволяет Go-программе подключаться к Redis-серверу, отправлять команды и получать результаты.
+
+```bash
+go get github.com/redis/go-redis/v9
+```
+
+<div className="hr-decor">✦</div>
+
+## Использование
+
+<Tabs items={['Вариант 1', 'Вариант 2']}>
+  <Tab value='Вариант 1'>
+
+    ```go
+    package main
+
+    import (
+    "github.com/redis/go-redis/v9"
+    )
+
+    func main() {
+
+    rdb := redis.NewClient(&redis.Options{
+        Addr:     "localhost:6379",
+        Password: "",
+        DB:       0,
+    })
+
+    defer rdb.Close()
+    }
+    ```
+
+  </Tab>
+  <Tab value='Вариант 2'>
+
+    ```go
+    package main
+
+    import (
+        "context"
+        "fmt"
+
+        "github.com/redis/go-redis/v9"
+
+    )
+
+    func main() {
+
+        ctx := context.Background()
+
+        rdb := redis.NewClient(&redis.Options{
+            Addr:     "localhost:6379",
+            Password: "",
+            DB:       0,
+        })
+
+        defer rdb.Close()
+
+        // Проверяем подключение
+        pong, err := rdb.Ping(ctx).Result()
+        if err != nil {
+            panic(err)
+        }
+
+        fmt.Println(pong) // PONG
+
+    }
+    ```
+
+  </Tab>
+</Tabs>

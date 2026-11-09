@@ -1,0 +1,62 @@
+---
+title: "Telegram"
+---
+
+## Сравнение Go-библиотек для Telegram Bot API
+
+| Критерий                      | go-telegram/bot                                       | telebot                                      | telegram-bot-api                                                            | gotgbot                                             | Telego                                      |
+| ----------------------------- | ----------------------------------------------------- | -------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------- | ------------------------------------------- |
+| GitHub                        | [go-telegram/bot](https://github.com/go-telegram/bot) | [telebot](https://github.com/tucnak/telebot) | [telegram-bot-api](https://github.com/go-telegram-bot-api/telegram-bot-api) | [gotgbot](https://github.com/PaulSonOfLars/gotgbot) | [Telego](https://github.com/mymmrac/telego) |
+| Тип                           | API Wrapper                                           | High-level Framework                         | API Wrapper                                                                 | API Wrapper                                         | API Wrapper                                 |
+| Простота освоения             | Высокая                                               | Очень высокая                                | Высокая                                                                     | Средняя                                             | Средняя                                     |
+| Типизация                     | Хорошая                                               | Хорошая                                      | Хорошая                                                                     | Хорошая                                             | Хорошая                                     |
+| Обработка обновлений          | Да                                                    | Да                                           | Да                                                                          | Да                                                  | Да                                          |
+| Long Polling                  | Да                                                    | Да                                           | Да                                                                          | Да                                                  | Да                                          |
+| Webhook                       | Да                                                    | Да                                           | Да                                                                          | Да                                                  | Да                                          |
+| Middleware                    | Да                                                    | Есть механизмы middleware                    | Самостоятельно                                                              | Да                                                  | Есть механизмы middleware                   |
+| Обработка команд              | Удобная                                               | Очень удобная                                | Вручную                                                                     | Вручную / handlers                                  | Вручную / handlers                          |
+| Inline Keyboard               | Да                                                    | Да                                           | Да                                                                          | Да                                                  | Да                                          |
+| Callback Queries              | Да                                                    | Да                                           | Да                                                                          | Да                                                  | Да                                          |
+| Работа с контекстом           | Да                                                    | Да                                           | Ограниченно                                                                 | Да                                                  | Да                                          |
+| Асинхронная обработка         | Да                                                    | Да                                           | Через собственную реализацию                                                | Да                                                  | Да                                          |
+| Архитектурная гибкость        | Высокая                                               | Средняя                                      | Очень высокая                                                               | Высокая                                             | Высокая                                     |
+| Дополнительные зависимости    | Минимальные                                           | Зависит от версии                            | Минимальные                                                                 | Зависит от версии                                   | Минимальные                                 |
+| Подходит для MVP              | Да                                                    | Да                                           | Да                                                                          | Да                                                  | Да                                          |
+| Подходит для крупных проектов | Да                                                    | Да                                           | Да                                                                          | Да                                                  | Да                                          |
+| Рекомендуемый сценарий        | Современные боты и production                         | Быстрая разработка                           | Обучение и собственная архитектура                                          | Типизированная работа с API                         | Типизированная работа с API                 |
+
+<div className="hr-decor">✦</div>
+
+## Итоговая рекомендация
+
+| Библиотека       | Оценка     | Рекомендация                         |
+| ---------------- | ---------- | ------------------------------------ |
+| go-telegram/bot  | ⭐⭐⭐⭐⭐ | Лучший баланс для нового проекта     |
+| telebot          | ⭐⭐⭐⭐   | Для быстрой разработки               |
+| telegram-bot-api | ⭐⭐⭐⭐   | Для изучения Telegram API            |
+| gotgbot          | ⭐⭐⭐⭐   | Для типизированной работы с API      |
+| Telego           | ⭐⭐⭐⭐   | Для проектов с акцентом на типизацию |
+
+### Мой выбор
+
+Для нового production-проекта я бы выбрал `go-telegram/bot`.
+
+Причины:
+
+- Современный API.
+- Поддержка middleware.
+- Удобная обработка обновлений.
+- Работа с context.Context.
+- Возможность самостоятельно проектировать архитектуру.
+- Минимум лишней абстракции.
+
+**Рекомендуемый стек:**
+
+- Telegram Bot API: `github.com/go-telegram/bot`
+- Database: PostgreSQL
+- Cache: Redis
+- PostgreSQL driver: `github.com/jackc/pgx/v5`
+- Redis client: `github.com/redis/go-redis/v9`
+- Logging: `log/slog`
+- Configuration: `github.com/ilyakaznacheev/cleanenv`
+- Deployment: Docker
