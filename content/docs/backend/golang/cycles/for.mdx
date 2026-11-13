@@ -29,7 +29,7 @@ for i := 0; i < 5; i++ {
 
 </details>
 
-<hr />
+<div className="hr-decor">✦</div>
 
 ## Цикл как `while`
 
@@ -41,7 +41,7 @@ for Условие {
 }
 ```
 
-<hr />
+<div className="hr-decor">✦</div>
 
 ## Бесконечный цикл
 
@@ -55,7 +55,7 @@ for {
 }
 ```
 
-<hr />
+<div className="hr-decor">✦</div>
 
 ## for range - итерация по коллекциям
 
@@ -63,7 +63,7 @@ for {
 
 `for range` — это конструкция цикла, которая позволяет перебирать элементы коллекции: массивов, слайсов, строк, map и каналов (channels).
 
-<Tabs items={['Классический', 'только value', 'только index']}>
+<Tabs items={['Классический', 'только value', 'только index', 'n - кол-во']}>
   <Tab value='Классический'>
 
     ```go
@@ -87,6 +87,15 @@ for {
     ```go
     for index := range numbers {
         fmt.Println(index)
+    }
+    ```
+
+  </Tab>
+    <Tab value='n - кол-во'>
+
+    ```go
+    for range n {             // for index := range n
+        fmt.Println("Hello")  // 0 .. n - не включительно
     }
     ```
 
