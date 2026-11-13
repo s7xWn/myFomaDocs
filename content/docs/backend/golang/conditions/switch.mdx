@@ -20,6 +20,19 @@ switch var {
 
 В Go не нужно писать `break` после каждого `case:` он выполняется автоматически.
 
+Можно использовать `switch` вместо большого кол-ва `if else`:
+
+```go
+switch {
+  case condition1:
+    //
+  case condition2:
+    //
+  default:
+    //
+}
+```
+
 <hr />
 
 ### `default`
