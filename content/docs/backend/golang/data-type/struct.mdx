@@ -1,0 +1,273 @@
+---
+title: "Структура"
+---
+
+Структура (struct) в Go (Golang) — это пользовательский тип данных, который позволяет объединить несколько переменных (полей) разных типов в одну логическую сущность.
+
+Структура — это способ описать объект, у которого есть несколько характеристик.
+
+```go
+type StructName struct {
+    field1 string
+    field2  int
+    field3 string
+}
+```
+
+<Callout title='' type='success'>
+
+Порядок структуры в памяти мы получим тот, который мы описали
+
+</Callout>
+
+<div className="hr-decor">✦</div>
+
+## Padding (выравнивание)
+
+Padding (выравнивание) в структурах Go — это дополнительные пустые байты,
+которые компилятор добавляет между полями структуры или в её конце,
+чтобы правильно выровнять данные в памяти.
+
+<details>
+  <summary>Пример</summary>
+
+Представим структуру:
+
+```go
+type Example struct {
+    a bool
+    b int64
+    c bool
+}
+```
+
+Размеры типов:
+
+- bool — 1 байт.
+- int64 — 8 байт.
+- bool — 1 байт.
+
+На первый взгляд, структура должна занимать: 1 + 8 + 1 = 10 байт
+
+Но фактически на распространённых 64-битных платформах она занимает 24 байта.
+
+Go выравнивает `int64` по границе 8 байт.
+
+Поэтому память будет распределена примерно так:
+
+```
+bool (1байт) + Padding(7байт)
+int64 (8байт)
+bool (1байт) + Padding(7байт)
+```
+
+Можно изменить порядок полей структуры:
+
+```go
+type Example struct {
+    a bool
+    c bool
+    b int64
+}
+```
+
+Теперь расположение будет следующим:
+
+- `a` - 1 байт.
+- `c` - 1 байт.
+- Padding - 6 байт.
+- `b` - 8 байт.
+
+16 байт вместо 24
+
+</details>
+
+<div className="hr-decor">✦</div>
+
+## Создания структуры
+
+### С указанием имён полей
+
+```go
+varName := StructName{
+    field1: "Alex",
+    field2:  25,
+    field3: "Riga",
+}
+fmt.Println(varName) // {Alex 25 Riga}
+```
+
+### Без указания имён (важен порядок полей)
+
+```go
+varName := StructName{"Alex", 25, "Riga"}
+fmt.Println(varName) // {Alex 25 Riga}
+```
+
+### Через указатель
+
+```go
+varName := new(StructName)
+
+varName.field1 = "Alex"
+varName.field2 = 25
+```
+
+### Zero value
+
+Zero value структура — это структура, у которой все поля имеют свои нулевые значения(zero value).
+
+```go
+var varName StructName
+```
+
+<div className="hr-decor">✦</div>
+
+## Обращение к полю структуры
+
+Для доступа к полям используется точка `.`
+
+```go
+fmt.Println(person.Name) // Alex
+fmt.Println(person.Age)  // 25
+```
+
+<div className="hr-decor">✦</div>
+
+## Функции (методы)
+
+```go
+func (s StructName) MethodName() {
+    fmt.Println(s.field1)
+}
+```
+
+- `s StructName` — получатель метода (receiver). Благодаря ему метод связан со структурой `StructName`.
+- `s` - похож на `this` в других языках. Обычно называют одной буквой (первой буквой названии структуры).
+
+В данном случае результат может быть одинаковым, но это не совсем одно и то же:
+
+```go
+func MethodName(s StructName) {
+    fmt.Println(s.field1)
+}
+```
+
+<details>
+  <summary>Пример</summary>
+
+```go
+type Person struct {
+    Name string
+    Age  int
+}
+
+func (p Person) SayHello() {
+    fmt.Println("Привет, меня зовут", p.Name)
+}
+
+func main() {
+    p := Person{Name: "Alex", Age: 25}
+
+    p.SayHello()
+}
+```
+
+</details>
+
+<div className="hr-decor">✦</div>
+
+## Композиция (Composition)
+
+Композиция (Composition) в Go — это принцип, при котором одна структура включает в себя другую структуру, чтобы использовать её поля и методы.
+
+Проще говоря, вместо того чтобы наследовать поведение другого типа (как в некоторых ООП-языках), Go позволяет объединять типы между собой.
+
+```go
+type Engine struct {
+    Power int
+}
+
+type Car struct {
+    Brand  string
+    Engine Engine
+}
+```
+
+### Создание
+
+```go
+car := Car{
+    Brand: "BMW",
+    Engine: Engine{
+        Power: 300,
+    },
+}
+```
+
+### Исопьзование
+
+```go
+fmt.Println(car.Brand)        // BMW
+fmt.Println(car.Engine.Power)  // 300
+```
+
+<div className="hr-decor">✦</div>
+
+## Встраивание структур (Embedding)
+
+<Callout title='' type='tip'>
+
+Больше похоже на наследование
+
+</Callout>
+
+```go
+type Engine struct {
+    Power int
+}
+
+type Car struct {
+    Brand string
+    Engine
+}
+```
+
+### Создание
+
+```go
+car := Car{
+    Brand: "BMW",
+    Engine: Engine{
+        Power: 300,
+    },
+}
+```
+
+### Исопьзование
+
+```go
+fmt.Println(car.Brand)        // BMW
+fmt.Println(car.Power)  // 300
+```
+
+### Field Shadowing - Перекрытие полей
+
+Перекрытие полей (Field Shadowing) в Embedding Go — это ситуация, когда внешняя структура объявляет поле с таким же именем, как у встроенной структуры.
+
+```go
+type User struct {
+    Name string         // = "User"
+    Age  int
+}
+
+type Admin struct {
+    User
+    Name string         // = "Admin"
+}
+```
+
+```go
+fmt.Println(admin.Name)      // "Admin"
+fmt.Println(admin.User.Name)      // "User"
+```
