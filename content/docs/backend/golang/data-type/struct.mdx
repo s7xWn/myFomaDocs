@@ -28,6 +28,12 @@ Padding (выравнивание) в структурах Go — это доп�
 которые компилятор добавляет между полями структуры или в её конце,
 чтобы правильно выровнять данные в памяти.
 
+<Callout title='' type='tip'>
+
+Компилятор не меняет порядок полей в структуре и не может оптимизировать padding
+
+</Callout>
+
 <details>
   <summary>Пример</summary>
 
@@ -81,6 +87,8 @@ type Example struct {
 16 байт вместо 24
 
 </details>
+
+[Выравнивание структур данных в Go](#links-padding)
 
 <div className="hr-decor">✦</div>
 
@@ -271,3 +279,11 @@ type Admin struct {
 fmt.Println(admin.Name)      // "Admin"
 fmt.Println(admin.User.Name)      // "User"
 ```
+
+<div className="hr-decor">✦</div>
+
+## Ссылки[#links]
+
+### Padding[#links-padding]
+
+- [ Владимир Балун | Выравнивание структур данных в Go](https://youtu.be/fSrXheYgmTg)
