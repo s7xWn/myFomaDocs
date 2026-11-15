@@ -282,6 +282,155 @@ fmt.Println(admin.User.Name)      // "User"
 
 <div className="hr-decor">✦</div>
 
+## Примеры (файл)
+
+```go
+package main
+
+import (
+	"fmt"
+	"unsafe"
+)
+
+type user struct {
+	ID   int
+	Name string
+	Age  int
+}
+
+func (u user) GetName() string {
+	return u.Name
+}
+
+func (u user) GetAge() int {
+	return u.Age
+}
+
+func main() {
+	u := user{
+		ID:   42,
+		Name: "Alice",
+		Age:  25,
+	}
+
+	name := u.GetName()
+	age := u.GetAge()
+
+	fmt.Println(name, age)
+
+	// Паддинг (выравнивание) в структурах
+	// Размер структуры зависит от порядка полей и их типов
+	// Поля выравниваются по 4 или 8 байт
+	type user1 struct {
+		ID   int32  // 4 байта, но займёт 8
+		Name string // 16 байт
+		Age  int32  // 4 байта, но займёт 8
+	}
+
+	fmt.Println("Размер структуры user1:", unsafe.Sizeof(user1{})) // 32 байта
+
+	type user2 struct {
+		Name string // 16 байт
+		ID   int32  // 4 байта и займёт 4 байта
+		Age  int32  // 4 байта и займёт 4 байта
+	}
+
+	fmt.Println("Размер структуры user2:", unsafe.Sizeof(user2{})) // 24 байта
+
+	type user3 struct {
+		ID    int  // 8 байт
+		Valid bool // 1 байт, но займёт 8 байт
+	}
+
+	fmt.Println("Размер структуры user3:", unsafe.Sizeof(user3{})) // 16 байт
+
+	type user4 struct {
+		ID    int32 // 4 байта
+		Valid bool  // 1 байт, но займёт 4 байта
+	}
+
+	fmt.Println("Размер структуры user4:", unsafe.Sizeof(user4{})) // 8 байт
+}
+```
+
+```go
+package main
+
+import "fmt"
+
+// Мы хотим иногда делать обёртки над чужими типами
+// Есть 2 варианта это сделать:
+
+// 1. Композиция Composition - структура просто содержит в себе другую структуру
+// type Banana struct {
+//   Apple Apple
+// }
+
+// 2. Встраивание Embedding - при совпадении имён, поля и методы встроеного типа переопределяются. Похоже на наследование
+// type Banana struct {
+//   Apple
+// }
+
+func main() {
+	type Apple struct {
+		Payload string
+	}
+
+	type Banana struct {
+		Apple Apple // Composition
+		//Apple   // Embedding
+		//Payload string
+	}
+
+	a := Apple{
+		Payload: "I'm an apple",
+	}
+
+	b := Banana{
+		Apple: a,
+		//Payload: "I'm a banana",
+	}
+
+	fmt.Println(b.Apple.Payload) // I'm an apple
+	//fmt.Println(b.Payload) // I'm a banana
+}
+```
+
+```go
+package main
+
+import "fmt"
+
+// Пример встраивания структур с методами
+
+type Apple struct{}
+
+func (a Apple) Print() {
+	fmt.Println("I'm an apple")
+}
+
+type Banana struct {
+	Apple
+}
+
+//func (b Banana) Print() {
+//	fmt.Println("I'm a banana")
+//}
+
+// При встраивании методы переопределяются при совпандении имен
+func main() {
+	apple := Apple{}
+
+	banana := Banana{
+		Apple: apple,
+	}
+
+	banana.Print() // I'm an apple
+}
+```
+
+<div className="hr-decor">✦</div>
+
 ## Ссылки[#links]
 
 ### Padding[#links-padding]

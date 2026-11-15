@@ -87,3 +87,41 @@ func checkType(v interface{}) {
 - `v` — переменная типа interface{} или any.
 - `.(type)` — специальная конструкция для определения типа значения внутри интерфейса.
 - `val` — переменная, которая получает значение с конкретным типом внутри соответствующего case.
+
+<div className="hr-decor">✦</div>
+
+## Примеры (файл)
+
+```go
+
+package main
+
+import "fmt"
+
+// Условные конструкции
+func main() {
+	const zero = 0
+
+  	// Switch
+	switch zero {
+	case 1:
+		// false
+	case 2:
+		// false
+	case 3:
+		// false
+	default:
+		// true
+	}
+
+	// Switch с несколькими условиями
+	switch zero {
+	case 0:
+		// true
+	case 1, 2, 3, 10_000, 1_000_000:
+		// false
+	default:
+		// false
+	}
+}
+```
