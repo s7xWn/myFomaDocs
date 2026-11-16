@@ -1,5 +1,5 @@
 ---
-title: "Указатели"
+title: "Указатель"
 ---
 
 Указатель (pointer) — это переменная, которая хранит адрес другой переменной в памяти, а не само значение.
@@ -180,16 +180,30 @@ func main() {
 
 ### Возврат указателя
 
+<Callout title='Рекомендации для Code Review' type='warn'>
+
+Если функция возвращает указатель, всегда оцениваем возможность получения `nil`. Если указатель может быть `nil`, проверяем его перед разыменованием.
+
+</Callout>
+
 ```go
-func funcName(varName *type) {
-    *varName = value
+func funcName(varName *type) *type {
+    if varName == nil {             //
+        panic("pointer is nil")     // Рекомендация
+    }                               //
+    ...
+    return varName
 }
 
 ...
 
 func main() {
-    funcName(&a)
-    fmt.Println(a) // value
+    ...
+    p := funcName(&a)
+    if p == nil {                   //
+        panic("pointer is nil")     // Рекомендация
+    }                               //
+    fmt.Println(p) // 0x2af68c03e0a0
 }
 ```
 
