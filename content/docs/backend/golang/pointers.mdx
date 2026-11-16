@@ -32,7 +32,82 @@ fmt.Println(*p) // 10
 - `p` хранит этот адрес.
 - `*p` позволяет получить значение, лежащее по этому адресу.
 
-<hr />
+<div className="hr-decor">✦</div>
+
+## Тонкий указатель (Thin Pointer)
+
+Тонкий указатель хранит только адрес объекта в памяти.
+
+<details>
+  <summary>Пример</summary>
+
+```go
+var x int = 42
+var p *int = &x
+
+fmt.Println(*p) // 42
+```
+
+Указатель `p` содержит адрес переменной `x`.
+
+На 64-битной архитектуре такой указатель обычно занимает 8 байт.
+
+</details>
+
+<div className="hr-decor">✦</div>
+
+## Толстый указатель (Fat Pointer)
+
+Толстый указатель содержит не только адрес, но и дополнительную информацию об объекте.
+
+В Go наиболее понятные примеры — интерфейсы и срезы.
+
+<details>
+  <summary>Пример 1. Интерфейс</summary>
+
+```go
+type Animal interface {
+    Speak()
+}
+
+type Dog struct{}
+
+func (Dog) Speak() {
+    fmt.Println("Woof!")
+}
+
+var a Animal = Dog{}
+```
+
+Интерфейс в Go концептуально содержит два поля:
+
+- `type` — информацию о конкретном типе.
+- `data` — указатель на данные.
+
+</details>
+
+<details>
+  <summary>Пример 2. Slice (срез)</summary>
+
+Срез в Go тоже представляет собой структуру из трёх полей:
+
+```go
+type SliceHeader struct {
+    Data *int
+    Len  int
+    Cap  int
+}
+```
+
+1. `Data` — указатель на массив.
+2. `Len` — длина среза.
+3. `Cap` — ёмкость среза.
+
+На 64-битной архитектуре заголовок среза обычно занимает 24 байта.
+
+</details>
+
+<div className="hr-decor">✦</div>
 
 ## Изменение значения через указатель
 
@@ -44,7 +119,7 @@ p := &x
 fmt.Println(x) // 50
 ```
 
-<hr />
+<div className="hr-decor">✦</div>
 
 ## Указатели в функциях
 
@@ -80,7 +155,7 @@ func main() {
 }
 ```
 
-<hr />
+<div className="hr-decor">✦</div>
 
 ## Nil-указатель
 
@@ -105,7 +180,7 @@ if p != nil {
 }
 ```
 
-<hr />
+<div className="hr-decor">✦</div>
 
 ## Указатели и структуры
 
@@ -140,6 +215,8 @@ func main() {
     fmt.Println(user.Age) // 25
 }
 ```
+
+<div className="hr-decor">✦</div>
 
 ## `new()`
 
