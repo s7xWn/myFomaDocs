@@ -4,6 +4,12 @@ title: "Функции"
 
 Функция (function) в Go (Golang) — это именованный блок кода, который выполняет определённую задачу. Функции позволяют не повторять один и тот же код несколько раз, а вызывать его по необходимости.
 
+<Callout title='' type='tip'>
+
+Function в Go — объект первого класса.
+
+</Callout>
+
 ```go
 func funcName() {
 
@@ -162,6 +168,97 @@ func calculate(a int, b int) (sum int, difference int) {
 инициализированных заранее, всё же существует риск случайно использовать его.
 
 </Callout>
+
+<div className="hr-decor">✦</div>
+
+## First-Class Functions
+
+Функции как объекты первого класса (First-Class Functions) в Go — это свойство языка, которое означает, что функции можно использовать практически так же, как обычные значения: числа, строки или переменные.
+
+То есть функцию можно:
+
+1. Присвоить переменной.
+2. Передать в другую функцию как аргумент.
+3. Вернуть из другой функции.
+4. Хранить в структурах или коллекциях.
+
+```go
+var f FuncType = funcName
+```
+
+`f` — это переменная функционального типа, но в Go её не следует считать обычным указателем (`pointer`).
+
+<hr />
+
+### Zero Value
+
+В Go zero value (нулевое значение) функции — это `nil`.
+
+При вызове `nil`-функции произойдёт `panic`, потому что вызвать `nil` как функцию нельзя.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    var f func()
+
+    fmt.Println(f == nil) // true
+
+	 f() // panic: call of nil function
+}
+```
+
+<hr />
+
+### Присваивание функции переменной
+
+```go
+package main
+
+import "fmt"
+
+func sum(a, b int) int {
+    return a + b
+}
+
+func main() {
+    operation := sum
+
+    result := operation(10, 20)
+
+    fmt.Println(result) // 30
+}
+```
+
+- `sum` — функция.
+- `operation := sum` — мы присвоили функцию переменной.
+- `operation(10, 20)` — вызываем функцию через переменную.
+
+<hr />
+
+### Передача функции в качестве аргумента
+
+```go
+package main
+
+import "fmt"
+
+func sum(a, b int) int {
+    return a + b
+}
+
+func calculate(a, b int, operation func(int, int) int) int {
+    return operation(a, b)
+}
+
+func main() {
+    result := calculate(10, 20, sum)
+
+    fmt.Println(result) // 30
+}
+```
 
 <div className="hr-decor">✦</div>
 
