@@ -115,7 +115,8 @@ fmt.Println(varName) // {Alex 25 Riga}
 ### Через указатель
 
 ```go
-varName := new(StructName)
+varName := new(StructName) // Устаревшее
+varName := &StructName{}
 
 varName.field1 = "Alex"
 varName.field2 = 25
