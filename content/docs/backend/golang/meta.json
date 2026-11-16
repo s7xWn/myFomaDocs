@@ -6,7 +6,7 @@
     "conditions",
     "cycles",
     "func",
-    "pointers",
+    "pointer",
     "packages",
     "std-libs",
     "garbage-collector",
