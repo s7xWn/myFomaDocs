@@ -282,6 +282,75 @@ fmt.Println(admin.User.Name)      // "User"
 
 <div className="hr-decor">✦</div>
 
+## Передача структуры в функцию
+
+### Изменение полей структуры внутри функции
+
+```go
+package main
+
+import "fmt"
+
+
+
+type Car struct {
+    name string
+    cost  int
+    power int
+}
+
+func main() {
+    s := Car {"Royal",1_000_000,240}
+
+    change(s)
+
+    fmt.Println(s) // {"Royal",1_000_000,240}
+}
+
+func change(s Car) {
+    s.name = "Royal J"
+}
+```
+
+Структура в Go передаётся в функцию по значению, то есть функция получает его копию.
+
+Поэтому изменения элементов структуры внутри функции не затрагивают оригинальную структуру.
+
+Чтобы изменить оригинальный массив, нужно передать в функцию указатель на него или вернуть новый.
+
+```go
+package main
+
+import "fmt"
+
+type Car struct {
+    name  string
+    cost  int
+    power int
+}
+
+func main() {
+    s := Car{"Royal", 1_000_000, 240}
+
+    // change(&s)
+	// s = change(s)
+
+    fmt.Println(s) // {Royal J 1000000 240}
+}
+
+func change(s *Car) {
+    s.name = "Royal J"
+}
+
+
+// func change(s Car) Car {
+//     s.name = "Royal J"
+//     return s
+// }
+```
+
+<div className="hr-decor">✦</div>
+
 ## Примеры (файл)
 
 ```go
