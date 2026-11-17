@@ -223,11 +223,18 @@ fmt.Println(cap(s)) // 4 (в данном случае)
 
 ```go
 s := make([]type, length, capacity)
+
+s1 := make([]type, length)
+// len = cap
 ```
 
 - `int` — тип элементов слайса.
 - `length` — начальная длина слайса.
 - `capacity` — начальная ёмкость слайса (необязательный параметр).
+
+- Если `capacity` не указан, он равен `length`,
+- `length` не может быть больше `capacity` <br/>
+- При `length > 0`, элементы заполнятся zero value
 
 <hr />
 
