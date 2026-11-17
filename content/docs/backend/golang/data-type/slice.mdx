@@ -329,7 +329,15 @@ s = append(s[:i], s[i+1:]...) // 1 2 4 5
 ### Скопировать `copy()`
 
 ```go
+copy(sliceCopy, sliceOriginal)
+```
 
+<hr />
+
+### Сброс (в zero value) `clear()`
+
+```go
+clear(slice)
 ```
 
 <hr />
@@ -560,6 +568,8 @@ func main() {
 
 ## Пример (файл)
 
+Инициализация:
+
 ```go
 package main
 
@@ -618,5 +628,133 @@ func main() {
 	fmt.Println("makeSlice == nil:", makeSlice == nil) // false
 	fmt.Println("len", len(makeSlice))                 // 0
 	fmt.Println("cap", cap(makeSlice))                 // 5
+}
+```
+
+Доступ к элементам (перебор), добавить, сброс (zero value), cоздание, копирование
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	{ // Доступ             0       1        2
+		users := []string{"Tom", "Alice", "Kate"}
+
+		fmt.Println(len(users)) // 3
+		fmt.Println(cap(users)) // 3
+
+		// Доступ к 3 элементу
+		kate := users[2]
+
+		// Перезапись 3 элемента
+		users[2] = kate
+
+		// Перебор (есть риск выйти за границы)
+		for i := 0; i < len(users); i++ {
+			fmt.Println(users[i])
+		}
+
+		// Перебор (нет риска выйти за границы)
+		for _, user := range users {
+			fmt.Println(user)
+		}
+
+		//	Добавить элемент в конец слайса
+		users = append(users, "Paul")
+
+		// Clear - сброс значений слайса в zero value, длина и ёмкость остаются прежними
+		clear(users)
+
+		fmt.Println("After clear:", users) // ["", "", "", ""]
+
+		// Создание слайса с указанием длины и ёмкости
+		users2 := make([]string, 3)    // length 3, capacity 3
+		users3 := make([]string, 0, 3) // length 0, capacity 3
+
+		_, _ = users2, users3
+	}
+
+	{ // Копирование
+		src := []string{"Tom", "Alice", "Kate"}
+		dst := make([]string, len(src))
+
+		copy(dst, src) // Копирование слайса
+
+		fmt.Println("Copy", dst) // ["Tom", "Alice", "Kate"]
+	}
+
+	{ // Из строки можно скопировать в []byte, но не наоборот, т.к. строка неизменяемая
+		users := []byte("Tom")
+
+		copy(users, "Alice") // Копирование слайса
+
+		fmt.Println("Copy string", string(users)) // "Ali"
+	}
+}
+```
+
+Слайсинг
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	{ // Slicing            0       1       2       3      4      5	       6        7
+		users := []string{"Bob", "Alice", "Kate", "Sam", "Tom", "Paul", "Mike", "Robert"}
+
+		fmt.Println(users[:])   // ["Bob", "Alice", "Kate", "Sam", "Tom", "Paul", "Mike", "Robert"]
+		fmt.Println(users[0:0]) // []
+		fmt.Println(users[1:1]) // []
+		fmt.Println(users[:1])  // ["Bob"]
+		fmt.Println(users[0:1]) // ["Bob"]
+		fmt.Println(users[1:2]) // ["Alice"]
+		fmt.Println(users[2:4]) // ["Kate", "Sam"]
+		fmt.Println(users[3:6]) // ["Sam", "Tom", "Paul
+		fmt.Println(users[7:])  // ["Robert"]
+		fmt.Println(users[7:8]) // ["Robert"]
+		fmt.Println(users[8:8]) // []
+		fmt.Println(users[9:])  // panic: slice bounds out of range
+		fmt.Println(users[:9])  // panic: slice bounds out of range
+	}
+
+	{ // Slicing            0       1       2       3      4      5	       6        7
+		users := []string{"Bob", "Alice", "Kate", "Sam", "Tom", "Paul", "Mike", "Robert"}
+
+		users1 := users[2:6]
+		users2 := users[:4]
+		users3 := users[3:]
+		users4 := users[:] // взять всё (так можно из массива сделать слайс)
+
+		fmt.Println(users1) // ["Kate", "Sam", "Tom", "Paul"]
+		fmt.Println(users2) // ["Bob", "Alice", "Kate", "Sam"]
+		fmt.Println(users3) // ["Sam", "Tom", "Paul", "Mike", "Robert"]
+		fmt.Println(users4) // ["Bob", "Alice", "Kate", "Sam", "Tom", "Paul", "Mike", "Robert"]
+	}
+
+	{ // А ещё можно ограничить ёмкость слайса
+		users := []string{"Bob", "Alice", "Kate"}
+		users1 := users[0:2]            // берем первые 2 элемента
+		fmt.Println("Len", len(users1)) // 2
+		fmt.Println("Cap", cap(users1)) // 3 <- ёмкость массива под капотом
+
+		users2 := users[0:2:2]          // <- ограничиваем ёмкость
+		fmt.Println("Len", len(users2)) // 2
+		fmt.Println("Cap", cap(users2)) // 2 <- ограничили ёмкость слайса (массив под капотом не изменился)
+	}
+
+	{ // Удаление           0        1       2
+		users := []string{"Tom", "Alice", "Kate"}
+
+		// Удаление по индексу
+		users = append(users[:1], users[2:]...)
+
+		fmt.Println(users) // ["Tom", "Kate"]
+	}
 }
 ```
