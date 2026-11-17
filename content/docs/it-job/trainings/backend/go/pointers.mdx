@@ -1,0 +1,195 @@
+---
+title: Указатели
+---
+
+import { Quiz } from "@/components/quiz";
+
+<Quiz
+  explanation=""
+  title="Что выведет код?"
+  answers={[
+    {
+      text: "5",
+      correct: true,
+    },
+    {
+      text: "3",
+      correct: false,
+    },
+  ]}>
+
+```go
+package main
+
+import "fmt";
+
+
+
+func changePointer(p \*int) {
+    v := 3
+    p = &v
+}
+
+func main() {
+    v := 5
+    p := &v
+
+    fmt.Println(*p)
+
+    changePointer(p)
+
+    fmt.Println(*p)
+
+}
+
+```
+
+</Quiz>
+
+<hr />
+
+<Quiz
+  explanation=""
+  title="Что выведет код?"
+  answers={[
+    {
+      text: "Bob",
+      correct: true,
+    },
+    {
+      text: "Alice",
+      correct: false,
+    },
+  ]}>
+
+```go
+package main
+
+import "fmt"
+
+
+type Person struct {
+	Name string
+}
+
+func changeName(person *Person) {
+	person = &Person{
+		Name: "Alice",
+	}
+}
+
+func main() {
+	person := &Person{
+		Name: "Bob",
+	}
+
+	fmt.Println(person.Name)
+
+	changeName(person)
+
+	fmt.Println(person.Name)
+}
+```
+
+</Quiz>
+
+<hr />
+
+<Quiz
+  explanation=""
+  title="Что выведет код?"
+  answers={[
+    {
+      text: "13",
+      correct: false,
+    },
+    {
+      text: "19",
+      correct: true,
+    },
+    {
+      text: "15",
+      correct: false,
+    },
+  ]}>
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	a := 1
+	p := &a
+	b := &p
+
+	*p = 3
+	**b = 5
+
+	a += 4 + *p + **b
+
+	fmt.Println("Result:", *p)
+}
+```
+
+</Quiz>
+
+<hr />
+
+<Quiz
+  explanation=""
+  title="Что выведет код?"
+  answers={[
+    {
+      text: "100 0x168eb7bd80a0",
+      correct: false,
+    },
+    {
+      text: "100 и другой адрес",
+      correct: false,
+    },
+    {
+      text: "200 0x168eb7bd80a0",
+      correct: true,
+    },
+    {
+      text: "200 и другой адрес",
+      correct: false,
+    },
+  ]}>
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func process(temp *int32) {
+	var value2 int32 = 200
+
+	*temp = value2
+}
+
+func main() {
+	var value1 int32 = 100
+	pointer := &value1
+
+	fmt.Println("Value:", *pointer)
+	fmt.Println("Pointer:", pointer)
+
+	process(pointer)
+
+	fmt.Println("Value:", *pointer)
+	fmt.Println("Pointer:", pointer)
+}
+```
+
+Первый вывод
+
+```
+Value: 100
+Pointer: 0x168eb7bd80a0
+```
+
+</Quiz>
