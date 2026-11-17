@@ -34,3 +34,77 @@ func main() {
 </Quiz>
 
 <hr />
+
+<Quiz
+  explanation=""
+  title="Что выведет код?"
+  answers={[
+    {
+      text: "1,2,3,4,5",
+      correct: true,
+    },
+    {
+      text: "1,2,3,4",
+      correct: false,
+    },
+  ]}>
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	s := []int{1, 2, 3, 4}
+
+	printer := func(s []int) {
+		fmt.Println(s)
+	}
+
+	printer(s)
+
+	s = append(s, 5)
+
+	printer(s)
+}
+```
+
+</Quiz>
+
+<hr />
+
+<Quiz
+  explanation=""
+  title="Что выведет код?"
+  answers={[
+    {
+      text: "1,2,3,4,5",
+      correct: false,
+    },
+    {
+      text: "1,2,3,4",
+      correct: true,
+    },
+  ]}>
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	s := []int{1, 2, 3, 4}
+
+	printer := func(s []int) {
+		fmt.Println(s)
+	}
+
+	s2 := s
+
+	s = append(s, 5)
+
+  printer(s2)
+}
+```
+
+</Quiz>

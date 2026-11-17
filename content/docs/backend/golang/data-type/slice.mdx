@@ -296,6 +296,12 @@ slice[:] // взять все элементы
 
 - При отсутствии `n` - срез начинается с первого элемента (индекс `0`).
 - При отсутствии `m` - срез продолжается до конца исходного массива или слайса (не включая индекс `len(slice)`, но включая последний существующий элемент).
+- Если `m` выйдет за `len`, вывод будет zero value
+
+```go
+s := make([]int,0,5)
+fmt.Println(s[:5])
+```
 
 <Callout title='' type='tip'>
 
@@ -312,6 +318,30 @@ fmt.Println(s) // [1 100 3 4 5]
 ```
 
 </Callout>
+
+#### Ограничить ёмкость
+
+```go
+slice[n:m:max]
+```
+
+- max - размер `cap`
+
+<details>
+  <summary>Пример</summary>
+
+```go
+users := []string{"Bob", "Alice", "Kate"}
+users1 := users[0:2]            // берем первые 2 элемента
+fmt.Println("Len", len(users1)) // 2
+fmt.Println("Cap", cap(users1)) // 3 <- ёмкость массива под капотом
+
+users2 := users[0:2:2]          // <- ограничиваем ёмкость
+fmt.Println("Len", len(users2)) // 2
+fmt.Println("Cap", cap(users2)) // 2 <- ограничили ёмкость слайса (массив под капотом не изменился)
+```
+
+</details>
 
 #### Создать слайс на основе массива
 
@@ -796,5 +826,37 @@ func main() {
 
 		fmt.Println(users) // ["Tom", "Kate"]
 	}
+}
+```
+
+Передача слайса как аргумент и возврат в функции
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	var names = []string{"Tom", "Alice", "Kate"}
+
+	// Рисовать: Передача слайса в функцию
+	printer := func(s []string) {
+		fmt.Println(s)
+	}
+
+	// Структура слайса копируется!
+	printer(names)
+
+	// Рисовать: Возврат из функции
+	returner := func() []string {
+		s := []string{"Tom", "Alice", "Kate"}
+		return s
+	}
+
+	// Получили копию структуры (копию указателя на массив и копии len и cap)
+	s := returner()
+	_ = s
 }
 ```
