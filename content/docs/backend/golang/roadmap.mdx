@@ -71,6 +71,757 @@ Kustomize/Helm
 ArgoCD
 ```
 
+<div className="hr-decor">✦</div>
+
+## Roadmap by ChatGPT
+
+Roadmap: Go Backend Developer
+Цель: подготовиться к позиции Go Backend Developer и освоить технологии.
+Срок обучения: 4–5 месяцевНагрузка: 2–3 часа в день, 5–6 дней в неделюФормат: теория → практика → мини-проект → интеграция в итоговый проект.
+
+### Этап 1. Основы Go
+
+Продолжительность: 2–3 недели
+1.1. Основы языка
+
+- Установка Go, настройка окружения.
+- Структура Go-проекта.
+- go mod, go run, go build, go test.
+- Переменные и константы.
+- Типы данных.
+- Условия и циклы.
+- Массивы и слайсы.
+- Map.
+- Функции и множественные возвращаемые значения.
+- Указатели.
+- Структуры (struct).
+- Методы.
+- Интерфейсы.
+- Композиция структур.
+- Обработка ошибок (error, errors, fmt.Errorf).
+- Defer, panic, recover.
+- Работа с пакетами и импортами.
+  1.2. Особенности Go
+- Zero values.
+- Value semantics и reference semantics.
+- Копирование структур и слайсов.
+- Устройство интерфейсов.
+- Указатели и работа с памятью.
+- Garbage Collector.
+- Замыкания (closures).
+- Generics.
+- Работа с контекстом (context.Context).
+- Стандартная библиотека Go.
+  1.3. Практика
+  Реализовать небольшие программы:
+- Консольный менеджер задач.
+- Парсер JSON-файлов.
+- Чтение и запись файлов.
+- Программа для работы с HTTP API.
+- Простой CRUD в памяти.
+  Результат: уверенное владение базовым синтаксисом Go и стандартной библиотекой.
+
+### Этап 2. Многопоточность и конкурентность
+
+Продолжительность: 2–3 недели
+Одна из наиболее важных частей вакансии.
+2.1. Основы конкурентности
+
+- Отличие concurrency от parallelism.
+- Goroutines.
+- Channels.
+- Buffered и unbuffered channels.
+- Направленные каналы.
+- Select.
+- Закрытие каналов.
+- Range по каналам.
+- WaitGroup.
+- Mutex.
+- RWMutex.
+- Once.
+- Cond.
+- Atomic.
+- Context и отмена операций.
+  2.2. Паттерны конкурентности
+- Worker Pool.
+- Fan-in / Fan-out.
+- Pipeline.
+- Producer / Consumer.
+- Semaphore.
+- Ограничение количества goroutines.
+- Graceful Shutdown.
+- Обнаружение и предотвращение deadlock.
+- Race conditions.
+- Data races.
+- Goroutine leaks.
+  2.3. Инструменты
+- go test -race.
+- runtime.
+- sync/atomic.
+- pprof.
+- go tool trace.
+  2.4. Практика
+- Реализовать Worker Pool.
+- Написать многопоточный парсер файлов.
+- Создать ограничитель количества параллельных запросов.
+- Реализовать конкурентный счетчик с Mutex и Atomic.
+- Создать сервис обработки задач через каналы.
+  Результат: понимание конкурентной модели Go и умение безопасно использовать примитивы синхронизации.
+
+### Этап 3. Реляционные базы данных и SQL
+
+Продолжительность: 2–3 недели
+3.1. SQL
+
+- SELECT.
+- INSERT.
+- UPDATE.
+- DELETE.
+- WHERE.
+- ORDER BY.
+- GROUP BY.
+- HAVING.
+- JOIN (INNER, LEFT, RIGHT).
+- Подзапросы.
+- CTE (WITH).
+- Агрегатные функции.
+- UNION.
+- Индексы.
+- Первичные и внешние ключи.
+- Ограничения (constraints).
+- Нормализация данных.
+- Транзакции.
+- ACID.
+- Уровни изоляции транзакций.
+- Блокировки.
+- EXPLAIN / EXPLAIN ANALYZE.
+  3.2. PostgreSQL
+- Установка PostgreSQL.
+- Создание баз и таблиц.
+- Типы данных PostgreSQL.
+- SERIAL / IDENTITY.
+- UUID.
+- JSONB.
+- Индексы B-tree, GIN.
+- Миграции базы данных.
+- Понимание MVCC.
+- Deadlocks.
+- Connection Pooling.
+  3.3. PostgreSQL в Go
+- Работа через database/sql.
+- Драйвер pgx.
+- Подключение к PostgreSQL.
+- Выполнение SQL-запросов.
+- Query, QueryRow, Exec.
+- Scan.
+- Prepared Statements.
+- Transactions.
+- Context для запросов.
+- Обработка ошибок БД.
+- Пул соединений.
+- SQL-инъекции и параметризованные запросы.
+  3.4. Практика
+- Создать схему БД для пользователей и задач.
+- Реализовать CRUD через Go.
+- Добавить миграции.
+- Реализовать транзакцию создания пользователя и связанных данных.
+- Оптимизировать несколько медленных запросов.
+  Результат: умение проектировать реляционные БД и работать с PostgreSQL из Go.
+
+### Этап 4. Key-Value хранилища
+
+Продолжительность: 1–2 недели
+4.1. Redis / Valkey / Dragonfly
+
+- Что такое Key-Value хранилища.
+- Отличия SQL и NoSQL.
+- Структуры данных Redis.
+- Strings.
+- Hashes.
+- Lists.
+- Sets.
+- Sorted Sets.
+- TTL и expiration.
+- Persistence (RDB / AOF).
+- Pub/Sub.
+- Transactions.
+- Pipeline.
+- Lua Scripts.
+- Eviction policies.
+- Redis Sentinel и Cluster на базовом уровне.
+  4.2. Redis в Go
+- Подключение через go-redis.
+- Выполнение команд.
+- Работа с TTL.
+- Сериализация JSON.
+- Кеширование результатов SQL-запросов.
+- Cache-Aside Pattern.
+- Инвалидация кеша.
+- Distributed Lock.
+- Обработка недоступности Redis.
+  4.3. Практика
+- Реализовать кеширование пользователей.
+- Добавить TTL.
+- Реализовать rate limiter через Redis.
+- Реализовать счетчик запросов.
+- Сравнить время выполнения запросов с кешем и без него.
+  Результат: умение использовать Redis как кеш и быстрое KV-хранилище.
+
+### Этап 5. REST API и HTTP
+
+Продолжительность: 2–3 недели
+5.1. Основы HTTP
+
+- HTTP и HTTPS.
+- HTTP Request / Response.
+- HTTP Methods.
+- HTTP Status Codes.
+- Headers.
+- Cookies.
+- Query Parameters.
+- Path Parameters.
+- Request Body.
+- Content-Type.
+- REST архитектура.
+- Идемпотентность.
+- Stateless архитектура.
+  5.2. Создание API на Go
+- Пакет net/http.
+- HTTP Server.
+- HTTP Handler.
+- Router.
+- Middleware.
+- JSON Encoding / Decoding.
+- Валидация входных данных.
+- Обработка ошибок.
+- Логирование запросов.
+- Graceful Shutdown.
+- Context в HTTP-запросах.
+- Pagination.
+- Filtering.
+- Sorting.
+- CORS.
+  5.3. Архитектура REST API
+- Разделение Handler / Service / Repository.
+- Dependency Injection.
+- DTO.
+- Работа с интерфейсами.
+- Разделение бизнес-логики и HTTP-слоя.
+- Конфигурация через ENV.
+- Структурированное логирование.
+- Единый формат ошибок API.
+  5.4. Swagger / OpenAPI
+- Что такое OpenAPI.
+- Swagger.
+- Описание API в YAML / JSON.
+- Описание endpoints.
+- Описание request / response моделей.
+- HTTP Status Codes в документации.
+- Swagger UI.
+- Генерация документации.
+- Swagger Codegen.
+- Генерация клиентского кода.
+- Генерация серверных интерфейсов.
+  5.5. Практика
+  Создать REST API:
+- POST /users
+- GET /users
+- GET /users/{id}
+- PUT /users/{id}
+- DELETE /users/{id}
+- POST /auth/login
+- Реализовать пагинацию.
+- Добавить middleware.
+- Подключить PostgreSQL.
+- Подключить Redis.
+- Описать API через OpenAPI.
+- Сгенерировать клиент с помощью Swagger Codegen.
+  Результат: умение самостоятельно проектировать, разрабатывать и документировать REST API.
+
+### Этап 6. Форматы данных JSON и XML
+
+Продолжительность: 3–5 дней
+6.1. JSON
+
+- Структура JSON.
+- Объекты и массивы.
+- Типы JSON.
+- Маршалинг и анмаршалинг.
+- JSON в Go (encoding/json).
+- Struct Tags.
+- omitempty.
+- Работа с RawMessage.
+- Валидация JSON.
+- Обработка некорректных данных.
+  6.2. XML
+- Структура XML.
+- Теги и атрибуты.
+- Namespace.
+- XML в Go (encoding/xml).
+- Struct Tags.
+- Marshal / Unmarshal.
+- Обработка XML-документов.
+  6.3. Практика
+- Написать JSON-парсер.
+- Написать XML-парсер.
+- Реализовать преобразование XML в JSON.
+- Реализовать HTTP endpoint, принимающий JSON.
+- Реализовать экспорт данных в XML.
+  Результат: уверенная работа с JSON и XML в Go.
+
+### Этап 7. Тестирование
+
+Продолжительность: 1–2 недели
+7.1. Unit Testing
+
+- Пакет testing.
+- Написание unit-тестов.
+- Table-driven tests.
+- Subtests.
+- Testify.
+- Assertions.
+- Тестирование ошибок.
+- Тестирование граничных случаев.
+- Тестирование конкурентного кода.
+- Race Detector.
+  7.2. Mocking
+- Что такое Mock / Stub / Fake.
+- Dependency Injection для тестирования.
+- Mocking интерфейсов.
+- Test doubles.
+- Работа с gomock или аналогами.
+  7.3. Integration Testing
+- Тестирование PostgreSQL.
+- Тестирование Redis.
+- Testcontainers.
+- Тестирование HTTP API.
+- httptest.
+- Проверка HTTP Status Codes.
+- Проверка JSON Response.
+- Тестирование middleware.
+  7.4. Дополнительно
+- Coverage.
+- go test -cover.
+- go test -coverprofile.
+- Benchmark Tests.
+- go test -race.
+- Fuzz Testing.
+  Результат: умение писать unit-, integration- и HTTP-тесты.
+
+### Этап 8. Linux, TCP/UDP и сети
+
+Продолжительность: 1–2 недели
+8.1. Linux
+
+- Структура файловой системы.
+- Права доступа.
+- Пользователи и группы.
+- Процессы.
+- Сигналы.
+- Переменные окружения.
+- Bash.
+- Pipes и Redirection.
+- grep, find, awk, sed.
+- systemctl.
+- journalctl.
+- SSH.
+- Работа с логами.
+  8.2. Компьютерные сети
+- Модель OSI.
+- TCP/IP.
+- IP-адресация.
+- DNS.
+- TCP.
+- UDP.
+- TCP Handshake.
+- TCP Connection Termination.
+- Порты.
+- Sockets.
+- HTTP поверх TCP.
+- TLS на базовом уровне.
+- NAT.
+- Firewall.
+  8.3. Сетевые инструменты
+- curl.
+- wget.
+- ping.
+- traceroute.
+- ss.
+- netstat.
+- nc.
+- tcpdump.
+  8.4. Практика
+- Написать простой TCP-сервер на Go.
+- Написать TCP-клиент.
+- Написать простой UDP-сервис.
+- Посмотреть TCP-соединение через tcpdump.
+- Исследовать HTTP-запрос через curl.
+  Результат: понимание основ сетевого взаимодействия и работы сервисов в Linux.
+
+### Этап 9. Docker и Docker Compose
+
+Продолжительность: 1 неделя
+9.1. Docker
+
+- Что такое контейнеризация.
+- Docker Images.
+- Docker Containers.
+- Dockerfile.
+- Docker Build.
+- Docker Run.
+- Docker Volumes.
+- Docker Networks.
+- Environment Variables.
+- Multi-stage Builds.
+- Docker Logs.
+- Docker Exec.
+  9.2. Docker Compose
+- docker-compose.yml.
+- Services.
+- Networks.
+- Volumes.
+- Depends_on.
+- Healthcheck.
+- Environment.
+- Profiles.
+- Контейнеризация Go-приложения.
+  9.3. Практика
+- Создать Dockerfile для Go API.
+- Настроить Multi-stage Build.
+- Поднять PostgreSQL через Compose.
+- Поднять Redis через Compose.
+- Добавить RabbitMQ.
+- Запустить весь проект одной командой.
+- Настроить healthcheck для сервисов.
+  Результат: умение контейнеризировать Go-приложения и инфраструктуру.
+
+### Этап 10. Брокеры сообщений: RabbitMQ и Kafka
+
+Продолжительность: 1–2 недели
+10.1. Основы Message Brokers
+
+- Зачем нужны брокеры сообщений.
+- Синхронное и асинхронное взаимодействие.
+- Producer / Consumer.
+- Message Queue.
+- Pub/Sub.
+- Acknowledgment.
+- Retry.
+- Dead Letter Queue.
+- Delivery Guarantees.
+- At-most-once.
+- At-least-once.
+- Exactly-once на концептуальном уровне.
+- Идемпотентность обработчиков.
+  10.2. RabbitMQ
+- Exchanges.
+- Queues.
+- Bindings.
+- Routing Keys.
+- Direct Exchange.
+- Fanout Exchange.
+- Topic Exchange.
+- Manual ACK.
+- Prefetch.
+- Retry и DLQ.
+- Подключение из Go.
+  10.3. Kafka
+- Brokers.
+- Topics.
+- Partitions.
+- Consumer Groups.
+- Offsets.
+- Producers.
+- Consumers.
+- Replication.
+- Retention.
+- Подключение из Go.
+  10.4. Практика
+- Поднять RabbitMQ через Docker Compose.
+- Создать Producer на Go.
+- Создать Consumer на Go.
+- Реализовать асинхронную обработку задач.
+- Добавить Retry.
+- Добавить Dead Letter Queue.
+- Обеспечить идемпотентность обработки.
+  Результат: понимание асинхронной архитектуры и умение интегрировать брокеры сообщений.
+
+### Этап 11. Git и CI/CD
+
+Продолжительность: 3–5 дней
+11.1. Git
+
+- init.
+- clone.
+- add.
+- commit.
+- push.
+- pull.
+- fetch.
+- merge.
+- rebase.
+- cherry-pick.
+- reset.
+- revert.
+- stash.
+- Работа с ветками.
+- Pull Requests / Merge Requests.
+- Разрешение конфликтов.
+  11.2. GitHub / GitLab
+- Создание репозитория.
+- README.md.
+- .gitignore.
+- Issues.
+- Merge Requests.
+- Code Review.
+- GitHub Actions или GitLab CI.
+  11.3. CI/CD
+- Основы CI/CD.
+- Автоматический запуск тестов.
+- Сборка Go-приложения.
+- Проверка gofmt.
+- golangci-lint.
+- Docker Build.
+- Хранение секретов в CI.
+- Автоматизация проверок при Pull Request.
+  Результат: умение работать с Git и автоматизировать проверки проекта.
+
+### Этап 12. Архитектура и дополнительные знания
+
+Продолжительность: 1–2 недели
+12.1. Архитектура backend-приложений
+
+- Монолитная архитектура.
+- Микросервисы.
+- Layered Architecture.
+- Clean Architecture.
+- SOLID.
+- Dependency Injection.
+- Repository Pattern.
+- Service Layer.
+- DTO.
+- Domain Model.
+- Конфигурация приложения.
+- Логирование.
+- Graceful Shutdown.
+  12.2. Производительность
+- Профилирование Go-приложений.
+- CPU Profiling.
+- Memory Profiling.
+- pprof.
+- Benchmarking.
+- Оптимизация SQL.
+- Connection Pooling.
+- Работа с памятью.
+- Аллокации.
+- Понимание GC.
+  12.3. Дополнительные темы
+- JWT.
+- Authentication / Authorization.
+- Middleware.
+- Rate Limiting.
+- Structured Logging.
+- OpenTelemetry.
+- Metrics.
+- Health Checks.
+- Configuration Management.
+
+### Этап 13. Итоговый проект
+
+Продолжительность: 3–4 недели
+Проект: Task Management Backend
+Разработать полноценный backend для управления пользователями и задачами.
+13.1. Функциональность
+
+- Регистрация пользователей.
+- Авторизация через JWT.
+- CRUD пользователей.
+- CRUD задач.
+- Назначение задач пользователям.
+- Фильтрация задач.
+- Сортировка.
+- Пагинация.
+- Кеширование данных.
+- Асинхронная обработка событий.
+- Логирование.
+- Graceful Shutdown.
+  13.2. Технологический стек
+- Go.
+- PostgreSQL.
+- Redis или Valkey.
+- RabbitMQ.
+- Docker.
+- Docker Compose.
+- REST API.
+- Swagger / OpenAPI.
+- Git.
+- GitHub Actions или GitLab CI.
+  13.3. Архитектура проекта
+  text
+  task-manager/
+  ├── cmd/
+  │ └── api/
+  │ └── main.go
+  ├── internal/
+  │ ├── config/
+  │ ├── handler/
+  │ ├── service/
+  │ ├── repository/
+  │ ├── models/
+  │ ├── middleware/
+  │ ├── cache/
+  │ ├── broker/
+  │ └── worker/
+  ├── migrations/
+  ├── docs/
+  ├── tests/
+  ├── deployments/
+  │ └── docker/
+  ├── .github/
+  │ └── workflows/
+  ├── Dockerfile
+  ├── docker-compose.yml
+  ├── Makefile
+  ├── go.mod
+  └── README.md
+  13.4. Требования к качеству
+- Разделение слоев приложения.
+- Отсутствие бизнес-логики в HTTP Handler.
+- Использование интерфейсов там, где это оправдано.
+- Корректная обработка ошибок.
+- Context для отмены операций.
+- Unit-тесты.
+- Integration-тесты.
+- Проверка race conditions.
+- Документация API.
+- Запуск проекта одной командой.
+- Понятный README с инструкцией запуска.
+  Результат: полноценный проект для GitHub и демонстрации на техническом собеседовании.
+
+Этап 14. Подготовка к собеседованию
+Продолжительность: 1–2 недели
+Go
+
+- Чем отличаются массивы и слайсы?
+- Как устроен append?
+- Что такое интерфейсы?
+- Что такое nil interface?
+- Чем отличаются Mutex и RWMutex?
+- Что такое goroutine?
+- Как работает scheduler?
+- Чем отличаются buffered и unbuffered channels?
+- Что такое deadlock?
+- Как работает Garbage Collector?
+- Для чего нужен context?
+- Чем отличаются make и new?
+- Что такое defer?
+  SQL / PostgreSQL
+- Что такое индексы?
+- Как работают JOIN?
+- Что такое транзакции?
+- Что такое ACID?
+- Какие бывают уровни изоляции?
+- Что такое MVCC?
+- Что такое deadlock?
+- Как оптимизировать SQL-запрос?
+- Чем отличаются WHERE и HAVING?
+  Redis
+- Что такое TTL?
+- Какие структуры данных есть в Redis?
+- Что такое Cache-Aside?
+- Как работает инвалидация кеша?
+- Что такое Redis Pub/Sub?
+- Чем Redis отличается от PostgreSQL?
+  REST API
+- Что такое REST?
+- Чем отличаются PUT и PATCH?
+- Что такое идемпотентность?
+- Какие бывают HTTP Status Codes?
+- Что такое middleware?
+- Что такое JWT?
+- Что такое Swagger / OpenAPI?
+  RabbitMQ / Kafka
+- Чем отличаются RabbitMQ и Kafka?
+- Что такое Producer и Consumer?
+- Что такое ACK?
+- Что такое Retry?
+- Что такое Dead Letter Queue?
+- Что такое Consumer Group?
+- Как обеспечить идемпотентность обработчика?
+  Linux / Docker / Git
+- Как посмотреть запущенные процессы?
+- Как посмотреть открытые порты?
+- Как посмотреть логи приложения?
+- Что такое TCP Handshake?
+- Чем TCP отличается от UDP?
+- Что такое Docker Image?
+- Чем контейнер отличается от виртуальной машины?
+- Что такое Docker Compose?
+- Чем merge отличается от rebase?
+
+Приоритеты изучения
+Если времени мало, рекомендую распределить усилия следующим образом:
+Приоритет Технологии
+Критический Go, Goroutines, Channels, Mutex, PostgreSQL, SQL
+Высокий REST API, HTTP, Redis, Testing
+Высокий Docker, Docker Compose, Git, Linux
+Средний RabbitMQ, Kafka
+Средний TCP/UDP, JSON, XML
+Дополнительный Swagger Codegen, CI/CD, pprof, OpenTelemetry
+Рекомендуемые материалы
+Go
+
+- A Tour of Go
+- Go by Example
+- Effective Go
+- Go Documentation
+  SQL / PostgreSQL
+- PostgreSQL Documentation
+- SQLBolt
+  Redis
+- Redis Documentation
+- Valkey Documentation
+  Backend / HTTP
+- Go net/http
+- OpenAPI Specification
+  Concurrency
+- Go Concurrency Patterns
+- The Go Memory Model
+  Testing
+- Go Testing
+- Testify
+  Docker
+- Docker Get Started
+  RabbitMQ / Kafka
+- RabbitMQ Tutorials
+- Apache Kafka Documentation
+
+Финальный чек-лист готовности к вакансии
+
+- Пишу Go-код без постоянного обращения к документации.
+- Понимаю интерфейсы, указатели, структуры и ошибки.
+- Умею писать конкурентный код.
+- Умею использовать Mutex, RWMutex, WaitGroup, Channels.
+- Понимаю race conditions и deadlocks.
+- Умею проектировать таблицы PostgreSQL.
+- Умею писать сложные SQL-запросы.
+- Умею работать с транзакциями и индексами.
+- Умею подключать Redis и реализовывать кеширование.
+- Умею разрабатывать REST API.
+- Умею документировать API через OpenAPI / Swagger.
+- Понимаю JSON и XML.
+- Умею писать unit- и integration-тесты.
+- Умею работать с Linux.
+- Понимаю TCP и UDP.
+- Умею собирать Docker-образы.
+- Умею запускать инфраструктуру через Docker Compose.
+- Умею работать с Git и GitHub / GitLab.
+- Понимаю принципы работы RabbitMQ или Kafka.
+- Имею законченный backend-проект на GitHub.
+  Главная цель: не просто пройти все пункты, а реализовать итоговый проект самостоятельно и уметь объяснить каждое архитектурное решение на техническом собеседовании.
+
+<div className="hr-decor">✦</div>
+
 ## Pet проекты
 
 - [gRPC](../../computer-science/architectural-style-web-api/grpc.mdx)
