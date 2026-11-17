@@ -1,0 +1,36 @@
+---
+title: Слайсы
+---
+
+import { Quiz } from "@/components/quiz";
+
+<Quiz
+  explanation=""
+  title="Что выведет код?"
+  answers={[
+    {
+      text: "1,2,3,4,5",
+      correct: false,
+    },
+    {
+      text: "5,2,3,4,5",
+      correct: true,
+    },
+  ]}>
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	s1 := []int{1,2,3,4,5}
+	s2 := s1
+	s2[0] = 5
+	fmt.Println(s1)
+}
+```
+
+</Quiz>
+
+<hr />
