@@ -231,11 +231,35 @@ s := make([]type, length, capacity)
 
 <hr />
 
-### Взять часть
+### Обратиться к элементу
 
 ```go
-
+fmt.Println("Read", slice[0]) // panic: index out of range
 ```
+
+<Callout title='' type='warn'>
+
+Если `len == 0` или попытаться обратиться за пределами `len` (хотя у слайса может быть свободная `cap`) будет: <br/>
+`panic: index out of range`
+
+</Callout>
+
+<hr />
+
+### Перезаписать элемент
+
+```go
+slice[0] = "Alice" //
+```
+
+<Callout title='' type='warn'>
+
+Если `len == 0` или попытаться обратиться за пределами `len` (хотя у слайса может быть свободная `cap`) будет: <br/>
+`panic: index out of range`
+
+</Callout>
+
+<hr />
 
 ### Получить длину `len()`
 
