@@ -82,7 +82,8 @@ Roadmap: Go Backend Developer
 ### Этап 1. Основы Go
 
 Продолжительность: 2–3 недели
-1.1. Основы языка
+
+#### 1.1. Основы языка
 
 - Установка Go, настройка окружения.
 - Структура Go-проекта.
@@ -101,7 +102,9 @@ Roadmap: Go Backend Developer
 - Обработка ошибок (error, errors, fmt.Errorf).
 - Defer, panic, recover.
 - Работа с пакетами и импортами.
-  1.2. Особенности Go
+
+#### 1.2. Особенности Go
+
 - Zero values.
 - Value semantics и reference semantics.
 - Копирование структур и слайсов.
@@ -112,20 +115,27 @@ Roadmap: Go Backend Developer
 - Generics.
 - Работа с контекстом (context.Context).
 - Стандартная библиотека Go.
-  1.3. Практика
-  Реализовать небольшие программы:
+
+#### 1.3. Практика
+
+Реализовать небольшие программы:
+
 - Консольный менеджер задач.
 - Парсер JSON-файлов.
 - Чтение и запись файлов.
 - Программа для работы с HTTP API.
 - Простой CRUD в памяти.
-  Результат: уверенное владение базовым синтаксисом Go и стандартной библиотекой.
+
+Результат: уверенное владение базовым синтаксисом Go и стандартной библиотекой.
+
+<div className="hr-decor">✦</div>
 
 ### Этап 2. Многопоточность и конкурентность
 
 Продолжительность: 2–3 недели
 Одна из наиболее важных частей вакансии.
-2.1. Основы конкурентности
+
+#### 2.1. Основы конкурентности
 
 - Отличие concurrency от parallelism.
 - Goroutines.
@@ -142,7 +152,9 @@ Roadmap: Go Backend Developer
 - Cond.
 - Atomic.
 - Context и отмена операций.
-  2.2. Паттерны конкурентности
+
+#### 2.2. Паттерны конкурентности
+
 - Worker Pool.
 - Fan-in / Fan-out.
 - Pipeline.
@@ -154,24 +166,32 @@ Roadmap: Go Backend Developer
 - Race conditions.
 - Data races.
 - Goroutine leaks.
-  2.3. Инструменты
+
+#### 2.3. Инструменты
+
 - go test -race.
 - runtime.
 - sync/atomic.
 - pprof.
 - go tool trace.
-  2.4. Практика
+
+#### 2.4. Практика
+
 - Реализовать Worker Pool.
 - Написать многопоточный парсер файлов.
 - Создать ограничитель количества параллельных запросов.
 - Реализовать конкурентный счетчик с Mutex и Atomic.
 - Создать сервис обработки задач через каналы.
-  Результат: понимание конкурентной модели Go и умение безопасно использовать примитивы синхронизации.
+
+Результат: понимание конкурентной модели Go и умение безопасно использовать примитивы синхронизации.
+
+<div className="hr-decor">✦</div>
 
 ### Этап 3. Реляционные базы данных и SQL
 
 Продолжительность: 2–3 недели
-3.1. SQL
+
+#### 3.1. SQL
 
 - SELECT.
 - INSERT.
@@ -195,7 +215,9 @@ Roadmap: Go Backend Developer
 - Уровни изоляции транзакций.
 - Блокировки.
 - EXPLAIN / EXPLAIN ANALYZE.
-  3.2. PostgreSQL
+
+#### 3.2. PostgreSQL
+
 - Установка PostgreSQL.
 - Создание баз и таблиц.
 - Типы данных PostgreSQL.
@@ -207,7 +229,9 @@ Roadmap: Go Backend Developer
 - Понимание MVCC.
 - Deadlocks.
 - Connection Pooling.
-  3.3. PostgreSQL в Go
+
+#### 3.3. PostgreSQL в Go
+
 - Работа через database/sql.
 - Драйвер pgx.
 - Подключение к PostgreSQL.
@@ -220,18 +244,24 @@ Roadmap: Go Backend Developer
 - Обработка ошибок БД.
 - Пул соединений.
 - SQL-инъекции и параметризованные запросы.
-  3.4. Практика
+
+#### 3.4. Практика
+
 - Создать схему БД для пользователей и задач.
 - Реализовать CRUD через Go.
 - Добавить миграции.
 - Реализовать транзакцию создания пользователя и связанных данных.
 - Оптимизировать несколько медленных запросов.
-  Результат: умение проектировать реляционные БД и работать с PostgreSQL из Go.
+
+Результат: умение проектировать реляционные БД и работать с PostgreSQL из Go.
+
+<div className="hr-decor">✦</div>
 
 ### Этап 4. Key-Value хранилища
 
 Продолжительность: 1–2 недели
-4.1. Redis / Valkey / Dragonfly
+
+#### 4.1. Redis / Valkey / Dragonfly
 
 - Что такое Key-Value хранилища.
 - Отличия SQL и NoSQL.
@@ -249,7 +279,9 @@ Roadmap: Go Backend Developer
 - Lua Scripts.
 - Eviction policies.
 - Redis Sentinel и Cluster на базовом уровне.
-  4.2. Redis в Go
+
+#### 4.2. Redis в Go
+
 - Подключение через go-redis.
 - Выполнение команд.
 - Работа с TTL.
@@ -259,18 +291,26 @@ Roadmap: Go Backend Developer
 - Инвалидация кеша.
 - Distributed Lock.
 - Обработка недоступности Redis.
-  4.3. Практика
+
+#### 4.3. Практика
+
 - Реализовать кеширование пользователей.
 - Добавить TTL.
 - Реализовать rate limiter через Redis.
 - Реализовать счетчик запросов.
 - Сравнить время выполнения запросов с кешем и без него.
-  Результат: умение использовать Redis как кеш и быстрое KV-хранилище.
+
+Результат: умение использовать Redis как кеш и быстрое KV-хранилище.
+
+<div className="hr-decor">✦</div>
 
 ### Этап 5. REST API и HTTP
 
 Продолжительность: 2–3 недели
-5.1. Основы HTTP
+
+####
+
+#### 5.1. Основы HTTP
 
 - HTTP и HTTPS.
 - HTTP Request / Response.
@@ -285,7 +325,9 @@ Roadmap: Go Backend Developer
 - REST архитектура.
 - Идемпотентность.
 - Stateless архитектура.
-  5.2. Создание API на Go
+
+#### 5.2. Создание API на Go
+
 - Пакет net/http.
 - HTTP Server.
 - HTTP Handler.
@@ -301,7 +343,9 @@ Roadmap: Go Backend Developer
 - Filtering.
 - Sorting.
 - CORS.
-  5.3. Архитектура REST API
+
+#### 5.3. Архитектура REST API
+
 - Разделение Handler / Service / Repository.
 - Dependency Injection.
 - DTO.
@@ -310,7 +354,9 @@ Roadmap: Go Backend Developer
 - Конфигурация через ENV.
 - Структурированное логирование.
 - Единый формат ошибок API.
-  5.4. Swagger / OpenAPI
+
+#### 5.4. Swagger / OpenAPI
+
 - Что такое OpenAPI.
 - Swagger.
 - Описание API в YAML / JSON.
@@ -326,9 +372,9 @@ Roadmap: Go Backend Developer
   Создать REST API:
 - POST /users
 - GET /users
-- GET /users/{id}
-- PUT /users/{id}
-- DELETE /users/{id}
+- GET `/users/{id}`
+- PUT `/users/{id}`
+- DELETE `/users/{id}`
 - POST /auth/login
 - Реализовать пагинацию.
 - Добавить middleware.
@@ -336,12 +382,16 @@ Roadmap: Go Backend Developer
 - Подключить Redis.
 - Описать API через OpenAPI.
 - Сгенерировать клиент с помощью Swagger Codegen.
-  Результат: умение самостоятельно проектировать, разрабатывать и документировать REST API.
+
+Результат: умение самостоятельно проектировать, разрабатывать и документировать REST API.
+
+<div className="hr-decor">✦</div>
 
 ### Этап 6. Форматы данных JSON и XML
 
 Продолжительность: 3–5 дней
-6.1. JSON
+
+#### 6.1. JSON
 
 - Структура JSON.
 - Объекты и массивы.
@@ -353,7 +403,9 @@ Roadmap: Go Backend Developer
 - Работа с RawMessage.
 - Валидация JSON.
 - Обработка некорректных данных.
-  6.2. XML
+
+#### 6.2. XML
+
 - Структура XML.
 - Теги и атрибуты.
 - Namespace.
@@ -361,18 +413,24 @@ Roadmap: Go Backend Developer
 - Struct Tags.
 - Marshal / Unmarshal.
 - Обработка XML-документов.
-  6.3. Практика
+
+#### 6.3. Практика
+
 - Написать JSON-парсер.
 - Написать XML-парсер.
 - Реализовать преобразование XML в JSON.
 - Реализовать HTTP endpoint, принимающий JSON.
 - Реализовать экспорт данных в XML.
-  Результат: уверенная работа с JSON и XML в Go.
+
+Результат: уверенная работа с JSON и XML в Go.
+
+<div className="hr-decor">✦</div>
 
 ### Этап 7. Тестирование
 
 Продолжительность: 1–2 недели
-7.1. Unit Testing
+
+#### 7.1. Unit Testing
 
 - Пакет testing.
 - Написание unit-тестов.
@@ -384,13 +442,17 @@ Roadmap: Go Backend Developer
 - Тестирование граничных случаев.
 - Тестирование конкурентного кода.
 - Race Detector.
-  7.2. Mocking
+
+#### 7.2. Mocking
+
 - Что такое Mock / Stub / Fake.
 - Dependency Injection для тестирования.
 - Mocking интерфейсов.
 - Test doubles.
 - Работа с gomock или аналогами.
-  7.3. Integration Testing
+
+#### 7.3. Integration Testing
+
 - Тестирование PostgreSQL.
 - Тестирование Redis.
 - Testcontainers.
@@ -399,19 +461,25 @@ Roadmap: Go Backend Developer
 - Проверка HTTP Status Codes.
 - Проверка JSON Response.
 - Тестирование middleware.
-  7.4. Дополнительно
+
+#### 7.4. Дополнительно
+
 - Coverage.
 - go test -cover.
 - go test -coverprofile.
 - Benchmark Tests.
 - go test -race.
 - Fuzz Testing.
-  Результат: умение писать unit-, integration- и HTTP-тесты.
+
+Результат: умение писать unit-, integration- и HTTP-тесты.
+
+<div className="hr-decor">✦</div>
 
 ### Этап 8. Linux, TCP/UDP и сети
 
 Продолжительность: 1–2 недели
-8.1. Linux
+
+#### 8.1. Linux
 
 - Структура файловой системы.
 - Права доступа.
@@ -426,7 +494,9 @@ Roadmap: Go Backend Developer
 - journalctl.
 - SSH.
 - Работа с логами.
-  8.2. Компьютерные сети
+
+#### 8.2. Компьютерные сети
+
 - Модель OSI.
 - TCP/IP.
 - IP-адресация.
@@ -441,7 +511,9 @@ Roadmap: Go Backend Developer
 - TLS на базовом уровне.
 - NAT.
 - Firewall.
-  8.3. Сетевые инструменты
+
+#### 8.3. Сетевые инструменты
+
 - curl.
 - wget.
 - ping.
@@ -450,18 +522,22 @@ Roadmap: Go Backend Developer
 - netstat.
 - nc.
 - tcpdump.
-  8.4. Практика
+
+#### 8.4. Практика
+
 - Написать простой TCP-сервер на Go.
 - Написать TCP-клиент.
 - Написать простой UDP-сервис.
 - Посмотреть TCP-соединение через tcpdump.
 - Исследовать HTTP-запрос через curl.
-  Результат: понимание основ сетевого взаимодействия и работы сервисов в Linux.
+
+Результат: понимание основ сетевого взаимодействия и работы сервисов в Linux.
 
 ### Этап 9. Docker и Docker Compose
 
 Продолжительность: 1 неделя
-9.1. Docker
+
+#### 9.1. Docker
 
 - Что такое контейнеризация.
 - Docker Images.
@@ -475,7 +551,9 @@ Roadmap: Go Backend Developer
 - Multi-stage Builds.
 - Docker Logs.
 - Docker Exec.
-  9.2. Docker Compose
+
+#### 9.2. Docker Compose
+
 - docker-compose.yml.
 - Services.
 - Networks.
@@ -485,7 +563,9 @@ Roadmap: Go Backend Developer
 - Environment.
 - Profiles.
 - Контейнеризация Go-приложения.
-  9.3. Практика
+
+#### 9.3. Практика
+
 - Создать Dockerfile для Go API.
 - Настроить Multi-stage Build.
 - Поднять PostgreSQL через Compose.
@@ -493,12 +573,16 @@ Roadmap: Go Backend Developer
 - Добавить RabbitMQ.
 - Запустить весь проект одной командой.
 - Настроить healthcheck для сервисов.
-  Результат: умение контейнеризировать Go-приложения и инфраструктуру.
+
+Результат: умение контейнеризировать Go-приложения и инфраструктуру.
+
+<div className="hr-decor">✦</div>
 
 ### Этап 10. Брокеры сообщений: RabbitMQ и Kafka
 
 Продолжительность: 1–2 недели
-10.1. Основы Message Brokers
+
+#### 10.1. Основы Message Brokers
 
 - Зачем нужны брокеры сообщений.
 - Синхронное и асинхронное взаимодействие.
@@ -513,7 +597,9 @@ Roadmap: Go Backend Developer
 - At-least-once.
 - Exactly-once на концептуальном уровне.
 - Идемпотентность обработчиков.
-  10.2. RabbitMQ
+
+#### 10.2. RabbitMQ
+
 - Exchanges.
 - Queues.
 - Bindings.
@@ -525,7 +611,9 @@ Roadmap: Go Backend Developer
 - Prefetch.
 - Retry и DLQ.
 - Подключение из Go.
-  10.3. Kafka
+
+#### 10.3. Kafka
+
 - Brokers.
 - Topics.
 - Partitions.
@@ -536,7 +624,9 @@ Roadmap: Go Backend Developer
 - Replication.
 - Retention.
 - Подключение из Go.
-  10.4. Практика
+
+#### 10.4. Практика
+
 - Поднять RabbitMQ через Docker Compose.
 - Создать Producer на Go.
 - Создать Consumer на Go.
@@ -544,12 +634,14 @@ Roadmap: Go Backend Developer
 - Добавить Retry.
 - Добавить Dead Letter Queue.
 - Обеспечить идемпотентность обработки.
-  Результат: понимание асинхронной архитектуры и умение интегрировать брокеры сообщений.
+
+Результат: понимание асинхронной архитектуры и умение интегрировать брокеры сообщений.
 
 ### Этап 11. Git и CI/CD
 
 Продолжительность: 3–5 дней
-11.1. Git
+
+#### 11.1. Git
 
 - init.
 - clone.
@@ -567,7 +659,9 @@ Roadmap: Go Backend Developer
 - Работа с ветками.
 - Pull Requests / Merge Requests.
 - Разрешение конфликтов.
-  11.2. GitHub / GitLab
+
+#### 11.2. GitHub / GitLab
+
 - Создание репозитория.
 - README.md.
 - .gitignore.
@@ -575,7 +669,9 @@ Roadmap: Go Backend Developer
 - Merge Requests.
 - Code Review.
 - GitHub Actions или GitLab CI.
-  11.3. CI/CD
+
+#### 11.3. CI/CD
+
 - Основы CI/CD.
 - Автоматический запуск тестов.
 - Сборка Go-приложения.
@@ -584,12 +680,16 @@ Roadmap: Go Backend Developer
 - Docker Build.
 - Хранение секретов в CI.
 - Автоматизация проверок при Pull Request.
-  Результат: умение работать с Git и автоматизировать проверки проекта.
+
+Результат: умение работать с Git и автоматизировать проверки проекта.
+
+<div className="hr-decor">✦</div>
 
 ### Этап 12. Архитектура и дополнительные знания
 
 Продолжительность: 1–2 недели
-12.1. Архитектура backend-приложений
+
+#### 12.1. Архитектура backend-приложений
 
 - Монолитная архитектура.
 - Микросервисы.
@@ -604,7 +704,9 @@ Roadmap: Go Backend Developer
 - Конфигурация приложения.
 - Логирование.
 - Graceful Shutdown.
-  12.2. Производительность
+
+#### 12.2. Производительность
+
 - Профилирование Go-приложений.
 - CPU Profiling.
 - Memory Profiling.
@@ -615,7 +717,9 @@ Roadmap: Go Backend Developer
 - Работа с памятью.
 - Аллокации.
 - Понимание GC.
-  12.3. Дополнительные темы
+
+#### 12.3. Дополнительные темы
+
 - JWT.
 - Authentication / Authorization.
 - Middleware.
@@ -631,7 +735,8 @@ Roadmap: Go Backend Developer
 Продолжительность: 3–4 недели
 Проект: Task Management Backend
 Разработать полноценный backend для управления пользователями и задачами.
-13.1. Функциональность
+
+#### 13.1. Функциональность
 
 - Регистрация пользователей.
 - Авторизация через JWT.
@@ -645,7 +750,9 @@ Roadmap: Go Backend Developer
 - Асинхронная обработка событий.
 - Логирование.
 - Graceful Shutdown.
-  13.2. Технологический стек
+
+#### 13.2. Технологический стек
+
 - Go.
 - PostgreSQL.
 - Redis или Valkey.
@@ -656,35 +763,40 @@ Roadmap: Go Backend Developer
 - Swagger / OpenAPI.
 - Git.
 - GitHub Actions или GitLab CI.
-  13.3. Архитектура проекта
-  text
-  task-manager/
-  ├── cmd/
-  │ └── api/
-  │ └── main.go
-  ├── internal/
-  │ ├── config/
-  │ ├── handler/
-  │ ├── service/
-  │ ├── repository/
-  │ ├── models/
-  │ ├── middleware/
-  │ ├── cache/
-  │ ├── broker/
-  │ └── worker/
-  ├── migrations/
-  ├── docs/
-  ├── tests/
-  ├── deployments/
-  │ └── docker/
-  ├── .github/
-  │ └── workflows/
-  ├── Dockerfile
-  ├── docker-compose.yml
-  ├── Makefile
-  ├── go.mod
-  └── README.md
-  13.4. Требования к качеству
+
+#### 13.3. Архитектура проекта
+
+```
+task-manager/
+├── cmd/
+│ └── api/
+│ └── main.go
+├── internal/
+│ ├── config/
+│ ├── handler/
+│ ├── service/
+│ ├── repository/
+│ ├── models/
+│ ├── middleware/
+│ ├── cache/
+│ ├── broker/
+│ └── worker/
+├── migrations/
+├── docs/
+├── tests/
+├── deployments/
+│ └── docker/
+├── .github/
+│ └── workflows/
+├── Dockerfile
+├── docker-compose.yml
+├── Makefile
+├── go.mod
+└── README.md
+```
+
+#### 13.4. Требования к качеству
+
 - Разделение слоев приложения.
 - Отсутствие бизнес-логики в HTTP Handler.
 - Использование интерфейсов там, где это оправдано.
@@ -696,11 +808,16 @@ Roadmap: Go Backend Developer
 - Документация API.
 - Запуск проекта одной командой.
 - Понятный README с инструкцией запуска.
-  Результат: полноценный проект для GitHub и демонстрации на техническом собеседовании.
 
-Этап 14. Подготовка к собеседованию
+Результат: полноценный проект для GitHub и демонстрации на техническом собеседовании.
+
+<div className="hr-decor">✦</div>
+
+### Этап 14. Подготовка к собеседованию
+
 Продолжительность: 1–2 недели
-Go
+
+#### Go
 
 - Чем отличаются массивы и слайсы?
 - Как устроен append?
@@ -715,7 +832,9 @@ Go
 - Для чего нужен context?
 - Чем отличаются make и new?
 - Что такое defer?
-  SQL / PostgreSQL
+
+#### SQL / PostgreSQL
+
 - Что такое индексы?
 - Как работают JOIN?
 - Что такое транзакции?
@@ -725,14 +844,18 @@ Go
 - Что такое deadlock?
 - Как оптимизировать SQL-запрос?
 - Чем отличаются WHERE и HAVING?
-  Redis
+
+#### Redis
+
 - Что такое TTL?
 - Какие структуры данных есть в Redis?
 - Что такое Cache-Aside?
 - Как работает инвалидация кеша?
 - Что такое Redis Pub/Sub?
 - Чем Redis отличается от PostgreSQL?
-  REST API
+
+#### REST API
+
 - Что такое REST?
 - Чем отличаются PUT и PATCH?
 - Что такое идемпотентность?
@@ -740,7 +863,9 @@ Go
 - Что такое middleware?
 - Что такое JWT?
 - Что такое Swagger / OpenAPI?
-  RabbitMQ / Kafka
+
+#### RabbitMQ / Kafka
+
 - Чем отличаются RabbitMQ и Kafka?
 - Что такое Producer и Consumer?
 - Что такое ACK?
@@ -748,7 +873,9 @@ Go
 - Что такое Dead Letter Queue?
 - Что такое Consumer Group?
 - Как обеспечить идемпотентность обработчика?
-  Linux / Docker / Git
+
+#### Linux / Docker / Git
+
 - Как посмотреть запущенные процессы?
 - Как посмотреть открытые порты?
 - Как посмотреть логи приложения?
@@ -759,44 +886,20 @@ Go
 - Что такое Docker Compose?
 - Чем merge отличается от rebase?
 
-Приоритеты изучения
+### Приоритеты изучения
+
 Если времени мало, рекомендую распределить усилия следующим образом:
-Приоритет Технологии
-Критический Go, Goroutines, Channels, Mutex, PostgreSQL, SQL
-Высокий REST API, HTTP, Redis, Testing
-Высокий Docker, Docker Compose, Git, Linux
-Средний RabbitMQ, Kafka
-Средний TCP/UDP, JSON, XML
-Дополнительный Swagger Codegen, CI/CD, pprof, OpenTelemetry
-Рекомендуемые материалы
-Go
 
-- A Tour of Go
-- Go by Example
-- Effective Go
-- Go Documentation
-  SQL / PostgreSQL
-- PostgreSQL Documentation
-- SQLBolt
-  Redis
-- Redis Documentation
-- Valkey Documentation
-  Backend / HTTP
-- Go net/http
-- OpenAPI Specification
-  Concurrency
-- Go Concurrency Patterns
-- The Go Memory Model
-  Testing
-- Go Testing
-- Testify
-  Docker
-- Docker Get Started
-  RabbitMQ / Kafka
-- RabbitMQ Tutorials
-- Apache Kafka Documentation
+#### Приоритет Технологии
 
-Финальный чек-лист готовности к вакансии
+- Критический Go, Goroutines, Channels, Mutex, PostgreSQL, SQL
+- Высокий REST API, HTTP, Redis, Testing
+- Высокий Docker, Docker Compose, Git, Linux
+- Средний RabbitMQ, Kafka
+- Средний TCP/UDP, JSON, XML
+- Дополнительный Swagger Codegen, CI/CD, pprof, OpenTelemetry
+
+### Финальный чек-лист готовности к вакансии
 
 - Пишу Go-код без постоянного обращения к документации.
 - Понимаю интерфейсы, указатели, структуры и ошибки.
