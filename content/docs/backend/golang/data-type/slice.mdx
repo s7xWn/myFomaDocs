@@ -10,8 +10,8 @@ title: "Слайс"
 var varName []type // Nil slice
 
 // Empty slice
-varName := []type{}
-varName := make([]type,0)
+varName := []type{} // С помощью shorthand syntax
+varName := make([]type,0,5) // С помощью make
 ```
 
 - `varName` - название переменной
@@ -221,6 +221,8 @@ fmt.Println(cap(s)) // 4 (в данном случае)
 
 ### Создать слайс `make()`
 
+Способ с `make` дает нам возможность задать тип, длину и вместимость.
+
 ```go
 s := make([]type, length, capacity)
 
@@ -238,7 +240,17 @@ s1 := make([]type, length)
 
 <hr />
 
-### Обратиться к элементу
+### Создать слайс Shorthand-syntax
+
+```go
+s := []int{1, 2, 3}
+
+// len = cap = кол-во элементов
+```
+
+<hr />
+
+### Обращение к элементу по индексу
 
 ```go
 fmt.Println("Read", slice[0]) // panic: index out of range
@@ -273,6 +285,14 @@ slice[0] = "Alice" //
 ```go
 len(slice)
 ```
+
+<Callout title='' type='tip'>
+
+В Go функция `len()` может вычисляться как на этапе компиляции, так и во время выполнения. Это зависит от того, над каким типом вызывается `len()` и известен ли компилятору размер.
+
+</Callout>
+
+<hr />
 
 ### Получить ёмкость `cap()`
 
@@ -400,6 +420,12 @@ s = append(s[:i], s[i+1:]...) // 1 2 4 5
 
 ```go
 copy(sliceCopy, sliceOriginal)
+```
+
+```go
+s1 := []string{"D", "a", "n", "i", "i", "l"}
+s2 := make([]string, len(s1), cap(s1))
+copy(s2, s1)
 ```
 
 <hr />

@@ -4,6 +4,12 @@ title: "Массив"
 
 Массив — это последовательность элементов одного типа с заранее определённым размером.
 
+<Callout title='' type='tip'>
+
+Массив != указатель
+
+</Callout>
+
 ```go
 var varName [n]type
 ```
@@ -112,11 +118,62 @@ var b [5]int
 
 ## Основные операции
 
+### Создание массива
+
+```go
+const myConst1 := 5
+myVar := 5
+
+arr1 := [myConst]int{10, 20, 30, 40, 50}
+arr2 := [myVar]int{10, 20, 30, 40, 50} // ошибка
+```
+
+Создать массив можно явно указав размер или через константу.
+
+<hr />
+
+### Обращение к элементу по индексу
+
+```go
+arr[idx]
+```
+
+```go
+arr[idx] = *(array + idx * elem_size)
+```
+
+<details>
+  <summary>Пример</summary>
+
+```go
+func main() {
+	cosnt elemSize = unsafe.Sizeof(int32(0))
+	array = [...]int32{1,2,3}
+	pointer = unsafe.Pointer{&array}
+
+	first := *(*int32)(unsafe.Add(pointer, 0*elemSize)) // => array[0]
+	second := *(*int32)(unsafe.Add(pointer, 1*elemSize)) // => array[0]
+	third := *(*int32)(unsafe.Add(pointer, 2*elemSize)) // => array[0]
+}
+```
+
+</details>
+
+<hr />
+
 ### Получить длину `len()`
 
 ```go
 length := len(arrayVar) // 7
 ```
+
+<Callout title='' type='tip'>
+
+В Go функция `len()` может вычисляться как на этапе компиляции, так и во время выполнения. Это зависит от того, над каким типом вызывается `len()` и известен ли компилятору размер.
+
+</Callout>
+
+<hr />
 
 ### Получить ёмкость `cap()`
 
@@ -125,6 +182,8 @@ length := len(arrayVar) // 7
 ```go
 capacity := cap(arrayVar) // 7
 ```
+
+<hr />
 
 ### Итерация по массиву
 
@@ -142,6 +201,17 @@ capacity := cap(arrayVar) // 7
 		fmt.Println("Индекс:", i, "День:", day)
 	}
 ```
+
+<hr />
+
+### Сравнение массивов
+
+```go
+arr1 == arr2
+arr1 != arr2
+```
+
+`>`, `<`, `>=`, `<=` - нельзя использовать
 
 <div className="hr-decor">✦</div>
 
@@ -299,3 +369,10 @@ func main() {
 	_, _, _, _ = length, capacity, monday, sunday
 }
 ```
+
+<div className="hr-decor">✦</div>
+
+## Ссылки
+
+- [О массивах и слайсах в Go](https://habr.com/ru/articles/739754/)
+- [Владимир Балун | Ты не все знаешь о массивах и слайсах в Go](https://youtu.be/7ij3u-0YsJI)
