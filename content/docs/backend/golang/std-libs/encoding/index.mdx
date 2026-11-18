@@ -1,0 +1,36 @@
+---
+title: "encoding"
+---
+
+`encoding` — это стандартный пакет Go (`encoding`), который объединяет интерфейсы и инструменты для кодирования и декодирования данных в различные форматы.
+
+```go
+package encoding
+
+type BinaryMarshaler interface {
+    MarshalBinary() ([]byte, error)
+}
+
+type BinaryUnmarshaler interface {
+    UnmarshalBinary(data []byte) error
+
+}
+
+type TextMarshaler interface {
+    MarshalText() ([]byte, error)
+}
+
+type TextUnmarshaler interface {
+    UnmarshalText(text []byte) error
+}
+```
+
+| Пакет             | Назначение                        |
+| ----------------- | --------------------------------- |
+| `encoding/json`   | JSON                              |
+| `encoding/xml`    | XML                               |
+| `encoding/base64` | Base64                            |
+| `encoding/hex`    | Hexadecimal                       |
+| `encoding/binary` | Бинарное представление чисел      |
+| `encoding/csv`    | CSV                               |
+| `encoding/gob`    | Бинарная сериализация Go-объектов |
