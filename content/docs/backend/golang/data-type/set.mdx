@@ -1,0 +1,99 @@
+---
+title: "Set (Map)"
+---
+
+Set (множество) — это коллекция уникальных элементов, в которой каждый элемент может присутствовать только один раз.
+
+<Callout title='Главное отличие' type='tip'>
+
+`Set` хранит уникальные элементы, а `Map` хранит пары «ключ → значение».
+
+</Callout>
+
+В отличие от Python или Java, в Go нет отдельного встроенного типа `Set`, поэтому обычно для этого используют `map[T]struct{}`.
+
+```go
+set := make(map[type]struct{})
+```
+
+<div className="hr-decor">✦</div>
+
+## Основные операции
+
+### Добавление элементов
+
+```go
+set[key] = struct{}{}
+```
+
+<hr />
+
+### Проверка наличия элемента
+
+```go
+if _, exists := set[key]; exists {
+    fmt.Println("Элемент существует")
+}
+```
+
+<hr />
+
+### Удаление элемента
+
+```go
+delete(set,key)
+```
+
+<hr />
+
+### Перебор элементов `for range`
+
+```go
+for item := range set {
+    fmt.Println(item)
+}
+```
+
+<div className="hr-decor">✦</div>
+
+## Пример (файл)
+
+```go
+package main
+
+import "fmt"
+
+type Set[T comparable] map[T]struct{}
+
+func NewSet[T comparable]() Set[T] {
+    return make(Set[T])
+}
+
+func (s Set[T]) Add(value T) {
+    s[value] = struct{}{}
+}
+
+func (s Set[T]) Contains(value T) bool {
+    _, exists := s[value]
+    return exists
+}
+
+func (s Set[T]) Remove(value T) {
+    delete(s, value)
+}
+
+func main() {
+    set := NewSet[string]()
+
+    set.Add("Go")
+    set.Add("Python")
+    set.Add("Go")
+
+    fmt.Println(set.Contains("Go")) // true
+    fmt.Println(len(set))           // 2
+
+    set.Remove("Go")
+
+    fmt.Println(set.Contains("Go")) // false
+}
+```

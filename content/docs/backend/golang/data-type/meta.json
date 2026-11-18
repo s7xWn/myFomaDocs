@@ -8,6 +8,7 @@
     "array",
     "slice",
     "map",
+    "set",
     "pointer",
     "struct",
     "..."
