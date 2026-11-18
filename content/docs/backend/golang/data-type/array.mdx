@@ -269,6 +269,39 @@ capacity := cap(arrayVar) // 7
 	}
 ```
 
+#### Изменение значения
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    numbers := [5]int{10, 20, 30, 40, 50}
+	for _, v := range numbers {
+		v += 10
+	}
+	fmt.Println(numbers) // 10, 20, 30, 40, 50
+}
+```
+
+При переборе массива через цикл, `for range` коипрует значение массива в переменную `v`.<br/>
+Для того чтоб изменить значение, надо братиться к элементу массива через индекс:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    numbers := [5]int{10, 20, 30, 40, 50}
+	for i, _ := range numbers {
+		numbers[i] += 10
+	}
+	fmt.Println(numbers) // 20, 30, 40, 50, 60
+}
+```
+
 <hr />
 
 ### Сравнение массивов
