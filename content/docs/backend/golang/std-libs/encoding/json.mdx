@@ -27,6 +27,16 @@ import "encoding/json"
 | `bool`                   | `true` / `false` |
 | `nil`                    | `null`           |
 
+`json.Marshal()` принимает практически любое значение Go, которое поддерживает JSON-кодирование, а не только `struct`.
+
+При этом существуют ограничения:
+
+- Экспортируемые поля структур (начинающиеся с заглавной буквы) сериализуются.
+- `map` должен иметь поддерживаемый JSON тип ключей.
+- Каналы (`chan`), функции (`func`) и комплексные числа (`complex64`, `complex128`) не поддерживаются.
+- Циклические ссылки приводят к ошибке сериализации.
+- Некоторые типы могут реализовать собственную сериализацию через интерфейсы `json.Marshaler` и `encoding.TextMarshaler`.
+
 <div className="hr-decor">✦</div>
 
 ## Marshal — Go → JSON <br/> `json.Marshal()`
@@ -90,3 +100,73 @@ type User struct {
 | `json:"-"`             | Не включать поле в JSON                           |
 | `json:"age,omitempty"` | Не включать поле, если оно имеет нулевое значение |
 | `json:",string"`       | Представлять значение как JSON-строку             |
+
+<div className="hr-decor">✦</div>
+
+## Преобразование типов Go в JSON
+
+### Структура (struct)
+
+```go
+type User struct {
+    Name string `json:"name"`
+    Age  int    `json:"age"`
+}
+
+user := User{Name: "Alex", Age: 25}
+
+data, _ := json.Marshal(user)
+fmt.Println(string(data))
+```
+
+Результат:
+
+```json
+{ "name": "Alex", "age": 25 }
+```
+
+<hr />
+
+### Map
+
+```go
+user := map[string]interface{}{
+    "name": "Alex",
+    "age":  25,
+}
+
+data, _ := json.Marshal(user)
+fmt.Println(string(data))
+```
+
+<hr />
+
+### Slice
+
+```go
+numbers := []int{1, 2, 3}
+
+data, _ := json.Marshal(numbers)
+fmt.Println(string(data))
+```
+
+Результат:
+
+```json
+[1, 2, 3]
+```
+
+<hr />
+
+### Обычная строка
+
+```go
+data, _ := json.Marshal("Hello")
+fmt.Println(string(data))
+```
+
+Результат:
+
+```json
+"Hello"
+```
