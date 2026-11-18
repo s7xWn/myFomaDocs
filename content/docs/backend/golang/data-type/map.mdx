@@ -17,7 +17,7 @@ varName := make(map[typeKey]type)
 - `typeKey` — тип ключа.
 - `type` — тип значения.
 
-<hr />
+<div className="hr-decor">✦</div>
 
 ## Основные операции
 
@@ -101,7 +101,7 @@ for key, value := range varName {
 len(varName)
 ```
 
-<hr />
+<div className="hr-decor">✦</div>
 
 ## Старая реализация `map` (до Go 1.24)
 
@@ -139,7 +139,7 @@ overflow → следующий
 - `values` — массив из 8 значений.
 - `overflow` — указатель на следующий бакет, если текущий заполнен.
 
-<hr />
+<div className="hr-decor">✦</div>
 
 ## Новая реализация `map` (Go 1.24+) - Swiss Tables
 
@@ -159,7 +159,7 @@ overflow → следующий
 
 ### H1/H2
 
-<hr />
+<div className="hr-decor">✦</div>
 
 ## `Nil map`
 
@@ -184,6 +184,79 @@ fmt.Println(m1["key"]) // 0
 fmt.Println(m2["key"]) // ""
 fmt.Println(m3["key"]) // false
 ```
+
+<div className="hr-decor">✦</div>
+
+## Защита Map с помощью Mutex/RWMutex
+
+### Mutex
+
+В Go обычная `map` не является потокобезопасной. Если несколько горутин одновременно читают и изменяют одну `map`, могут возникнуть Race Condition или даже panic.
+
+Для защиты `map` обычно используют `sync.Mutex` или `sync.RWMutex`.
+
+```go
+type Cache struct {
+	mx sync.Mutex
+	m  map[string]string
+}
+
+cache := Cache{
+	m: map[string]string{},
+}
+
+cache.mx.Lock()
+cache.m["key"] = "value"
+cache.mx.Unlock()
+```
+
+Какое поле защищаем, над тем и ставим `sync.Mutex`
+
+<hr />
+
+### RWMutex
+
+```go
+type Cache struct {
+	mx sync.RWMutex
+	m  map[string]string
+
+	s string
+}
+
+cache := Cache{
+	m: map[string]string{},
+}
+
+// Write
+cache.mx.Lock()
+cache.m["key"] = "value"
+cache.mx.Unlock()
+
+// Read
+cache.mx.RLock()
+_ = cache.m["key"]
+cache.mx.RUnlock()
+```
+
+| Метод       | Назначение                         |
+| ----------- | ---------------------------------- |
+| `Lock()`    | Эксклюзивная блокировка для записи |
+| `Unlock()`  | Снятие блокировки                  |
+| `RLock()`   | Блокировка для чтения              |
+| `RUnlock()` | Снятие блокировки чтения           |
+
+<hr />
+
+### Почему RWMutex лучше
+
+Представим:
+
+- 10 горутин одновременно читают `map`.
+- 1 горутина хочет записать данные.
+
+С `Mutex` читатели будут работать строго по очереди. <br/>
+С `RWMutex` все 10 горутин смогут читать одновременно. Запись подождёт, пока чтение завершится.
 
 <div className="hr-decor">✦</div>
 
