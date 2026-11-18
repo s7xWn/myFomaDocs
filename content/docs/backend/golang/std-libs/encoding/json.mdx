@@ -1,3 +1,92 @@
 ---
 title: "encoding/json"
 ---
+
+`encoding/json` — это стандартный пакет языка Go (Golang) для работы с форматом JSON (JavaScript Object Notation).
+
+Он позволяет:
+
+- Преобразовывать Go-структуры в JSON (сериализация).
+- Преобразовывать JSON в Go-структуры (десериализация).
+- Работать с JSON-данными из файлов, HTTP-запросов и API.
+
+```go
+import "encoding/json"
+```
+
+Стандартный пакет encoding/json поддерживает несколько типов данных:
+
+| Тип Go                   | JSON             |
+| ------------------------ | ---------------- |
+| `struct`                 | объект `{}`      |
+| `map[string]interface{}` | объект `{}`      |
+| `map[string]string`      | объект `{}`      |
+| `[]int`, `[]string`      | массив `[]`      |
+| `string`                 | строка           |
+| `int`, `float64`         | число            |
+| `bool`                   | `true` / `false` |
+| `nil`                    | `null`           |
+
+<div className="hr-decor">✦</div>
+
+## Marshal — Go → JSON <br/> `json.Marshal()`
+
+Функция `json.Marshal()` преобразует Go-объект в JSON.
+
+```go
+data, err := json.Marshal(varName)
+if err != nil {
+    panic(err)
+}
+```
+
+<Callout title='' type='success'>
+
+`Marshal` возвращает `[]byte` и `error`, поэтому результат обычно преобразуют в строку через `string(data)`.
+
+```go
+fmt.Println(string(data))
+```
+
+</Callout>
+
+<div className="hr-decor">✦</div>
+
+## Unmarshal — JSON → Go <br/> `json.Unmarshal()`
+
+Функция `json.Unmarshal()` преобразует JSON в Go-структуру.
+
+```go
+err := json.Unmarshal(jsonData, varName)
+if err != nil {
+    panic(err)
+}
+```
+
+<div className="hr-decor">✦</div>
+
+## JSON-теги (json tags)
+
+В Go можно управлять тем, как поля структуры будут называться в JSON.
+
+```go
+type User struct {
+    Name string `json:"username"`
+    Age  int    `json:"age"`
+}
+```
+
+Теперь при `Marshal` получится:
+
+```json
+{ "username": "My name", "age": 25 }
+```
+
+### Полезные модификаторы
+
+| Тег                    | Значение                                          |
+| ---------------------- | ------------------------------------------------- |
+| `json:"name"`          | Назвать поле name                                 |
+| `json:"-"`             | Не включать поле в JSON                           |
+| `json:"age,omitempty"` | Не включать поле, если оно имеет нулевое значение |
+| `json:",string"`       | Представлять значение как JSON-строку             |
