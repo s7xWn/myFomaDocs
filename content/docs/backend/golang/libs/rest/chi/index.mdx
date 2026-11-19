@@ -1,0 +1,117 @@
+---
+title: "Chi"
+---
+
+| [GitHub](https://github.com/go-chi/chi) |
+| --------------------------------------- |
+
+Chi — это лёгкий, быстрый и удобный HTTP-роутер для Go.
+
+Он построен поверх стандартного пакета `net/http`.
+
+<div className="hr-decor">✦</div>
+
+## Установка
+
+```go
+go get -u github.com/go-chi/chi/v5
+```
+
+<div className="hr-decor">✦</div>
+
+## Использование
+
+```go
+import (
+    "net/http"
+    "github.com/go-chi/chi/v5"
+)
+```
+
+```go
+    r := chi.NewRouter()
+    http.ListenAndServe(":3000", r)
+```
+
+<div className="hr-decor">✦</div>
+
+## Методы
+
+### Dynamic path parameter
+
+Динамический параметр маршрута (path parameter) `{}` - обозначает переменную часть URL, которая передаётся в обработчик
+
+```go
+r.Get("/URLPath/{id}", handler)
+```
+
+`{id}` — динамический параметр маршрута.
+
+Чтобы получить его:
+
+```go
+func getUser(w http.ResponseWriter, r *http.Request) {
+    id := chi.URLParam(r, "id")
+
+    w.Write([]byte("User ID: " + id))
+}
+```
+
+<hr />
+
+### GET
+
+```go
+r.Get("/URLPath", handler)
+```
+
+<hr />
+
+### POST
+
+```go
+r.Post("/URLPath", handler)
+```
+
+<hr />
+
+### PUT
+
+```go
+r.Put("/URLPath", handler)
+```
+
+<hr />
+
+### DELETE
+
+```go
+r.Delete("/URLPath", handler)
+```
+
+<hr />
+
+### URLPath NotFound
+
+```go
+r.NotFound(func(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(http.StatusNotFound)
+
+    json.NewEncoder(w).Encode(map[string]string{
+        "error": "route not found",
+    })
+})
+```
+
+<hr />
+
+### MethodNotAllowed
+
+```go
+r.MethodNotAllowed(func(w http.ResponseWriter, r *http.Request) {
+    http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+})
+```
+
+<div className="hr-decor">✦</div>
