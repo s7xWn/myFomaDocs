@@ -153,3 +153,129 @@ func main() {
 ```
 
 </Quiz>
+
+<hr />
+
+<Quiz
+  explanation=""
+  title="Что выведет код?"
+  answers={[
+    {
+      text: "1235 1234",
+      correct: false,
+    },
+    {
+      text: "1235 1235",
+      correct: true,
+    },
+  ]}>
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var foo []int
+	var bar []int
+
+	foo = append(foo, 1)
+	foo = append(foo, 2)
+	foo = append(foo, 3)
+	bar = append(foo, 4)
+	foo = append(foo, 5)
+
+	fmt.Println(foo, bar)
+}
+```
+
+</Quiz>
+
+<hr />
+
+<Quiz
+  explanation=""
+  title="Что выведет код?"
+  answers={[
+    {
+      text: "[A B D E] [B TT]",
+      correct: false,
+    },
+    {
+      text: "[A B TT E] [B TT]",
+      correct: true,
+    },
+    {
+      text: "[A B D E] [A B TT]",
+      correct: false,
+    },
+    {
+      text: "[A B TT E] [A B TT]",
+      correct: false,
+    },
+  ]}>
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	c := []string{"A", "B", "D", "E"}
+
+	b := c[1:2]
+
+	b = append(b, "TT")
+
+	fmt.Println(c) //
+	fmt.Println(b) // B TT
+}
+```
+
+</Quiz>
+
+<hr />
+
+<Quiz
+  explanation=""
+  title="Что выведет код?"
+  answers={[
+    {
+      text: "[0 2 3 3] [0 2 3 3 3]",
+      correct: true,
+    },
+    {
+      text: "[0 2 3 3] [0 2 3 2 3]",
+      correct: false,
+    },
+    {
+      text: "[0 1 2 3] [0 2 3 3 3]",
+      correct: false,
+    },
+    {
+      text: "[0 1 2 3 2 3] [0 2 3 3 3]",
+      correct: false,
+    },
+  ]}>
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	a := [...]int{0, 1, 2, 3}
+
+	x := a[:1]
+	y := a[2:]
+
+	x = append(x, y...)
+	x = append(x, y...) // Подсказка: y изменится после прошлого append
+
+	fmt.Println(a, x)
+}
+```
+
+</Quiz>
