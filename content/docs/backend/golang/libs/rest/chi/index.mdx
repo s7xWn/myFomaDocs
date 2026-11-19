@@ -35,7 +35,59 @@ import (
 
 <div className="hr-decor">✦</div>
 
-## Методы
+## Маршруты (группировка)
+
+Указать маршрут сразу:
+
+```go
+r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+    w.Write([]byte("Hello, Chi!"))
+})
+```
+
+Или группировать:
+
+```go
+r.Route("/api", func(r chi.Router) {
+
+    r.Route("/users", func(r chi.Router) {
+        r.Get("/", getUsers)
+        r.Post("/", createUser)
+        r.Get("/{id}", getUser)
+    })
+
+    r.Route("/posts", func(r chi.Router) {
+        r.Get("/", getPosts)
+        r.Post("/", createPost)
+    })
+
+})
+```
+
+<hr />
+
+### URLPath NotFound
+
+```go
+r.NotFound(func(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(http.StatusNotFound)
+
+    json.NewEncoder(w).Encode(map[string]string{
+        "error": "route not found",
+    })
+})
+```
+
+<hr />
+
+### MethodNotAllowed
+
+```go
+r.MethodNotAllowed(func(w http.ResponseWriter, r *http.Request) {
+    http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+})
+```
 
 ### Dynamic path parameter
 
@@ -57,7 +109,9 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-<hr />
+<div className="hr-decor">✦</div>
+
+## Методы
 
 ### GET
 
@@ -87,31 +141,6 @@ r.Put("/URLPath", handler)
 
 ```go
 r.Delete("/URLPath", handler)
-```
-
-<hr />
-
-### URLPath NotFound
-
-```go
-r.NotFound(func(w http.ResponseWriter, r *http.Request) {
-    w.Header().Set("Content-Type", "application/json")
-    w.WriteHeader(http.StatusNotFound)
-
-    json.NewEncoder(w).Encode(map[string]string{
-        "error": "route not found",
-    })
-})
-```
-
-<hr />
-
-### MethodNotAllowed
-
-```go
-r.MethodNotAllowed(func(w http.ResponseWriter, r *http.Request) {
-    http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
-})
 ```
 
 <div className="hr-decor">✦</div>
