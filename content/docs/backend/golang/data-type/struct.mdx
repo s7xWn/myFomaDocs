@@ -132,6 +132,58 @@ var varName StructName
 
 <div className="hr-decor">✦</div>
 
+## Конструктор
+
+В языке программирования Go (Golang) конструктор — это функция, которая создаёт и инициализирует структуру (`struct`).
+
+В Go нет специального ключевого слова `constructor`, как, например, в Java или C++. Вместо него обычно используют обычную функцию с именем `New...`.
+
+```go
+type StructName struct {
+	...
+}
+```
+
+```go
+func NewStructName(name string, ...params) *StructName {
+    return &Person{
+		Name: name,
+		...
+    }
+}
+```
+
+Использование:
+
+```go
+varName := NewStructName("Ivan", ...)
+```
+
+<hr />
+
+### Конструктор с проверкой данных
+
+Конструктор может возвращать ошибку, если переданные параметры некорректны.
+
+```go
+func NewStructName(name string, ...) (*StructName, error) {
+    if name == "" {
+        return nil, errors.New("name cannot be empty")
+    }
+
+    if ... {
+        return nil, errors.New("...")
+    }
+
+    return &Person{
+        Name: name,
+        ...
+    }, nil
+}
+```
+
+<div className="hr-decor">✦</div>
+
 ## Обращение к полю структуры
 
 Для доступа к полям используется точка `.`
