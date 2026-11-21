@@ -6,3 +6,88 @@ title: "pgx"
 | ---------------- | -------------------------------------- |
 
 `pgx` — это популярная Go-библиотека для работы с базой данных PostgreSQL. Она позволяет подключаться к PostgreSQL, выполнять SQL-запросы, читать результаты и управлять транзакциями.
+
+Он позволяет:
+
+- Подключаться к PostgreSQL.
+- Выполнять SQL-запросы.
+- Получать результаты запросов.
+- Работать с транзакциями.
+- Использовать connection pool.
+- Передавать параметры запросов безопасным способом.
+
+<div className="hr-decor">✦</div>
+
+## Установка
+
+```go
+go get github.com/jackc/pgx/v5
+```
+
+<div className="hr-decor">✦</div>
+
+## Использование
+
+```go
+import (
+    "github.com/jackc/pgx/v5"
+)
+```
+
+```go
+ctx := context.Background()
+
+conn, err := pgx.Connect(
+    ctx,
+    "postgres://login:password@ip:port/dbname",
+)
+if err != nil {
+    log.Fatal(err)
+}
+
+defer conn.Close(ctx)
+
+fmt.Println("Connected to PostgreSQL!")
+```
+
+<div className="hr-decor">✦</div>
+
+## Основные SQL-операции
+
+### `Exec()`
+
+<hr />
+
+### `Query()`
+
+<hr />
+
+### `QueryRow()`
+
+<hr />
+
+### `Scan()`
+
+<hr />
+
+### `INSERT`, `SELECT`, `UPDATE`, `DELETE`
+
+<div className="hr-decor">✦</div>
+
+## Транзакции
+
+### `Begin()`
+
+<hr />
+
+### `Commit()`
+
+<hr />
+
+### `Rollback()`
+
+<hr />
+
+### Обработка ошибок транзакций
+
+<div className="hr-decor">✦</div>
