@@ -1,0 +1,252 @@
+---
+title: "Интерфейс"
+---
+
+В Go (Golang) `interface` — это тип, который определяет набор методов. Любой тип, реализующий все методы интерфейса с соответствующими сигнатурами, автоматически удовлетворяет этому интерфейсу.
+
+Здесь важно слово автоматически: в Go не нужно явно указывать, что структура реализует интерфейс (в отличие, например, от Java).
+
+<Callout title='' type='tip'>
+
+Если интерфейс содержит один метод, его часто называют существительным с суффиксом -er.
+
+<details>
+  <summary>Пример</summary>
+
+```go
+type Reader interface {
+    Read()
+}
+
+type Writer interface {
+    Write()
+}
+
+type Stringer interface {
+    String() string
+}
+```
+
+</details>
+
+</Callout>
+
+```go
+type TypeName interface {
+    Method(types)(types) // можно указывать переменные, а можно только типы
+}
+```
+
+```go
+func MakeSound(t TypeName) {
+    t.Method()
+}
+```
+
+Чтобы тип удовлетворял интерфейсу, он должен реализовать все методы интерфейса с точно совпадающими сигнатурами. При этом тип может иметь и другие методы, не описанные в интерфейсе.
+
+```go
+type TypeName interface {
+    Method()
+}
+
+type Struct1 struct{}
+type Struct2 struct{}
+
+func (s *Struct1) Method() {}
+func (s *Struct2) Method() {}
+```
+
+Обе структуры автоматически реализуют интерфейс `TypeName`.
+
+<div className="hr-decor">✦</div>
+
+## Nil интерфейс
+
+Интерфейс в Go равен `nil`, только если одновременно отсутствуют и динамический тип (`type`), и динамическое значение (`value`).
+
+<details>
+  <summary>Пример</summary>
+
+```go
+package main
+
+import "fmt"
+
+type Writer interface {}
+
+type Example struct {
+	Value string
+}
+
+func Example1() Writer {
+	var e *Example
+	return  e
+}
+
+func Example2() Writer {
+	return nil
+}
+
+func main() {
+	e1 := Example1()
+	e2 := Example2()
+	fmt.Println("e1 == e2:", e1 == e2) // false
+	fmt.Println("e1 == nil:", e1 == nil) // false
+	fmt.Println("e2 == nil:", e2 == nil) // true
+	fmt.Println()
+	fmt.Printf("Value e1=%v\n",e1) // <nil>
+	fmt.Printf("Value e2=%v\n",e2) // <nil>
+	fmt.Printf("Value e1=%T\n",e1) // *main.Example
+	fmt.Printf("Value e2=%T\n",e2) // <nil>
+}
+```
+
+</details>
+
+<div className="hr-decor">✦</div>
+
+## Пустой интерфейс, `any`
+
+В Go `any` — это пустой интерфейс (empty interface), появившийся в Go 1.18 как более короткий и понятный псевдоним для `interface{}`
+
+```go
+var x any
+//  =
+var x interface{}
+```
+
+<details>
+  <summary>Пример</summary>
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var x any
+	x = 2
+	fmt.Printf("Значение: %v, Тип: %T\n",x,x)
+	printAny(x)
+
+	x = "hello"
+	fmt.Printf("Значение: %v, Тип: %T\n",x,x)
+	printAny(x)
+
+	x = true
+	fmt.Printf("Значение: %v, Тип: %T\n",x,x)
+	printAny(x)
+}
+
+func printAny(v any) {
+	fmt.Printf("(f) Значение: %v, Тип: %T\n",v,v)
+}
+```
+
+</details>
+
+<hr />
+
+### Приведение типа
+
+Паника при неудаче:
+
+```go
+var i any
+varName = i.(typeName)
+```
+
+При неудаче Zero Value:
+
+```go
+var i any
+varName, ok = i.(typeName)
+if ok {
+    ...
+} else {
+    ...
+}
+```
+
+#### Type Switch
+
+```go
+var i any
+switch v := i.(type) {
+    case int:
+        fmt.Printf("Это число: %d\n", v)
+    case string:
+        fmt.Printf("Это строка: %s\n", v)
+    case error:
+        fmt.Printf("Это ошибка: %v\n", v)
+    default:
+        fmt.Printf("Неизвестный тип")
+}
+```
+
+<div className="hr-decor">✦</div>
+
+## Композиция интерфейсов
+
+Композиция интерфейсов в Go (Interface Composition) — это объединение нескольких интерфейсов в один более сложный интерфейс.
+
+`ReadWriter` - композиция интерфейсов
+
+```go
+type Reader interface {
+    Read() error
+}
+
+type Writer interface {
+    Write() error
+}
+
+type ReadWriter interface {
+    Reader
+    Writer
+}
+```
+
+<div className="hr-decor">✦</div>
+
+## Где держать интерфейсы?
+
+В Go интерфейсы обычно объявляют там, где они нужны, а не там, где реализуются.
+
+Это одна из важных идиом Go.
+
+<Callout title='' type='success'>
+
+Не нужно создавать отдельную папку interfaces
+
+</Callout>
+
+<div className="hr-decor">✦</div>
+
+## Интерфейс на уровне памяти
+
+В Go интерфейс (interface) на уровне памяти устроен довольно интересно:
+это не просто указатель на объект, а структура из двух машинных слов
+(обычно по 8 байт на 64-битной архитектуре).
+
+Упрощённо интерфейс представлен двумя указателями:
+
+```go
+type iface struct {
+    tab  *itab
+    data unsafe.Pointer
+}
+```
+
+Здесь:
+
+- `tab` — указатель на информацию о типе и таблицу методов.
+- `data` — указатель на конкретное значение, которое хранится внутри интерфейса.
+
+<div className="hr-decor">✦</div>
+
+## Ссылки
+
+- [Погружение в интерфейсы Go](https://habr.com/ru/articles/856272/)
+- [Разбираемся с интерфейсами в Go](https://habr.com/ru/companies/vk/articles/463063/)
