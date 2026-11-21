@@ -1,0 +1,106 @@
+---
+title: "os"
+---
+
+`os` в Go (Golang) - это стандартный пакет для взаимодействия с операционной системой.
+
+Он позволяет программе работать с файлами, папками, переменными окружения, аргументами командной строки и системными процессами.
+
+```go
+import "os"
+```
+
+<div className="hr-decor">✦</div>
+
+## Аргументы командной строки - `os.Args`
+
+```go
+os.Args
+```
+
+<div className="hr-decor">✦</div>
+
+## Работа с переменными окружения
+
+### `os.Getenv()` - получает переменную окружения
+
+```go
+name := os.Getenv("NAME")
+```
+
+<hr />
+
+### `os.Setenv()` - устанавливает переменную
+
+```go
+os.Setenv("NAME", "Alex")
+```
+
+<hr />
+
+### `os.Unsetenv()` - удаляет переменную
+
+<div className="hr-decor">✦</div>
+
+## Работа с файлами
+
+### `os.ReadFile()` - читает файл
+
+```go
+data, err := os.ReadFile("test.txt")
+if err != nil {
+    fmt.Println(err)
+    return
+}
+
+fmt.Println(string(data))
+```
+
+<hr />
+
+### `os.WriteFile()` - записывает данные в файл
+
+<hr />
+
+### `os.Remove()` - удаляет файл
+
+<hr />
+
+### `os.Rename()` - переименовывает файл
+
+<div className="hr-decor">✦</div>
+
+## Работа с директориями
+
+### `os.Mkdir()` - создать папку
+
+<hr />
+
+### `os.Getwd()` - получить текущую директорию
+
+```go
+dir, err := os.Getwd()
+
+if err != nil {
+    fmt.Println("Ошибка:", err)
+    return
+}
+```
+
+<hr />
+
+### `os.Chdir()` - перейти в другую директорию
+
+<hr />
+
+### `os.MkdirAll()` - создать вложенные папки
+
+<div className="hr-decor">✦</div>
+
+## Завершение программы - `os.Exit()`
+
+```go
+os.Exit(1)
+```
+
+Завершает программу с кодом `1` (обычно означает ошибку).
