@@ -1,0 +1,56 @@
+---
+title: "Структуры"
+---
+
+import { Quiz } from "@/components/quiz";
+
+<Quiz
+  explanation=""
+  title="Что выведет код?"
+  answers={[
+    {
+      text: '""',
+      correct: true,
+    },
+    {
+      text: "Value!",
+      correct: false,
+    },
+  ]}>
+
+```go
+package main
+
+import "fmt"
+
+type Interface interface {
+	method()
+}
+
+func fn(v Interface) {
+	v.method()
+}
+
+func main() {
+	t := T{}
+	// fmt.Printf("%p\n", &t)
+	fn(t)
+
+
+	fmt.Println("Payload:", t.Payload)
+}
+
+type T struct {
+	Payload string
+}
+
+func (t T) method() {
+	// fmt.Printf("%p\n", &t)
+	t.Payload = "Value!"
+	fmt.Println("Method called")
+}
+```
+
+</Quiz>
+
+<hr />
