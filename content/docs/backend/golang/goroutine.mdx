@@ -6,6 +6,12 @@ title: "Горутина (goroutine)"
 
 Проще говоря, горутина — это способ сказать Go: «Выполни эту функцию независимо от основного кода».
 
+<Callout title='' type='success'>
+
+Главная горутина - `main`
+
+</Callout>
+
 В Go начальный стек одной горутины занимает примерно 2 КБ памяти (в современных версиях Go). Стек горутины может автоматически увеличиваться по мере необходимости.
 
 <Callout title='' type='tip'>
@@ -19,6 +25,202 @@ title: "Горутина (goroutine)"
 ```go
 go funcNmae()
 ```
+
+<div className="hr-decor">✦</div>
+
+## Уступить текущий поток другим goroutine - `runtime.Gosched()`
+
+`runtime.Gosched()` в Go — это функция из пакета `runtime`, которая добровольно уступает текущий поток выполнения (goroutine) другим goroutine.
+
+```go
+runtime.Gosched()
+```
+
+<div className="hr-decor">✦</div>
+
+## Гонка данных (Data Race)
+
+Гонка данных (Data Race) в Go — это ситуация, когда несколько горутин одновременно обращаются к одной и той же области памяти,
+причём хотя бы одна из них изменяет данные, а доступ не синхронизирован.
+
+<details>
+  <summary>Пример</summary>
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+// У команды go есть флаг -race, который позволяет найти гонки данных. Обычно запускают в тестах. Но можно и в go run:
+// CGO_ENABLED=1 go run -race ./2-data-race-counter.go
+func main() {
+	//runtime.GOMAXPROCS(1) // Количество P
+
+	{ // Гонка данных
+		var counter int
+
+		for range 10_000 {
+			go func() {
+				counter++
+			}()
+		}
+
+		time.Sleep(time.Second)
+
+		fmt.Println(counter)
+	}
+}
+```
+
+</details>
+
+### Исправить гонку данных
+
+#### Использовать 1 поток (`runtime.GOMAXPROCS(1)`)
+
+```go
+package main
+
+import (
+	"fmt"
+	"runtime"
+	"time"
+)
+
+// У команды go есть флаг -race, который позволяет найти гонки данных. Обычно запускают в тестах. Но можно и в go run:
+// CGO_ENABLED=1 go run -race ./2-data-race-counter.go
+func main() {
+	runtime.GOMAXPROCS(1) // Количество P
+
+	{ // Гонка данных
+		var counter int
+
+		for range 10_000_000 {
+			go func() {
+				counter++
+			}()
+		}
+
+		time.Sleep(time.Second)
+
+		fmt.Println(counter)
+	}
+}
+```
+
+<hr />
+
+#### Использовать Mutex (`mu.Lock()`)
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+func main() {
+    mx := sync.Mutex{}
+    var counter int
+
+    for range 100 {
+        go func() {
+			fmt.Println("Create goroutine")
+            mx.Lock() // <- Блокировка
+            counter++
+			fmt.Println(counter)
+            mx.Unlock()
+        }()
+    }
+
+    time.Sleep(time.Second)
+
+    fmt.Println("Total:",counter)
+
+}
+
+```
+
+<hr />
+
+#### Использовать Atomic
+
+При использовании `time.Sleep()`:
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync/atomic"
+	"time"
+)
+
+func main() {
+    var counter atomic.Int64
+
+    for range 10_000 {
+        go func() {
+			counter.Add(1)
+        }()
+    }
+
+    time.Sleep(time.Second)
+
+    fmt.Println("Total:",counter.Load())
+
+}
+```
+
+Нужен универсальный способ с `WaitGroup`:
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+func Init() {
+	fmt.Println("Инициализация выполнена")
+}
+
+func main() {
+	// используется для того, чтобы гарантировать, что определённый код выполнится только один раз,
+	// даже если несколько горутин попытаются выполнить его одновременно
+
+	var wg sync.WaitGroup
+	var once sync.Once
+
+	for i := 0; i < 5; i++ {
+		wg.Add(1)
+
+		go func() {
+			defer wg.Done()
+
+			once.Do(Init)
+
+			fmt.Println("Горутина завершена")
+		}()
+	}
+
+	wg.Wait()
+}
+
+```
+
+- `wg.Add(n)` - увеличивает счётчик группы ожидания на `n`.
+- `defer` - откладывает выполнение функции до момента завершения текущей функции. <br/>
+  т.е. `wg.Done()` выполнится когда наша функция закончит выполнение.
+- `wg.Done()` - уменьшает счётчик группы ожидания на `1`.
+- `once.Do(funcName)` - выполнит функцию один раз
+- `wg.Wait()` - блокирует выполнение текущей горутины до тех пор, пока счётчик WaitGroup не станет равен 0.
 
 <div className="hr-decor">✦</div>
 
@@ -66,6 +268,12 @@ Go Runtime распределяет множество горутин между
 
 ### Горутина vs Coroutine vs Green Thread
 
+<Callout title='' type='tip'>
+
+Горутина (Goroutine) — это лёгкая единица конкурентного выполнения в языке Go, реализованная на основе концепции Green Threads (зелёных потоков) и обладающая свойствами Coroutine (корутин).
+
+</Callout>
+
 | Характеристика                 | Coroutine                              | Green Thread          | Goroutine                        |
 | ------------------------------ | -------------------------------------- | --------------------- | -------------------------------- |
 | Приостановка выполнения        | Да                                     | Зависит от реализации | Да                               |
@@ -76,9 +284,7 @@ Go Runtime распределяет множество горутин между
 
 <hr />
 
-### Сколько потоков создаётся при запуске
-
-Главная горутина `main` — это G.
+### Сколько потоков создаётся при запуске - `runtime.GOMAXPROCS(0)`
 
 Количество `P` по умолчанию равно `GOMAXPROCS`, который в современных версиях Go обычно определяется количеством доступных CPU.
 
@@ -116,4 +322,92 @@ GOMAXPROCS=4 go run main.go
 
 ```go
 runtime.GOMAXPROCS(4)
+```
+
+<div className="hr-decor">✦</div>
+
+## Пример (файл)
+
+```go
+package main
+
+import (
+	"fmt"
+	"runtime"
+	"time"
+)
+
+func hello() {
+	fmt.Println("Hello 1")
+}
+
+func main() {
+	runtime.GOMAXPROCS(4) // Количество P, которые будут использоваться для выполнения горутин
+	runtime.Gosched()     // Передача управления другим горутинам
+
+	{ // Запуск функции в горутине
+		go hello()
+
+		time.Sleep(time.Second)
+	}
+
+	{ // Запуск анонимной функции в горутине
+		go func() {
+			fmt.Println("Hello 2")
+		}()
+
+		time.Sleep(time.Second)
+	}
+
+	{ // То же самое
+		fn := func() {
+			fmt.Println("Hello 3")
+		}
+
+		go fn()
+
+		time.Sleep(time.Second)
+	}
+}
+```
+
+`WaitGroup`:
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+func main() {
+	{ // Одновременный запуск медленных операций
+		var wg sync.WaitGroup
+
+		wg.Add(3)
+
+		now := time.Now()
+
+		go func() {
+			defer wg.Done()
+			time.Sleep(time.Second) // Service A
+		}()
+
+		go func() {
+			defer wg.Done()
+			time.Sleep(time.Second) // Service B
+		}()
+
+		go func() {
+			defer wg.Done()
+			time.Sleep(time.Second) // Service C
+		}()
+
+		wg.Wait()
+
+		fmt.Println("Время выполнения:", time.Since(now))
+	}
+}
 ```
