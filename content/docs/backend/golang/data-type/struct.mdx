@@ -91,10 +91,11 @@ type Example struct {
 [Выравнивание структур данных в Go](#links-padding)
 
 <div className="hr-decor">✦</div>
+## Основные операции
 
-## Создания структуры
+### Создания структуры
 
-### С указанием имён полей
+#### С указанием имён полей
 
 ```go
 varName := StructName{
@@ -105,14 +106,14 @@ varName := StructName{
 fmt.Println(varName) // {Alex 25 Riga}
 ```
 
-### Без указания имён (важен порядок полей)
+#### Без указания имён (важен порядок полей)
 
 ```go
 varName := StructName{"Alex", 25, "Riga"}
 fmt.Println(varName) // {Alex 25 Riga}
 ```
 
-### Через указатель
+#### Через указатель
 
 ```go
 varName := new(StructName) // Устаревшее
@@ -122,12 +123,23 @@ varName.field1 = "Alex"
 varName.field2 = 25
 ```
 
-### Zero value
+#### Zero value
 
 Zero value структура — это структура, у которой все поля имеют свои нулевые значения(zero value).
 
 ```go
 var varName StructName
+```
+
+<hr />
+
+### Обращение к полю структуры
+
+Для доступа к полям используется точка `.`
+
+```go
+fmt.Println(person.Name) // Alex
+fmt.Println(person.Age)  // 25
 ```
 
 <div className="hr-decor">✦</div>
@@ -180,17 +192,6 @@ func NewStructName(name string, ...) (*StructName, error) {
         ...
     }, nil
 }
-```
-
-<div className="hr-decor">✦</div>
-
-## Обращение к полю структуры
-
-Для доступа к полям используется точка `.`
-
-```go
-fmt.Println(person.Name) // Alex
-fmt.Println(person.Age)  // 25
 ```
 
 <div className="hr-decor">✦</div>
