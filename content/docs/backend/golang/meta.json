@@ -7,6 +7,7 @@
     "cycles",
     "func",
     "goroutine",
+    "channel",
     "packages",
     "std-libs",
     "garbage-collector",
@@ -15,8 +16,8 @@
     "roadmap",
     "vendor",
     "project-struct",
+    "...",
     "---[Blocks]Доп. библиотеки---",
-    "...libs",
-    "..."
+    "...libs"
   ]
 }
