@@ -235,6 +235,55 @@ if !ok {
 len(ch)
 ```
 
+<hr />
+
+### Закрыть канал - `close()`
+
+<Callout title='' type='tip'>
+
+Канал обычно закрывает отправитель, а не получатель.
+
+</Callout>
+
+```go
+close(ch)
+```
+
+- Читать из канала - Можно
+- Читать из пустого канала - Получим нулевое значение и `ok == false`
+- Отправлять в канал - Паника (panic)
+- Повторно закрывать канал - Паника (panic)
+
+<details>
+  <summary>Пример</summary>
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	{ // Закрытие канала
+		var ch = make(chan int, 1)
+
+		ch <- 42
+
+		close(ch)
+
+		value, ok := <-ch
+		fmt.Println("Value:", value, "IsOpen:", ok)
+
+		value, ok = <-ch
+		fmt.Println("Value:", value, "IsOpen:", ok)
+
+		//close(ch) // Закрытие уже закрытого канала вызывает панику
+		//ch <- 42 // Запись в закрытый канал тоже вызывает панику
+	}
+}
+```
+
+</details>
+
 <div className="hr-decor">✦</div>
 
 ## Пример (файл)
