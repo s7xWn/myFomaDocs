@@ -157,6 +157,87 @@ func main() {
 
 </details>
 
+<div className="hr-decor">✦</div>
+
+## Использование каналов
+
+Каналы в Go можно использовать и без горутин. Но чаще всего они применяются именно для обмена данными и синхронизации между горутинами.
+
+Разберём три ситуации.
+
+<hr />
+
+### Канал без горутин
+
+Можно создать канал и отправить в него данные, но есть важный нюанс - deadlock
+
+```go
+func main() {
+    ch := make(chan int)
+
+    ch <- 10 // deadlock!
+
+    value := <-ch
+    fmt.Println(value)
+}
+```
+
+Небуферизированный канал ждёт получателя, а текущая горутина заблокировалась на отправке.
+
+Никто не сможет выполнить чтение.
+
+<hr />
+
+### Буферизированный канал без горутин
+
+```go
+func main() {
+    ch := make(chan int, 2)
+
+    ch <- 10
+    ch <- 20
+
+    fmt.Println(<-ch)
+    fmt.Println(<-ch)
+}
+```
+
+Буферизированный канал может временно хранить данные без немедленного получателя.
+
+Но если буфер заполнится, отправка заблокируется.
+
+<hr />
+
+### Каналы вместе с горутинами
+
+```go
+package main
+
+import "fmt"
+
+func worker(ch chan int) {
+    ch <- 100
+}
+
+func main() {
+    ch := make(chan int)
+
+    go worker(ch)
+
+    result := <-ch
+
+    fmt.Println(result)
+}
+```
+
+Здесь:
+
+- `worker` работает в отдельной горутине.
+- `worker` отправляет данные в канал.
+- `main` получает данные.
+
+<div className="hr-decor">✦</div>
+
 ## Основные операции
 
 ### Создание - `make()`
@@ -286,6 +367,147 @@ func main() {
 
 <div className="hr-decor">✦</div>
 
+## `select`
+
+В Go `select` - это специальная конструкция языка,
+которая позволяет одновременно ожидать несколько операций с каналами (channels) и выполнить ту, которая будет готова первой.
+
+Проще говоря, `select` для каналов - примерно то же самое, что `switch` для обычных значений.
+
+```go
+select {
+case msg := <-ch1:
+    fmt.Println("Получили из ch1:", msg)
+
+case msg := <-ch2:
+    fmt.Println("Получили из ch2:", msg)
+
+default:
+}
+fmt.Println("Нет готовых данных")
+```
+
+<Callout title='' type='tip'>
+
+`default` нужен просто чтобы выйти из селекта если все кейсы заблокированы. <br/>
+Чтобы упростить код, default оставляют пустой, а логику пишут ниже.
+
+</Callout>
+
+Как это работает:
+
+- Go проверяет все `case`.
+- Если готов только один - выполняет его.
+- Если ни один не готов - блокируется и ждёт.
+- Если есть `default` - выполняет его сразу, не ожидая канала
+
+<Callout title='' type='warn'>
+
+Если несколько каналов готовы, выбирает один случайным образом.
+
+</Callout>
+
+<details>
+  <summary>Пример с двумя каналами</summary>
+
+Здесь две горутины отправляют сообщения в разные каналы.
+
+`select` ждёт, пока хотя бы один канал будет готов к чтению, и обрабатывает одно сообщение.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    ch1 := make(chan string)
+    ch2 := make(chan string)
+
+    go func() {
+        ch1 <- "Привет из первого канала"
+    }()
+
+    go func() {
+        ch2 <- "Привет из второго канала"
+    }()
+
+    select {
+    case msg := <-ch1:
+        fmt.Println(msg)
+
+    case msg := <-ch2:
+        fmt.Println(msg)
+    }
+}
+```
+
+</details>
+
+<hr />
+
+### Использование `select` с `default`
+
+Можно проверить, есть ли данные в канале, не блокируя выполнение.
+
+<Callout title='' type='tip'>
+
+Это называется неблокирующим чтением.
+
+</Callout>
+
+<Callout title='' type='tip'>
+
+`default` нужен просто чтобы выйти из селекта если все кейсы заблокированы. <br/>
+Чтобы упростить код, `default` оставляют пустой, а логику пишут ниже.
+
+</Callout>
+
+```go
+select {
+case msg := <-ch:
+    fmt.Println("Получили:", msg)
+
+default:
+}
+fmt.Println("Канал пока пуст")
+```
+
+<hr />
+
+### Использование `select` с таймером
+
+Очень полезная возможность - ограничение времени ожидания.
+
+```go
+select {
+case msg := <-ch:
+    fmt.Println("Получили:", msg)
+
+case <-time.After(3 * time.Second):
+    fmt.Println("Время ожидания истекло")
+}
+```
+
+<hr />
+
+### `Select` в бесконечном цикле
+
+Часто используется для обработки нескольких каналов:
+
+```go
+for {
+    select {
+    case msg := <-ch1:
+        fmt.Println("Первый:", msg)
+
+    case msg := <-ch2:
+        fmt.Println("Второй:", msg)
+    }
+}
+```
+
+<div className="hr-decor">✦</div>
+
 ## Пример (файл)
 
 Буферизированный канал:
@@ -315,4 +537,150 @@ func main() {
 
 	}
 }
+```
+
+`Select`:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	{ // Select - конструкция для работы с каналами
+		ch1 := make(chan int, 10)
+		ch2 := make(chan int, 10)
+		ch3 := make(chan int, 10)
+
+		ch1 <- 1
+		ch2 <- 2
+		ch3 <- 3
+
+		var value int
+
+		select {
+		case value = <-ch1:
+		case value = <-ch2:
+		case value = <-ch3:
+		}
+
+		fmt.Println(value) // Случайное число: 1, 2 или 3
+	}
+
+	{ // Default
+		ch1 := make(chan int, 10)
+		ch2 := make(chan int, 10)
+
+		var value int
+
+		select {
+		case value = <-ch1:
+		case value = <-ch2:
+		default:
+		}
+
+		fmt.Println("Default case:", value) // 0
+	}
+
+	// default нужен просто чтобы выйти из селекта если все кейсы заблокированы.
+	// Чтобы упростить код, default оставляют пустой, а логику пишут ниже.
+	tasks := make(chan int, 10)
+	stop := make(chan int)
+
+	{ // Вот это
+		select {
+		case <-stop:
+			break
+		default:
+			tasks <- 42 // мы тут можем заблокироваться и не узнать что канал stop закрыт
+		}
+	}
+
+	{ // И вот это, одно и тоже
+		select {
+		case <-stop:
+			break
+		default:
+		}
+
+		tasks <- 42 // мы тут можем заблокироваться и не узнать что канал stop закрыт
+	}
+}
+```
+
+Ошибки:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	{ // Работа с неинициализированным каналом
+		var ch chan int
+		ch <- 1 // fatal error: all goroutines are asleep - deadlock!
+	}
+
+	{ // Дедлок - никто не читает
+		var ch = make(chan int, 1)
+
+		ch <- 1
+		ch <- 1 // fatal error: all goroutines are asleep - deadlock!
+	}
+
+	{ // Дедлок - никто не пишет
+		var ch = make(chan int, 1)
+
+		<-ch // fatal error: all goroutines are asleep - deadlock!
+	}
+
+	{ // Закрытие закрытого канала
+		var ch = make(chan int, 1)
+		close(ch)
+		close(ch) // panic: close of closed channel
+	}
+
+	{ // Запись в закрытый канал
+		var ch = make(chan int, 1)
+		close(ch)
+		ch <- 1 // panic: send on closed channel
+	}
+
+	{ // Чтение из закрытого канала - OK!
+		var ch = make(chan int, 1)
+		close(ch)
+
+		_, ok := <-ch
+		if !ok {
+			fmt.Println("Channel is closed")
+		}
+	}
+
+	{ // For range закрытого канала - OK!
+		var ch = make(chan int, 1)
+
+		ch <- 1
+
+		close(ch)
+
+		for value := range ch {
+			fmt.Println("Прочитано из канала:", value)
+		}
+
+		fmt.Println("Прочитали всё из канала и вышли из цикла")
+	}
+
+	{ // Select закрытого канала - OK!
+		var ch = make(chan int, 1)
+		close(ch)
+
+		select {
+		case value := <-ch:
+			fmt.Println("Прочитано из канала (zero value):", value)
+		default:
+			fmt.Println("Канал закрыт")
+		}
+	}
+}
+
 ```
