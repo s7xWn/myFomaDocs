@@ -222,6 +222,77 @@ func main() {
 - `once.Do(funcName)` - выполнит функцию один раз
 - `wg.Wait()` - блокирует выполнение текущей горутины до тех пор, пока счётчик WaitGroup не станет равен 0.
 
+или
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+func main() {
+	{ // WaitGroup - это счётчик, который позволяет дождаться завершения всех горутин
+		var (
+			mx      sync.Mutex
+			counter int
+			wg      sync.WaitGroup
+		)
+
+		for range 100 {
+			wg.Add(1)
+
+			go func() {
+				defer wg.Done()
+
+				mx.Lock()
+				defer mx.Unlock()
+
+				counter++
+			}()
+		}
+
+		wg.Wait()
+
+		fmt.Println(counter)
+	}
+}
+```
+
+или
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+	"sync/atomic"
+)
+
+func main() {
+    var counter int64
+    var wg sync.WaitGroup
+
+    for i := 0; i < 1000; i++ {
+        wg.Add(1)
+
+        go func() {
+            defer wg.Done()
+            atomic.AddInt64(&counter, 1)
+        }()
+    }
+
+    wg.Wait()
+    fmt.Println(counter)
+}
+```
+
+<hr />
+
+#### Использовать каналы
+
 <div className="hr-decor">✦</div>
 
 ## Как устроены Goroutine
