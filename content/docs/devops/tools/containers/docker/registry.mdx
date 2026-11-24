@@ -1,0 +1,50 @@
+---
+title: "Registry"
+---
+
+Docker Registry — это хранилище Docker-образов (Docker Images), откуда их можно скачивать и куда можно загружать.
+
+Проще говоря, это аналог GitHub, но для Docker-образов.
+
+<div className="hr-decor">✦</div>
+
+##
+
+<div className="hr-decor">✦</div>
+
+## Популярные Docker Registry
+
+| Registry                             | Описание                                      |
+| ------------------------------------ | --------------------------------------------- |
+| [Docker Hub](https://hub.docker.com) | Публичный и приватный Registry от Docker      |
+| GitHub Container Registry (GHCR)     | Хранение образов в GitHub                     |
+| GitLab Container Registry            | Registry, встроенный в GitLab                 |
+| Amazon ECR                           | Registry от AWS                               |
+| Harbor                               | Self-hosted Registry для своей инфраструктуры |
+
+<hr />
+
+### Настройки доступа к Gitlab Registry
+
+Нужно создать персональный токен доступа (access token) в настройках своего профиля на Gitlab.
+
+Переходим по ссылке:
+
+```web
+https:/gitltab/-/user_settings/personal_access_tokens
+```
+
+Нажимаем кнопку `Add new token`
+Token name: Registry
+
+В **Select scopes** нужны права:
+
+- api
+- read_api
+- read_user
+- read_repository
+- write_repository
+
+Нажимаем кнопку `Create personal access token`.
+
+Сохраняем сгенерированный токен для дальнейшего использования.
