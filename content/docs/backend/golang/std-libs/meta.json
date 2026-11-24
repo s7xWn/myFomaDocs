@@ -1,4 +1,4 @@
 {
   "title": "Стандартные пакеты",
-  "pages": ["fmt", "unsafe", "encoding", "os", "net-http", "..."]
+  "pages": ["fmt", "encoding", "net-http", "sync", "unsafe", "os", "..."]
 }

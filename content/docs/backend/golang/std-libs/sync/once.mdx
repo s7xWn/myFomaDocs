@@ -1,0 +1,53 @@
+---
+title: "Once"
+---
+
+Гарантирует, что определённая функция выполнится только один раз, даже если её одновременно вызывают несколько горутин.
+
+```go
+var once sync.Once
+```
+
+```go
+go func() {
+    defer wg.Done()
+
+    once.Do(funcName)
+}()
+```
+
+<details>
+  <summary>Пример</summary>
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+var once sync.Once
+
+func initialize() {
+	fmt.Println("Initializing...")
+}
+
+func main() {
+	var wg sync.WaitGroup
+
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
+
+		go func() {
+			defer wg.Done()
+
+			once.Do(initialize)
+		}()
+	}
+
+	wg.Wait()
+}
+```
+
+</details>

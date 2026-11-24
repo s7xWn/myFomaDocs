@@ -1,0 +1,144 @@
+---
+title: "WaitGroup"
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+`WaitGroup` нужен, чтобы дождаться завершения группы горутин.
+
+<Tabs items={['Variable declaration', 'Short declaration']}>
+  <Tab value='Variable declaration'>
+
+    ```go
+    var wg sync.WaitGroup
+    ```
+
+  </Tab>
+  <Tab value='Short declaration'>
+
+    ```go
+    wg := sync.WaitGroup{}
+    ```
+
+  </Tab>
+</Tabs>
+
+<div className="hr-decor">✦</div>
+
+## Использование
+
+<details>
+  <summary>Пример</summary>
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+func main() {
+	wg := sync.WaitGroup{}
+
+	for i := range 10 {
+		wg.Add(1)
+		go func(i int) {
+			defer wg.Done()
+            fmt.Println(i)
+		}(i)
+	}
+
+	wg.Wait()
+}
+```
+
+</details>
+
+<hr />
+
+### `Add(n)`
+
+Увеличивает счётчик задач на `n`
+
+```go
+wg.Add(n)
+```
+
+<details>
+  <summary>Пример</summary>
+
+```go
+for i := 0; i < 5; i++ {
+    wg.Add(1)
+    go funcNmae() {
+        defer wg.Done()
+        ...
+    }
+
+}
+```
+
+или
+
+```go
+wg.Add(5)
+for i := 0; i < 5; i++ {
+    go funcNmae() {
+        defer wg.Done()
+        ...
+    }
+
+}
+```
+
+</details>
+
+<hr />
+
+### `Done()`
+
+Уменьшает счётчик на 1,
+
+<Callout title='' type='tip'>
+
+Используют в начале Горутины с `defer`
+
+В Go `defer` откладывает выполнение вызова функции до момента выхода из окружающей функции.
+
+Вызовы `defer` выполняются в обратном порядке добавления — LIFO (Last In, First Out).
+
+То есть последний добавленный `defer` выполнится первым.
+
+</Callout>
+
+```go
+go funcNmae() {
+    defer wg.Done()
+    ...
+}
+```
+
+аналог
+
+```go
+wg.Add(-1)
+```
+
+<hr />
+
+### `Wait()`
+
+Блокирует выполнение, пока счётчик не станет равен `0`
+
+```go
+... // Код с горутинами
+
+wg.Wait()
+```
+
+<div className="hr-decor">✦</div>
+
+## Ссылки
+
+- [Задача из Ozon: Golang собеседование](https://www.youtube.com/watch?v=Qf24zMzMmgI)
