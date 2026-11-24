@@ -8,7 +8,12 @@ Docker Registry — это хранилище Docker-образов (Docker Imag
 
 <div className="hr-decor">✦</div>
 
-##
+## Как это работает
+
+1. Собрать Docker Image на компьютере.
+2. Загрузить его в Docker Registry.
+3. На другом сервере скачать этот образ.
+4. Запустить контейнер из скачанного образа.
 
 <div className="hr-decor">✦</div>
 
@@ -28,11 +33,7 @@ Docker Registry — это хранилище Docker-образов (Docker Imag
 
 Нужно создать персональный токен доступа (access token) в настройках своего профиля на Gitlab.
 
-Переходим по ссылке:
-
-```web
-https:/gitltab/-/user_settings/personal_access_tokens
-```
+Переходим по ссылке: `https:/<namespace>/-/user_settings/personal_access_tokens`
 
 Нажимаем кнопку `Add new token`
 Token name: Registry
