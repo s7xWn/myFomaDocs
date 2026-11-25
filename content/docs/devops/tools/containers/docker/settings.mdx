@@ -1,0 +1,28 @@
+---
+title: "Настройки"
+---
+
+## Использование зеркал
+
+```bash
+nano /etc/docker/daemon.json
+```
+
+Добавить:
+
+```json
+{
+  "registry-mirrors": [
+    "https://docker.m.daocloud.io",
+    "https://docker.1ms.run",
+    "https://dockerproxy.net"
+  ]
+}
+```
+
+Перезапустить Docker:
+
+```bash
+systemctl daemon-reload
+systemctl restart docker
+```
