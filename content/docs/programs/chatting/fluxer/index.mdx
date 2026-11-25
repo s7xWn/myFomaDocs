@@ -2413,6 +2413,22 @@ fluxer-edge-1   caddy:2.11-alpine   "caddy run --config …"   edge      20 seco
 
 ### Linux
 
+```bash
+curl -fsSL https://fluxer.dev/install.sh | sh
+```
+
+<hr />
+
+### Настройка Firewall
+
+```bash
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow 443/udp
+sudo ufw allow 7881/tcp
+sudo ufw allow 7882/udp
+```
+
 <hr />
 
 ## Установка - Клинет
