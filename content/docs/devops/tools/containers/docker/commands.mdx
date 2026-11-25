@@ -7,7 +7,7 @@ title: "Команды"
 Логинимся под своим логином и созданным паролем.
 
 ```bash
-docker login -u <GITLAB-LOGIN> -p <ACCESS-TOKEN> <IP/URI>:PORT
+docker login -u <GITLAB-LOGIN> -p <ACCESS-TOKEN> <IP/URI>:<PORT>
 ```
 
 <div className="hr-decor">✦</div>
@@ -21,3 +21,94 @@ docker login -u <GITLAB-LOGIN> -p <ACCESS-TOKEN> <IP/URI>:PORT
 ```bash
 docker ps
 ```
+
+<hr />
+
+### `rm` - удалить контейнер
+
+```bash
+docker rm <CONTAINER_ID>
+```
+
+Удалить все контейнеры:
+
+```bash
+docker rm $(docker ps -aq) --force
+```
+
+<hr />
+
+### `run` - запустить контейнер
+
+```bash
+docker run <options> <ports> <container>
+```
+
+<hr />
+
+### `stop` - остановить контейнер
+
+```bash
+docker stop <CONTAINER_ID>
+```
+
+<div className="hr-decor">✦</div>
+
+## Образы
+
+### `pull` - пулл образа
+
+```bash
+docker pull <name>:<version>
+```
+
+<details>
+  <summary>Пример</summary>
+
+```bash
+docker pull alpine:latest
+```
+
+</details>
+
+#### GitLab Registry
+
+```bash
+docker pull <IP/URI>:<PORT>/.../<USERNAME>/my-app:v0.1.0
+```
+
+<hr />
+
+### `images` - спулленые образы
+
+```bash
+docker images
+```
+
+<hr />
+
+### `rmi` - удалить образ
+
+Удалить все образы:
+
+```bash
+docker rmi $(docker images -q) --force
+```
+
+<hr />
+
+### `tag` - метка
+
+```bash
+docker tag alpine:latest <IP/URI>:<PORT>/.../<USERNAME>/my-app:v0.1.0
+```
+
+<hr />
+
+### `push` - пуш образа
+
+```bash
+docker push <IP/URI>:<PORT>/.../<USERNAME>/my-app:v0.1.0
+```
+
+<hr />
