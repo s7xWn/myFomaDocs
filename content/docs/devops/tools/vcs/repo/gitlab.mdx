@@ -1,0 +1,57 @@
+---
+title: "GitLab"
+---
+
+## Установка
+
+### Docker compose
+
+```ruby
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab
+    restart: unless-stopped
+    hostname: gitlab.s7xwn.ru
+
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://gitlab.s7xwn.ru'
+
+        # HTTPS завершается на внешнем reverse proxy
+        nginx['listen_port'] = 443
+        nginx['listen_https'] = true
+
+        registry_external_url 'https://gitlab.s7xwn.ru:5050'
+        registry_nginx['enable'] = true
+        registry_nginx['listen_port'] = 5050
+        registry_nginx['listen_https'] = true
+
+        letsencrypt['enable'] = true
+        letsencrypt['contact_emails'] = ['admin@s7xwn.ru']
+        letsencrypt['auto_renew'] = true
+
+        # SSH для Git
+        gitlab_rails['gitlab_shell_ssh_port'] = 2222
+
+    ports:
+      - "80:80"
+      - "443:443"
+      - "2222:22"
+      - "5050:5050"
+
+    volumes:
+      - ./config:/etc/gitlab
+      - ./logs:/var/log/gitlab
+      - ./data:/var/opt/gitlab
+
+    shm_size: '256m'
+```
+
+<div className="hr-decor">✦</div>
+
+## Команды
+
+```bash
+docker exec -it gitlab gitlab-ctl status
+```
