@@ -10,6 +10,24 @@ title: "Команды"
 docker login -u <GITLAB-LOGIN> -p <ACCESS-TOKEN> <IP/URI>:<PORT>
 ```
 
+<details>
+  <summary>Пример</summary>
+
+```bash
+docker login -u root -p glpat-TOKEN gitlab.s7xwn.ru:5050
+```
+
+Docker compose, без внешнего reverse proxy:
+
+```
+registry_external_url 'https://gitlab.s7xwn.ru:5050'
+registry_nginx['enable'] = true
+registry_nginx['listen_port'] = 5050
+registry_nginx['listen_https'] = true
+```
+
+</details>
+
 <div className="hr-decor">✦</div>
 
 ## Контейнеры
