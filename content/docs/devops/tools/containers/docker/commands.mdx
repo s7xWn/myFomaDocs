@@ -32,6 +32,46 @@ registry_nginx['listen_https'] = true
 
 ## Контейнеры
 
+### `run` - запуск контейнера
+
+`docker run` запускает контейнер из Docker-образа.
+
+```bash
+docker run <name>
+```
+
+```bash
+docker run <name>:<version>
+```
+
+#### `-d` - в background
+
+```bash
+docker run -d <name>
+```
+
+```bash
+docker run -d <name>:<version>
+```
+
+#### `--name` - указать новое имя
+
+```bash
+docker run --name <new_name> <name>
+```
+
+```bash
+docker run --name <name>:<version>
+```
+
+#### `-p` - порты
+
+```bash
+docker run -p HOST_PORT:CONTAINER_PORT <name>:<version>
+```
+
+<hr />
+
 ### `ps` - запущенные контейнеры
 
 Запущенные контейнеры
@@ -73,6 +113,38 @@ docker stop <CONTAINER_ID>
 <div className="hr-decor">✦</div>
 
 ## Образы
+
+### `build` - сборка
+
+При `build` ищет `Dockerfile` в указанной директории
+
+```bash
+docker build .
+```
+
+#### `-t` - с именем (и тегом)
+
+```bash
+docker build -t <name> .
+```
+
+```bash
+docker build -t <name>:<tag> .
+```
+
+Несколько тегов одного образа:
+
+```bash
+docker build -t <name>:<tag> -t <name>:latest .
+```
+
+#### `-f` - указать Dockerfile явно
+
+```bash
+docker build -f Dockerfile .
+```
+
+<div className="hr-decor">✦</div>
 
 ### `pull` - пулл образа
 
