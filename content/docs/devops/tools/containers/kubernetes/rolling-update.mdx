@@ -1,0 +1,85 @@
+---
+title: "Rolling Update"
+---
+
+Rolling Update (постепенное обновление) в Kubernetes (K8s) — это стратегия обновления приложения, при которой старые Pod'ы постепенно заменяются новыми, без полной остановки приложения (zero downtime при правильной настройке).
+
+Rolling Update позволяет обновлять приложение постепенно, сохраняя его доступность на протяжении всего процесса обновления.
+
+<Callout title='' type='warn'>
+
+Rolling Update сам по себе не гарантирует Zero Downtime. Для этого нужны корректные `readinessProbe`, достаточное количество реплик и совместимость старой и новой версий приложения.
+
+</Callout>
+
+<div className="hr-decor">✦</div>
+
+## Основные параметры Rolling Update
+
+В Deployment можно настроить два важных параметра:
+
+- `maxSurge` — сколько дополнительных Pod'ов можно создать сверх желаемого количества во время обновления.
+- `maxUnavailable` — сколько Pod'ов может быть недоступно во время обновления.
+
+<details>
+  <summary>Пример</summary>
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: app
+          image: nginx:1.27
+```
+
+- Всегда должно оставаться минимум 3 доступных Pod'а.
+- Kubernetes может временно создать 4-й Pod.
+- Старый Pod удаляется только после того, как новый станет доступен.
+
+</details>
+
+<div className="hr-decor">✦</div>
+
+## Запустить Rolling Update вручную
+
+```bash
+# Обновить версию образа
+kubectl set image deployment/my-app app=nginx:1.28
+
+# Посмотреть процесс обновления
+kubectl rollout status deployment/my-app
+
+# Посмотреть историю обновлений
+kubectl rollout history deployment/my-app
+
+# Откатить обновление
+kubectl rollout undo deployment/my-app
+```
+
+<div className="hr-decor">✦</div>
+
+## Rolling Update vs Recreate
+
+| Rolling Update                                 | Recreate                                                |
+| ---------------------------------------------- | ------------------------------------------------------- |
+| Постепенная замена Pod'ов                      | Сначала удаляются все старые Pod'ы                      |
+| Обычно без downtime                            | Возможен downtime                                       |
+| Старые и новые версии временно работают вместе | Сначала старые, потом новые                             |
+| Подходит для большинства приложений            | Подходит, если нельзя запускать две версии одновременно |
