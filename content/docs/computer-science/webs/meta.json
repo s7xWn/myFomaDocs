@@ -2,15 +2,14 @@
   "title": "Сети",
   "pages": [
     "connections",
-    "osi-model",
     "ip-address",
     "port",
     "subnet",
     "subnet-mask",
     "mac-address",
     "gateway",
-    "dns",
-    "dhcp",
-    "cloud"
+    "cloud",
+    "osi-model",
+    "protocols"
   ]
 }

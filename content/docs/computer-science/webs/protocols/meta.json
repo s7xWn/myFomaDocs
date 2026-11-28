@@ -1,0 +1,19 @@
+{
+  "title": "Протоколы",
+  "pages": [
+    "---[EthernetPort]L1---",
+    "...l1",
+    "---[EthernetPort]L2---",
+    "...l2",
+    "---[EthernetPort]L3---",
+    "...l3",
+    "---[EthernetPort]L4---",
+    "...l4",
+    "---[EthernetPort]L5---",
+    "...l5",
+    "---[EthernetPort]L6---",
+    "...l6",
+    "---[EthernetPort]L7---",
+    "...l7"
+  ]
+}
