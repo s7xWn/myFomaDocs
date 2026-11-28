@@ -3,6 +3,7 @@
   "pages": [
     "index",
     "roadmap",
+    "12factor",
     "---Языки программирования---",
     "golang",
     "java",
