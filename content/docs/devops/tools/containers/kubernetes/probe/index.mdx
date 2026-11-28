@@ -1,0 +1,63 @@
+---
+title: "Probe"
+---
+
+Probe в Kubernetes (K8s) — это механизм проверки состояния контейнера (health check), с помощью которого Kubernetes определяет, работает ли приложение правильно и готово ли оно обрабатывать запросы.
+
+Probe выполняются kubelet'ом на узле, где запущен Pod.
+
+В Kubernetes есть 3 основных типа Probe:
+
+1. Liveness Probe — «Жив ли контейнер?»
+   - перезапустить, если приложение зависло.
+2. Readiness Probe — «Готов ли контейнер принимать трафик?»
+   - не отправлять трафик, если приложение не готово.
+3. Startup Probe — «Запустилось ли приложение?»
+   - дать приложению время запуститься.
+
+<div className="hr-decor">✦</div>
+
+## Способы проверки
+
+Все три Probe поддерживают несколько способов проверки:
+
+- `httpGet` — HTTP-запрос к endpoint приложения.
+- `tcpSocket` — проверка доступности TCP-порта.
+- `exec` — выполнение команды внутри контейнера.
+- `grpc` — проверка через gRPC Health Checking Protocol.
+
+<div className="hr-decor">✦</div>
+
+## Как работают Probe визуально
+
+```mermaid
+flowchart TD
+    A["🚀 Запуск контейнера"] --> B{"Startup Probe"}
+
+    B -->|"Успешно"| C["Liveness Probe"]
+    B -->|"Ошибка, попытки не исчерпаны"| B
+    B -->|"Лимит ошибок исчерпан"| R["🔄 Перезапуск контейнера"]
+
+    C -->|"Успешно"| D["Контейнер работает"]
+    C -->|"Ошибка"| E{"Liveness: лимит ошибок?"}
+    E -->|"Нет"| C
+    E -->|"Да"| R
+
+    D --> F["Readiness Probe"]
+    F -->|"Успешно"| G["✅ Pod получает трафик"]
+    F -->|"Ошибка"| H["⛔ Pod исключается из Service endpoints"]
+
+    H -->|"Проверка снова успешна"| G
+    G -->|"Проверка не прошла"| H
+
+    style A fill:#2563eb,color:#fff
+    style G fill:#16a34a,color:#fff
+    style H fill:#dc2626,color:#fff
+    style R fill:#ea580c,color:#fff
+```
+
+<Callout title='' type='tip'>
+
+После успешного Startup Probe Kubernetes начинает выполнять Liveness и Readiness Probe. Они работают независимо друг от друга.
+
+</Callout>

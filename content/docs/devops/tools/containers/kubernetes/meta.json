@@ -1,6 +1,7 @@
 {
   "pages": [
     "manifests",
+    "probe",
     "kubernetes-service",
     "service-discovery",
     "service-load-balancing",

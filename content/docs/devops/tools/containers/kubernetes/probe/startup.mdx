@@ -1,0 +1,27 @@
+---
+title: "Startup Probe"
+---
+
+Проверяет, завершился ли запуск приложения.
+
+Полезна для приложений, которые долго стартуют.
+
+Пока Startup Probe не прошла успешно, Kubernetes не запускает Liveness и Readiness Probe.
+
+<details>
+  <summary>Пример</summary>
+
+Java-приложение запускается 60 секунд. Без Startup Probe Liveness Probe может решить, что приложение зависло, и начать его перезапускать.
+
+```yaml
+startupProbe:
+  httpGet:
+    path: /health
+    port: 8080
+  failureThreshold: 30
+  periodSeconds: 5
+```
+
+Это даёт приложению до 150 секунд на запуск.
+
+</details>
