@@ -31,10 +31,12 @@ export default function Layout({ children }: LayoutProps<"/docs">) {
         },
         {
           title: "Backend",
+          description: "C#, Go, Java, NodeJS, PHP, Python",
           url: "/docs/backend",
         },
         {
           title: "Frontend",
+          description: "HTML CSS JS, React, Vue, Angular",
           url: "/docs/frontend",
         },
         {
