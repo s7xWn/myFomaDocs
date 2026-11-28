@@ -21,6 +21,16 @@ Rolling Update сам по себе не гарантирует Zero Downtime. �
 - `maxSurge` — сколько дополнительных Pod'ов можно создать сверх желаемого количества во время обновления.
 - `maxUnavailable` — сколько Pod'ов может быть недоступно во время обновления.
 
+```yaml
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+```
+
 <details>
   <summary>Пример</summary>
 
