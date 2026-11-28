@@ -1,0 +1,49 @@
+---
+title: "Service Discovery"
+---
+
+Service Discovery — механизм, позволяющий Pod'ам находить друг друга по стабильному имени, не зная их IP-адресов.
+
+Это фундамент для микросервисной архитектуры в Kubernetes.
+
+Проблема:
+
+- Pod может перезапуститься и получить новый IP.
+- Количество Pod'ов может динамически меняться.
+- IP-адреса Pod'ов нестабильны.
+
+Решение — Kubernetes Service + DNS.
+
+<details>
+  <summary>Пример</summary>
+
+Создаём Service:
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend
+  ports:
+    - port: 80
+      targetPort: 8080
+```
+
+Теперь из любого Pod внутри кластера можно обратиться:
+
+```bash
+curl http://backend-service
+```
+
+Kubernetes автоматически:
+
+1. Резолвит имя через CoreDNS.
+2. Направляет запрос на Service.
+3. Выбирает подходящий backend Pod через механизм Service routing.
+
+</details>
+
+Приложениям не нужно знать IP-адреса друг друга, отслеживать перезапуски Pod'ов или самостоятельно реализовывать discovery.
